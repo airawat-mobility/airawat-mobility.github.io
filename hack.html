@@ -44,7 +44,8 @@
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     .header-logo {
-      max-height: 70px;
+      max-height: 90px;
+      transition: transform 0.3s ease;
     }
     .title-section h1 {
       font-size: 3.5rem;
@@ -53,22 +54,29 @@
       text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
     .logo-container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 30px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding: 20px 0;
+      justify-items: center;
     }
     .logo-container img {
-      max-height: 80px;
-      padding: 12px;
       background: white;
+      padding: 12px;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      transition: transform 0.3s;
+      max-height: 80px;
+      width: auto;
+      transition: all 0.3s;
     }
-    .logo-container img:hover {
-      transform: scale(1.1);
+    @media (max-width: 768px) {
+      .logo-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .logo-container img {
+        max-height: 60px;
+        padding: 8px;
+      }
     }
     .main-image {
       width: 100%;
@@ -213,12 +221,12 @@
 <body>
   <div class="container">
     <div class="header-wrapper">
-      <img src="airawat-logo.png" alt="Airawat Logo" class="header-logo">
+      <img src="airawat-logo.png" alt="Airawat Logo" class="header-logo" style="max-height: 90px;">
       <div class="title-section">
         <h1>Urban Vision Hackathon</h1>
         <h3>The AI Challenge</h3>
       </div>
-      <img src="iisc-logo.jpg" alt="IISc Logo" class="header-logo">
+      <img src="iisc-logo.jpg" alt="IISc Logo" class="header-logo" style="max-height: 90px;">
     </div>
     
     <div class="logo-container">
@@ -228,6 +236,8 @@
       <img src="dfpg-logo.png" alt="DFPG Logo">
       <img src="ieee-logo.png" alt="IEEE Logo">
       <img src="moe-logo.png" alt="Ministry of Education Logo">
+      <img src="rbcbps-logo.png" alt="RBCBPS Logo">
+      <img src="cistup-logo.png" alt="CISTUP Logo">
     </div>
     
     <div class="card">
