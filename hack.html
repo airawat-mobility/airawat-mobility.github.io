@@ -28,7 +28,7 @@
     }
     .container {
       max-width: 1200px;
-      margin: auto;
+      margin: 0 auto;
       padding: 20px;
     }
     .header-wrapper {
@@ -54,11 +54,10 @@
       text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     }
     .logo-container {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-      padding: 20px 0;
-      justify-items: center;
+      max-width: 1200px;
+      margin: 40px auto 0;
+      padding: 30px 20px;
+      border-top: 2px solid #eee;
     }
     .logo-container img {
       background: white;
@@ -209,6 +208,37 @@
     .terms li {
         margin-bottom: 8px;
     }
+    .side-panel {
+      position: sticky;
+      top: 20px;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    @media (max-width: 1200px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+      
+      .side-panel {
+        position: static;
+        height: auto;
+        order: -1;
+      }
+    }
+    .mailing-form input {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 15px 0;
+      border: 2px solid #cbd5e0;
+      border-radius: 8px;
+      font-family: 'Poppins', sans-serif;
+      background: rgba(255,255,255,0.9);
+    }
+    .mailing-form input:focus {
+      outline: none;
+      border-color: #4299e1;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+    }
   </style>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
   <script>
@@ -220,109 +250,113 @@
 </head>
 <body>
   <div class="container">
-    <div class="header-wrapper">
-      <img src="airawat-logo.png" alt="Airawat Logo" class="header-logo" style="max-height: 90px;">
-      <div class="title-section">
-        <h1>Urban Vision Hackathon</h1>
-        <h3>The AI Challenge</h3>
+    <div class="main-content">
+      <div class="header-wrapper">
+        <img src="iisc-logo.jpg" alt="IISc Logo" class="header-logo" style="max-height: 90px;">
+        <div class="title-section">
+          <h1>Urban Vision Hackathon</h1>
+          <h3>The AI Challenge</h3>
+        </div>
+        <img src="airawat-logo.png" alt="Airawat Logo" class="header-logo" style="max-height: 90px;">
       </div>
-      <img src="iisc-logo.jpg" alt="IISc Logo" class="header-logo" style="max-height: 90px;">
-    </div>
-    
-    <div class="logo-container">
-      <img src="acm-logo.png" alt="ACM Logo">
-      <img src="btp-logo.png" alt="Bangalore Traffic Police Logo">
-      <img src="cds-logo.png" alt="CDS Logo">
-      <img src="dfpg-logo.png" alt="DFPG Logo">
-      <img src="ieee-logo.png" alt="IEEE Logo">
-      <img src="moe-logo.png" alt="Ministry of Education Logo">
-      <img src="rbcbps-logo.png" alt="RBCBPS Logo">
-      <img src="cistup-logo.png" alt="CISTUP Logo">
-    </div>
-    
-    <div class="card">
-      <h2>About AI Urban Mobility Initiative</h2>
-      <p>The AI Mobility Challenge is a collaboration between IISc, Airawat Research Foundation, and the Bangalore Traffic Police, aiming to build India's largest traffic image dataset. The goal is to enhance AI models for urban mobility, including traffic optimization, congestion forecasting, and smart signal planning.</p>
-    </div>
-    
-    <img src="main.jpeg" alt="Main Image" class="main-image">
-    
-    <div class="card">
-      <h2>🚦 The Traffic Quest Game</h2>
-      <img src="game.png" alt="Game Preview" class="main-image">
-      <p>Embark on a virtual race through Bangalore's streets to reach IISc! Teams will:</p>
-      <p>🎮 Navigate through dynamic traffic scenarios<br>
-         🛑 Face roadblocks requiring accurate image annotations<br>
-         ⏱️ Race against the clock while maintaining labeling precision<br>
-         🏁 Earn bonus points for both speed and accuracy</p>
-      <p>Each correctly labeled image clears your path forward - balance speed and accuracy to reach the finish line!</p>
-    </div>
-    
-    <div class="card">
-      <h2>Why Participate?</h2>
-      <p>Join this nationwide image annotation hackathon to classify and label traffic images. Enhance AI models for smarter cities while competing in a gamified challenge!</p>
-    </div>
-    
-    <div class="card">
-      <h2>Who Can Join?</h2>
-      <p>✅ Undergraduate and postgraduate students from any college in India are welcome.<br>
-         ✅ Multiple teams are allowed from colleges.<br>
-         ✅ ACM and IEEE members are encouraged to participate.</p>
-    </div>
-    
-    <div class="card">
-      <h2>Important Dates</h2>
-      <p>📅 Registration Opens: March 20, 2025<br>
-         ⏳ Challenge Duration: April 1-30, 2025 (Tentative)</p>
-    </div>
-    
-    <div class="card">
-      <h2>Prizes</h2>
-      <p>🏆 <strong>IISc Internships</strong>: Top participants will have the opportunity to secure internships at the prestigious Indian Institute of Science (IISc), gaining invaluable experience in AI and urban mobility research.</p>
-      <p>🎁 <strong>IISc Merchandise</strong>: Good performing participants will receive exclusive IISc merchandise, including branded apparel and accessories, to commemorate their involvement in this exciting challenge.</p>
-      <p>🎉 <strong>Weekly Prizes</strong>: Throughout the duration of the hackathon, we will be awarding weekly prizes to outstanding teams based on their performance and creativity in image annotation tasks. Stay engaged and compete for exciting rewards!</p>
-    </div>
-    
-    <div class="card">
-      <h2>Register Now</h2>
-      <p>Be part of this transformative AI challenge.</p>
-      <a href="https://forms.gle/bgJegtZschWFv4Jj7" class="btn-register" target="_blank">Register Here</a>
-    </div>
-    
-    <div class="card">
-      <h2>Contact Us</h2>
-      <p>📧 Have questions? Reach out at 
-         <a href="mailto:iiscurbanvision@gmail.com" class="contact-email" target="_blank">
-             <strong>iiscurbanvision@gmail.com</strong>
-         </a>
-      </p>
-    </div>
+      
+      <div class="card">
+        <h2>About AI Urban Mobility Initiative</h2>
+        <p>The AI Mobility Challenge is a collaboration between IISc, Airawat Research Foundation, and the Bangalore Traffic Police, aiming to build India's largest traffic image dataset. The goal is to enhance AI models for urban mobility, including traffic optimization, congestion forecasting, and smart signal planning.</p>
+      </div>
+      
+      <div class="card">
+        <h2>📬 Join Mailing List</h2>
+        <p>Get registration updates and challenge announcements directly in your inbox:</p>
+        <a href="https://forms.gle/BpF7XrXadLwjxyVL6" class="btn-register" target="_blank">
+            Subscribe via Google Form
+        </a>
+      </div>
+      
+      <img src="main.jpeg" alt="Main Image" class="main-image">
+      
+      <div class="card">
+        <h2>🚦 The Traffic Quest Game</h2>
+        <img src="game.png" alt="Game Preview" class="main-image">
+        <p>Embark on a virtual race through Bangalore's streets to reach IISc! Teams will:</p>
+        <p>🎮 Navigate through dynamic traffic scenarios<br>
+           🛑 Face roadblocks requiring accurate image annotations<br>
+           ⏱️ Race against the clock while maintaining labeling precision<br>
+           🏁 Earn bonus points for both speed and accuracy</p>
+        <p>Each correctly labeled image clears your path forward - balance speed and accuracy to reach the finish line!</p>
+      </div>
+      
+      <div class="card">
+        <h2>Why Participate?</h2>
+        <p>Join this nationwide image annotation hackathon to classify and label traffic images. Enhance AI models for smarter cities while competing in a gamified challenge!</p>
+      </div>
+      
+      <div class="card">
+        <h2>Who Can Join?</h2>
+        <p>✅ Undergraduate and postgraduate students from any college in India are welcome.<br>
+           ✅ Multiple teams are allowed from colleges.<br>
+           ✅ ACM and IEEE members are encouraged to participate.</p>
+      </div>
+      
+      <div class="card">
+        <h2>Important Dates</h2>
+        <p>📅 Registration Opens: March 20, 2025<br>
+           ⏳ Challenge Duration: April 1-30, 2025 (Tentative)</p>
+      </div>
+      
+      <div class="card">
+        <h2>Prizes</h2>
+        <p>🏆 <strong>IISc Internships</strong>: Top participants will have the opportunity to secure internships at the prestigious Indian Institute of Science (IISc), gaining invaluable experience in AI and urban mobility research.</p>
+        <p>🎁 <strong>IISc Merchandise</strong>: Good performing participants will receive exclusive IISc merchandise, including branded apparel and accessories, to commemorate their involvement in this exciting challenge.</p>
+        <p>🎉 <strong>Weekly Prizes</strong>: Throughout the duration of the hackathon, we will be awarding weekly prizes to outstanding teams based on their performance and creativity in image annotation tasks. Stay engaged and compete for exciting rewards!</p>
+      </div>
+      
+      <div class="card">
+        <h2>Contact Us</h2>
+        <p>📧 Have questions? Reach out at 
+           <a href="mailto:iiscurbanvision@gmail.com" class="contact-email" target="_blank">
+               <strong>iiscurbanvision@gmail.com</strong>
+           </a>
+        </p>
+      </div>
 
-    <!-- Add the portal image here -->
-    <div class="card">
-      <h2>Sample Portal</h2>
-      <img src="portal.png" alt="Sample Portal" class="main-image">
-      <p>Here is a sample of the portal that will be used for the hackathon.</p>
-    </div>
+      <!-- Add the portal image here -->
+      <div class="card">
+        <h2>Sample Portal</h2>
+        <img src="portal.png" alt="Sample Portal" class="main-image">
+        <p>Here is a sample of the portal that will be used for the hackathon.</p>
+      </div>
 
-    <div class="visit-counter">
-      <span id="visitCount">0</span> interested in the mobility revolution
-    </div>
+      <div class="visit-counter">
+        <span id="visitCount">0</span> interested in the mobility revolution
+      </div>
 
-    <!-- Add after visit counter but before closing container div -->
-    <div class="terms">
-        <h3>Terms of Use</h3>
-        <p>© 2024 Urban Vision Hackathon. All rights reserved.</p>
-        <p>Content and materials provided through this portal are for educational/non-commercial use only. By participating, you agree to:</p>
-        <ul>
-            <li>Submit original work</li>
-            <li>Follow ethical AI guidelines</li>
-            <li>Allow anonymized data usage for research</li>
-            <li>Not redistribute or use portal images outside the competition without explicit written permission</li>
-        </ul>
-        <p>All images provided through the portal remain property of the Urban Vision Initiative and may only be used for competition purposes. Unauthorized distribution or commercial use of challenge materials is strictly prohibited.</p>
-        <p>Full terms available upon request. Contact <a href="mailto:iiscurbanvision@gmail.com" class="contact-email">organizers</a> for queries.</p>
+      <!-- Add after visit counter but before closing container div -->
+      <div class="terms">
+          <h3>Terms of Use</h3>
+          <p>© 2024 Urban Vision Hackathon. All rights reserved.</p>
+          <p>Content and materials provided through this portal are for educational/non-commercial use only. By participating, you agree to:</p>
+          <ul>
+              <li>Submit original work</li>
+              <li>Follow ethical AI guidelines</li>
+              <li>Allow anonymized data usage for research</li>
+              <li>Not redistribute or use portal images outside the competition without explicit written permission</li>
+          </ul>
+          <p>All images provided through the portal remain property of the Urban Vision Initiative and may only be used for competition purposes. Unauthorized distribution or commercial use of challenge materials is strictly prohibited.</p>
+          <p>Full terms available upon request. Contact <a href="mailto:iiscurbanvision@gmail.com" class="contact-email">organizers</a> for queries.</p>
+      </div>
     </div>
+  </div>
+
+  <div class="logo-container">
+    <img src="acm-logo.png" alt="ACM Logo">
+    <img src="btp-logo.png" alt="Bangalore Traffic Police Logo">
+    <img src="cds-logo.png" alt="CDS Logo">
+    <img src="dfpg-logo.png" alt="DFPG Logo">
+    <img src="ieee-logo.png" alt="IEEE Logo">
+    <img src="moe-logo.png" alt="Ministry of Education Logo">
+    <img src="rbcbps-logo.png" alt="RBCBPS Logo">
+    <img src="cistup-logo.png" alt="CISTUP Logo">
   </div>
 
   <script>
