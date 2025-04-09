@@ -1,35 +1,711 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Coming Soon</title>
-  <meta name="description" content="Stay tuned for the Urban Vision Hackathon.">
-  <meta name="keywords" content="Coming Soon, Urban Vision, Hackathon">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Vision Hackathon: The AI Challenge</title>
+    <meta name="description" content="An AI-driven challenge to improve Indian traffic mobility through image annotation.">
+    <meta name="keywords" content="AI, Urban Mobility, Traffic, India, Hackathon, Image Annotation">
   
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
+    <!-- Favicons -->
+    <link rel="icon" href="assets/img/favicon.png">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com" rel="preconnect">
-  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-  
-  <style>
-    body {
-      background-color: #0A1931;
-      color: #ffffff;
-      font-family: 'Roboto', sans-serif;
-      text-align: center;
-      padding: 50px;
-    }
-    h1 {
-      font-size: 2.5rem;
-    }
-  </style>
+    <!-- Remix Icons - Modern Icon Pack -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Coming Soon</h1>
-  <p>Stay tuned for the Urban Vision Hackathon!</p>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <img src="assets/img/iisc-logo.jpg" alt="IISc Logo" class="nav-logo">
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#register">Register</a>
+                <a href="#game">The Game</a>
+                <a href="#prizes">Prizes</a>
+                <a href="#dates">Dates</a>
+                <a href="#partners">Partners</a>
+                <a href="#contact">Contact</a>
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch" for="checkbox">
+                        <input type="checkbox" id="checkbox" />
+                        <div class="slider">
+                            <div class="icons">
+                                <i class="ri-sun-line"></i>
+                                <i class="ri-moon-line"></i>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <button class="mobile-menu-btn">
+                <i class="ri-menu-line"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <canvas id="network-graph"></canvas>
+        <div class="hero-particles"></div>
+        <div class="hero-content">
+            <div class="logo-container">
+                <img src="assets/img/iisc-logo.jpg" alt="IISc Logo">
+                <img src="assets/img/airawat-logo.png" alt="Airawat Logo">
+            </div>
+            <h1>Urban Vision Hackathon</h1>
+            <h2>Making AI work for India</h2>
+            <p>An AI-driven challenge to improve Indian traffic mobility through image annotation</p>
+            <div class="hero-cta">
+                <a href="#register" class="btn btn-primary">
+                    Register Now <i class="ri-arrow-right-line"></i>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-number">100K+</div>
+                    <div class="hero-stat-label">Traffic Images</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">10+</div>
+                    <div class="hero-stat-label">Partner Institutions</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="hero-stat-number">₹5L+</div>
+                    <div class="hero-stat-label">in Prizes</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-scroll-indicator">
+            <a href="#about">
+                <i class="ri-arrow-down-line"></i>
+            </a>
+        </div>
+    </section>
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About the Challenge</h2>
+            </div>
+            
+            <div class="typewriter-container about-typewriter">
+                <span id="typewriter-text" class="typewriter-text"></span>
+                <span class="typewriter-cursor">|</span>
+            </div>
+            
+            <div class="about-wrapper">
+                <div class="about-image">
+                    <img src="main.jpeg" alt="Urban Traffic in India" class="about-main-image">
+                    <div class="stat-cards">
+                        <div class="stat-card">
+                            <span class="stat-number" data-count="100000">0</span>
+                            <span class="stat-label">Traffic Images</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" data-count="10">0</span>
+                            <span class="stat-label">Partner Institutions</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-content">
+                    <div class="info-card main-info-card">
+                        <div class="info-card-content">
+                            <div class="info-card-icon">
+                                <i class="ri-building-2-line"></i>
+                            </div>
+                            <h3>AI for Urban Mobility</h3>
+                            <p>The AI for Urban Mobility initiative at IISc, supported by Ministry of Education, AIRAWAT and Bangalore Traffic Police, is using AI to ease traffic congestion, improve safety and enhance mobility planning. This hackathon will create the largest annotated traffic image dataset for India.</p>
+                            <div class="benefit-list animated-list">
+                                <div class="benefit-item"><i class="ri-check-line"></i> Build AI models that improve millions of commuters' lives</div>
+                                <div class="benefit-item"><i class="ri-check-line"></i> Contribute to India's largest and first open-source urban traffic dataset initiative</div>
+                                <div class="benefit-item"><i class="ri-check-line"></i> Apply your skills to real-world challenges with immediate impact</div>
+                            </div>
+                            <div class="tags">
+                                <span class="tag interactive-tag">AI Research</span>
+                                <span class="tag interactive-tag">Smart Cities</span>
+                                <span class="tag interactive-tag">Data Science</span>
+                                <span class="tag interactive-tag">Urban Planning</span>
+                                <span class="tag interactive-tag">Computer Vision</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cards-grid" style="margin-top: 50px;">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="ri-team-line"></i>
+                    </div>
+                    <h3>Who Can Participate</h3>
+                    <ul class="modern-list">
+                        <li><i class="ri-user-follow-line"></i> Undergraduate and postgraduate students from any college in India</li>
+                        <li><i class="ri-group-line"></i> Multiple teams from the same institution are welcome</li>
+                        <li><i class="ri-code-box-line"></i> Students with backgrounds in Computer Science, Data Science, AI, or Urban Planning</li>
+                    </ul>
+                    <a href="#" class="card-button" style="margin-top: 15px;">Check Eligibility</a>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="ri-task-line"></i>
+                    </div>
+                    <h3>Challenge Format</h3>
+                    <ul class="modern-list">
+                        <li><i class="ri-game-line"></i> Engaging gamified experience with traffic image annotation</li>
+                        <li><i class="ri-database-2-line"></i> Help build smarter AI models through your contributions</li>
+                        <li><i class="ri-speed-up-line"></i> Series of increasingly complex challenges that test both speed and accuracy</li>
+                    </ul>
+                    <a href="#game" class="card-button" style="margin-top: 15px;">See the Game</a>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="ri-trophy-line"></i>
+                    </div>
+                    <h3>Why Join</h3>
+                    <ul class="modern-list">
+                        <li><i class="ri-building-4-line"></i> Gain hands-on experience with real-world AI applications</li>
+                        <li><i class="ri-file-user-line"></i> Build your portfolio and network with industry experts</li>
+                        <li><i class="ri-rocket-line"></i> Earn opportunities like internships at IISc</li>
+                    </ul>
+                    <a href="#prizes" class="card-button" style="margin-top: 15px;">View Prizes</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section id="register" class="register-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>How to Register</h2>
+            </div>
+            
+            <div class="registration-process">
+                <div class="registration-tabs">
+                    <button class="registration-tab active" data-target="team-leader">
+                        <i class="ri-user-star-line"></i> Team Leader
+                    </button>
+                    <button class="registration-tab" data-target="team-member">
+                        <i class="ri-team-line"></i> Team Member
+                    </button>
+                </div>
+                
+                <div class="registration-content">
+                    <!-- Team Leader Registration -->
+                    <div class="registration-panel active" id="team-leader-panel">
+                        <div class="registration-steps">
+                            <div class="registration-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h3>Fill Google Form</h3>
+                                    <p>Complete the registration form as a "Team-Leader"</p>
+                                    <a href="https://forms.gle/wDYRRYcFEp44PKEm6" target="_blank" class="btn btn-primary">
+                                        <i class="ri-file-list-3-line"></i> Google Form
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="registration-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h3>Register on Website</h3>
+                                    <p>Use the same email address you provided in the Google Form to register on the hackathon website</p>
+                                    <a href="https://uv-hack-client.vercel.app/login" target="_blank" class="btn btn-primary">
+                                        <i class="ri-dashboard-line"></i> Dashboard
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="registration-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h3>Leader Verification</h3>
+                                    <p>Enter your leader code during login for verification (you'll receive this via email)</p>
+                                    <div class="important-note">
+                                        <i class="ri-error-warning-line"></i>
+                                        <span>Do not share your leader code with anyone</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="registration-step">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h3>Invite Team Members</h3>
+                                    <p>Share your team code with your team members so they can join your team</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Team Member Registration -->
+                    <div class="registration-panel" id="team-member-panel">
+                        <div class="registration-steps">
+                            <div class="registration-step">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h3>Fill Google Form</h3>
+                                    <p>Complete the registration form as a "Team-Member"</p>
+                                    <a href="https://forms.gle/wDYRRYcFEp44PKEm6" target="_blank" class="btn btn-primary">
+                                        <i class="ri-file-list-3-line"></i> Google Form
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="registration-step">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h3>Register on Website</h3>
+                                    <p>Use the same email address you provided in the Google Form to register on the hackathon website</p>
+                                    <a href="https://uv-hack-client.vercel.app/login" target="_blank" class="btn btn-primary">
+                                        <i class="ri-dashboard-line"></i> Dashboard
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="registration-step">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h3>Join Your Team</h3>
+                                    <p>Enter your team leader's team code when prompted to join the team</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="registration-note">
+                <div class="note-icon">
+                    <i class="ri-information-line"></i>
+                </div>
+                <div class="note-content">
+                    <h3>Important Note</h3>
+                    <p>Each team can have a maximum of 4 members, including the leader.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Section -->
+    <section id="game" class="game-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>The Traffic Quest Game</h2>
+            </div>
+            
+            <!-- Replace with modern gallery -->
+            <div class="modern-gallery">
+                <div class="gallery-container">
+                    <div class="gallery-main-view">
+                        <div class="gallery-slides">
+                            <div class="gallery-slide active">
+                                <img src="assets/img/UI-1.png" alt="Game Interface 1">
+                                <div class="slide-caption">Main Dashboard Interface</div>
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="assets/img/UI-2.png" alt="Game Interface 2">
+                                <div class="slide-caption">Traffic Challenge Map</div>
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="assets/img/UI-3.png" alt="Game Interface 3">
+                                <div class="slide-caption">Team Performance Dashboard</div>
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="assets/img/UI-4.gif" alt="Game Interface 4" class="gif-slide">
+                                <div class="slide-caption">Annotation Process</div>
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="assets/img/UI-5.gif" alt="Game Interface 5" class="gif-slide">
+                                <div class="slide-caption">Navigation Through Challenges</div>
+                            </div>
+                        </div>
+                        
+                        <button class="gallery-nav gallery-prev" aria-label="Previous slide">
+                            <i class="ri-arrow-left-s-line"></i>
+                        </button>
+                        <button class="gallery-nav gallery-next" aria-label="Next slide">
+                            <i class="ri-arrow-right-s-line"></i>
+                        </button>
+                        
+                        <div class="gallery-progress">
+                            <div class="progress-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-filmstrip">
+                        <div class="filmstrip-track">
+                            <div class="filmstrip-thumb active" data-index="0">
+                                <img src="assets/img/UI-1.png" alt="Thumbnail 1">
+                            </div>
+                            <div class="filmstrip-thumb" data-index="1">
+                                <img src="assets/img/UI-2.png" alt="Thumbnail 2">
+                            </div>
+                            <div class="filmstrip-thumb" data-index="2">
+                                <img src="assets/img/UI-3.png" alt="Thumbnail 3">
+                            </div>
+                            <div class="filmstrip-thumb" data-index="3">
+                                <img src="assets/img/UI-4.gif" alt="Thumbnail 4">
+                            </div>
+                            <div class="filmstrip-thumb" data-index="4">
+                                <img src="assets/img/UI-5.gif" alt="Thumbnail 5">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-controls">
+                        <button class="gallery-play-pause" aria-label="Pause slideshow">
+                            <i class="ri-pause-line"></i>
+                        </button>
+                        <div class="gallery-counter">
+                            <span class="current-slide">1</span>/<span class="total-slides">5</span>
+                        </div>
+                        <button class="gallery-fullscreen" aria-label="View fullscreen">
+                            <i class="ri-fullscreen-line"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="descriptive-text">Embark on a virtual race through Bangalore's streets to reach IISc!</p>
+            
+            <div class="game-features">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ri-road-map-line"></i></div>
+                    <h3>Dynamic Traffic Scenarios</h3>
+                    <p>Navigate through realistic traffic situations that test your annotation skills</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ri-stop-circle-line"></i></div>
+                    <h3>Roadblock Challenges</h3>
+                    <p>Face roadblocks requiring accurate image annotations to progress</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ri-timer-flash-line"></i></div>
+                    <h3>Race Against Time</h3>
+                    <p>Balance speed with precision to maximize your score</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ri-flag-2-line"></i></div>
+                    <h3>Bonus Points</h3>
+                    <p>Earn extra points for both speed and accuracy</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ri-code-box-line"></i></div>
+                    <h3>AI Model Building</h3>
+                    <p>Build AI models on annotated data during the face-off round for top 20 teams</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ri-building-2-line"></i></div>
+                    <h3>IISc Face-off Round</h3>
+                    <p>Top teams will compete onsite at IISc Bangalore in the final phase</p>
+                </div>
+            </div>
+            
+            <p class="descriptive-text">Each correctly labeled image clears your path forward - balance speed and accuracy to reach the finish line!</p>
+        </div>
+    </section>
+
+    <!-- Prizes Section -->
+    <section id="prizes" class="prize-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Prizes</h2>
+            </div>
+            <div class="prizes">
+                <div class="prize-card">
+                    <div class="prize-icon"><i class="ri-building-4-line"></i></div>
+                    <h3>IISc Internships</h3>
+                    <p>Top participants will have the opportunity to secure internships at the prestigious Indian Institute of Science (IISc), gaining invaluable experience in AI and urban mobility research.</p>
+                </div>
+                <div class="prize-card">
+                    <div class="prize-icon"><i class="ri-gift-line"></i></div>
+                    <h3>IISc Merchandise</h3>
+                    <p>Good performing participants will receive exclusive IISc merchandise, including branded apparel and accessories, to commemorate their involvement in this exciting challenge.</p>
+                </div>
+                <div class="prize-card">
+                    <div class="prize-icon"><i class="ri-medal-line"></i></div>
+                    <h3>Weekly Prizes</h3>
+                    <p>Throughout the duration of the hackathon, we will be awarding weekly prizes to outstanding teams based on their performance and creativity in image annotation tasks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dates & Eligibility Section -->
+    <section id="dates" class="dates-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Important Dates</h2>
+                <p class="title-caption">Your journey with Urban Vision Hackathon</p>
+            </div>
+            
+            <div class="timeline-container">
+                <div class="timeline-progress">
+                    <div class="progress-bar" style="height: 25%"></div>
+                </div>
+                
+                <div class="timeline">
+                    <div class="timeline-item active">
+                        <div class="timeline-content">
+                            <div class="timeline-icon">
+                                <i class="ri-rocket-line"></i>
+                            </div>
+                            <div class="timeline-date">April 10, 2025</div>
+                            <h3>Registration Opens</h3>
+                            <p>Sign up with your team and get ready for the challenge! Complete your profile and access pre-hackathon resources to prepare.</p>
+                            <div class="time-remaining">Registration opens in <span class="countdown" data-date="2025-04-10">350 days</span></div>
+                            <a href="#" class="timeline-btn">Set Reminder</a>
+                            <span class="phase-badge">Phase 1</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-icon">
+                                <i class="ri-play-circle-line"></i>
+                            </div>
+                            <div class="timeline-date">May 1, 2025</div>
+                            <h3>Challenge Begins</h3>
+                            <p>Access to the gaming portal opens. Start annotating traffic images and racing through virtual Bangalore!</p>
+                            <div class="time-remaining">Begins in <span class="countdown" data-date="2025-05-01">362 days</span></div>
+                            <a href="#" class="timeline-btn">Mark Your Calendar</a>
+                            <span class="phase-badge">Phase 1</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-icon">
+                                <i class="ri-medal-line"></i>
+                            </div>
+                            <div class="timeline-date">May 25, 2025</div>
+                            <h3>Bonus Round</h3>
+                            <p>Top 100 teams will be given a bonus round and special challenges.</p>
+                            <div class="time-remaining">In <span class="countdown" data-date="2025-05-25">376 days</span></div>
+                            <span class="phase-badge">Phase 1</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-icon">
+                                <i class="ri-team-line"></i>
+                            </div>
+                            <div class="timeline-date">June 14, 2025</div>
+                            <h3>Face-off Round</h3>
+                            <p>Top 20 teams will build AI models at IISc using the collected annotated data as the final round.</p>
+                            <div class="time-remaining">In <span class="countdown" data-date="2025-06-14">386 days</span></div>
+                            <a href="#" class="timeline-btn">Finalist Info</a>
+                            <span class="phase-badge">Phase 2</span>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-content">
+                            <div class="timeline-icon">
+                                <i class="ri-award-line"></i>
+                            </div>
+                            <div class="timeline-date">June 15, 2025</div>
+                            <h3>Results</h3>
+                                <p>Results will be announced and winners will be awarded prizes.</p>
+                            <div class="time-remaining">In <span class="countdown" data-date="2025-06-15">406 days</span></div>
+                            <a href="#" class="timeline-btn">RSVP Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            <div class="eligibility-box">
+                <div class="eligibility-icon">
+                    <i class="ri-graduation-cap-line"></i>
+                        </div>
+                <div class="eligibility-content">
+                    <h3>Eligibility Criteria</h3>
+                    <ul class="eligibility-list">
+                        <li><i class="ri-check-line"></i> Must be currently enrolled in an Indian college/university</li>
+                        <li><i class="ri-check-line"></i> Teams of 2-4 members from the same institution</li>
+                        <li><i class="ri-check-line"></i> Each participant can be part of only one team</li>
+                        <li><i class="ri-check-line"></i> At least one team member should have basic knowledge of computer vision/annotation</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary" style="margin-top: 15px;">Register Your Team</a>
+                                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portal Preview Section -->
+    <section>
+        <div class="container">
+            <div class="section-title">
+                <h2>Sample Portal</h2>
+            </div>
+            <div class="portal-preview-container">
+                <img src="assets/dash_board.gif" alt="Sample Portal" class="portal-preview">
+            </div>
+            <p class="descriptive-text">Here is a sample of the portal that will be used for the hackathon.</p>
+            
+            <!-- <div style="text-align: center; margin-top: 40px;">
+                <div class="visit-counter">
+                    <i class="ri-rocket-2-line"></i>
+                    <span id="visitCount">1</span> interested in the mobility revolution
+                </div>
+            </div> -->
+        </div>
+    </section>
+
+    <!-- Media Gallery Section -->
+    <section class="media-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Media Gallery</h2>
+            </div>
+            
+            <div class="media-buttons">
+                <button class="media-btn" id="show-video">
+                    <i class="ri-video-line"></i>
+                    <span>Watch Video</span>
+                </button>
+                <button class="media-btn" id="show-poster">
+                    <i class="ri-file-image-line"></i>
+                    <span>View Poster</span>
+                </button>
+            </div>
+            
+            <!-- Media Modal -->
+            <div class="media-modal" id="media-modal">
+                <div class="modal-overlay"></div>
+                <div class="modal-container">
+                    <button class="modal-close" id="close-modal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                    <div class="modal-content">
+                        <!-- Video Player Container -->
+                        <div class="video-container" id="video-player-container">
+                            <video id="video-player" controls>
+                                <source src="assets/video.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-controls">
+                                <button class="video-btn play-pause">
+                                    <i class="ri-play-line"></i>
+                                </button>
+                                <div class="progress-container">
+                                    <div class="progress-bar-video"></div>
+                                </div>
+                                <button class="video-btn fullscreen">
+                                    <i class="ri-fullscreen-line"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Poster Container -->
+                        <div class="poster-container" id="poster-container">
+                            <img src="assets/poster.png" alt="Hackathon Poster" id="poster-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section id="partners" class="partners">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Partners</h2>
+            </div>
+            <div class="partner-logos">
+                <div class="partner-logo-container">
+                    <img src="assets/img/acm-logo.png" alt="ACM Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/btp-logo.png" alt="Bangalore Traffic Police Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/cds-logo.png" alt="CDS Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/dfpg-logo.png" alt="DFPG Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/ieee-logo.png" alt="IEEE Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/moe-logo.png" alt="Ministry of Education Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/rbcbps-logo.png" alt="RBCBPS Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/cistup.png" alt="CISTUP Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/artpark.png" alt="Artpark Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/airawat-logo.png" alt="Airawat Logo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Terms Section -->
+    <section>
+        <div class="container">
+            <div class="terms">
+                <h3>Terms of Use</h3>
+                <p>© 2024 Urban Vision Hackathon. All rights reserved.</p>
+                <p>Content and materials provided through this portal are for educational/non-commercial use only. By participating, you agree to:</p>
+                <ul>
+                    <li>Submit original work</li>
+                    <li>Follow ethical AI guidelines</li>
+                    <li>Allow anonymized data usage for research</li>
+                    <li>Not redistribute or use portal images outside the competition without explicit written permission</li>
+                </ul>
+                <p>All images provided through the portal remain property of the Urban Vision Initiative and may only be used for competition purposes. Unauthorized distribution or commercial use of challenge materials is strictly prohibited.</p>
+                <p>Full terms available upon request. Contact <a href="mailto:airawat.mobility@iisc.ac.in" class="contact-email">organizers</a> for queries.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Urban Vision Hackathon</h3>
+                    <p>An AI-driven challenge to improve Indian traffic mobility through image annotation.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="ri-twitter-x-line"></i></a>
+                        <a href="#"><i class="ri-linkedin-box-line"></i></a>
+                        <a href="#"><i class="ri-instagram-line"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <a href="#about">About</a>
+                    <a href="#game">The Game</a>
+                    <a href="#prizes">Prizes</a>
+                    <a href="#dates">Dates</a>
+                    <a href="#partners">Partners</a>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <p>Have questions about the hackathon?</p>
+                    <p>Email: <a href="mailto:airawat.mobility@iisc.ac.in" class="contact-email">airawat.mobility@iisc.ac.in</a></p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Urban Vision Hackathon. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
