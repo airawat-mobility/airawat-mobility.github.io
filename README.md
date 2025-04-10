@@ -2,7 +2,7 @@
 
 A modern, interactive website for the Urban Vision Hackathon - an AI-driven challenge to improve Indian traffic mobility through image annotation.
 
-![Urban Vision Hackathon Preview](/hack/assets/img/UI-1.png)
+![Urban Vision Hackathon Preview](/hack/assets/img/UI-1.jpg)
 
 ## About the Project
 
