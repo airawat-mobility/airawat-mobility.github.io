@@ -1090,24 +1090,25 @@ footer {
 }
 
 .info-card-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  background-color: rgba(66, 153, 225, 0.1);
-  border-radius: 50%;
-  margin-bottom: 15px;
-  font-size: 24px;
+  font-size: 2.5rem;
+  margin-bottom: 25px; /* Increased from 15px */
+  margin-top: 10px;    /* Added margin-top */
   color: var(--primary);
+  display: inline-flex; /* Changed from inline-block */
+  align-items: center;  /* Added for better alignment */
+  justify-content: center; /* Added for better alignment */
+  padding: 15px;
+  width: 70px;  /* Added explicit width */
+  height: 70px; /* Added explicit height */
+  background: rgba(66, 153, 225, 0.1);
+  border-radius: 50%;
   transition: all 0.3s ease;
 }
 
 .main-info-card:hover .info-card-icon {
-  transform: scale(1.1);
-  background-color: var(--primary);
+  transform: scale(1.1); /* Removed rotation effect */
+  background: var(--primary);
   color: white;
-  box-shadow: 0 0 20px rgba(66, 153, 225, 0.4);
 }
 
 .main-info-card .info-card-content {
@@ -1115,6 +1116,7 @@ footer {
 }
 
 .main-info-card h3 {
+  margin-top: 10px;
   margin-bottom: 20px;
   font-size: 1.8rem;
   color: var(--primary);
@@ -2400,7 +2402,7 @@ footer {
 }
 
 .main-info-card:hover .info-card-icon {
-  transform: scale(1.1) rotate(5deg);
+  transform: scale(1.1);
   background: var(--primary);
   color: white;
 }
