@@ -166,19 +166,32 @@
                         <li><i class="ri-group-line"></i> Multiple teams from the same institution are welcome</li>
                         <li><i class="ri-code-box-line"></i> Students with backgrounds in Computer Science, Data Science, AI, or Urban Planning</li>
                     </ul>
-                    <a href="#" class="card-button" style="margin-top: 15px;">Check Eligibility</a>
                 </div>
                 <div class="card">
                     <div class="card-icon">
                         <i class="ri-task-line"></i>
                     </div>
                     <h3>Challenge Format</h3>
-                    <ul class="modern-list">
-                        <li><i class="ri-game-line"></i> Engaging gamified experience with traffic image annotation</li>
-                        <li><i class="ri-database-2-line"></i> Help build smarter AI models through your contributions</li>
-                        <li><i class="ri-speed-up-line"></i> Series of increasingly complex challenges that test both speed and accuracy</li>
-                    </ul>
-                    <a href="#game" class="card-button" style="margin-top: 15px;">See the Game</a>
+                    <div class="challenge-phases">
+                        <div class="challenge-phase compact">
+                            <h4><i class="ri-game-line"></i> Phase 1: Traffic Quest</h4>
+                            <ul class="modern-list phase-list compact">
+                                <li><i class="ri-checkbox-circle-line"></i> Annotate traffic images in a gamified race</li>
+                                <li><i class="ri-timer-line"></i> Compete on precision and speed </li>
+                            </ul>
+                        </div>
+                        <div class="challenge-phase-divider compact">
+                            <div class="divider-line"></div>
+                            <div class="divider-icon"><i class="ri-arrow-down-line"></i></div>
+                        </div>
+                        <div class="challenge-phase compact">
+                            <h4><i class="ri-code-box-line"></i> Phase 2: AI Face-off</h4>
+                            <ul class="modern-list phase-list compact">
+                                <li><i class="ri-ai-generate"></i> Build AI models at IISc (top 20 teams)</li>
+                                <li><i class="ri-presentation-line"></i> Present to expert panel</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="card">
                     <div class="card-icon">
@@ -190,7 +203,22 @@
                         <li><i class="ri-file-user-line"></i> Build your portfolio and network with industry experts</li>
                         <li><i class="ri-rocket-line"></i> Earn opportunities like internships at IISc</li>
                     </ul>
-                    <a href="#prizes" class="card-button" style="margin-top: 15px;">View Prizes</a>
+                </div>
+            </div>
+            
+            <!-- Eligibility Criteria Box (Moved from Dates section) -->
+            <div class="eligibility-box" style="margin-top: 50px;">
+                <div class="eligibility-icon">
+                    <i class="ri-graduation-cap-line"></i>
+                </div>
+                <div class="eligibility-content">
+                    <h3>Eligibility Criteria</h3>
+                    <ul class="eligibility-list">
+                        <li><i class="ri-check-line"></i> Must be currently enrolled in an Indian college/university</li>
+                        <li><i class="ri-check-line"></i> Teams of 2-4 members from the same institution</li>
+                        <li><i class="ri-check-line"></i> Each participant can be part of only one team</li>
+                        <li><i class="ri-check-line"></i> At least one team member should have basic knowledge of computer vision/annotation</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -474,7 +502,7 @@
                             <div class="timeline-icon">
                                 <i class="ri-rocket-line"></i>
                             </div>
-                            <div class="timeline-date">April 10, 2025</div>
+                            <div class="timeline-date">April 11, 2025</div>
                             <h3>Registration Opens</h3>
                             <p>Sign up with your team and get ready for the challenge! Complete your profile and access pre-hackathon resources to prepare.</p>
                             <div class="time-remaining">Registration opens in <span class="countdown" data-date="2025-04-10">350 days</span></div>
@@ -535,21 +563,8 @@
                 </div>
             </div>
                 
-            <div class="eligibility-box">
-                <div class="eligibility-icon">
-                    <i class="ri-graduation-cap-line"></i>
-                        </div>
-                <div class="eligibility-content">
-                    <h3>Eligibility Criteria</h3>
-                    <ul class="eligibility-list">
-                        <li><i class="ri-check-line"></i> Must be currently enrolled in an Indian college/university</li>
-                        <li><i class="ri-check-line"></i> Teams of 2-4 members from the same institution</li>
-                        <li><i class="ri-check-line"></i> Each participant can be part of only one team</li>
-                        <li><i class="ri-check-line"></i> At least one team member should have basic knowledge of computer vision/annotation</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary" style="margin-top: 15px;">Register Your Team</a>
-                                </div>
-            </div>
+            <!-- Eligibility Box removed as it's now moved above the Registration section -->
+            
         </div>
     </section>
 
@@ -560,7 +575,7 @@
                 <h2>Sample Portal</h2>
             </div>
             <div class="portal-preview-container">
-                <img src="assets/dash_board.gif" alt="Sample Portal" class="portal-preview">
+                <img src="assets/img/dash_board.gif" alt="Sample Portal" class="portal-preview">
             </div>
             <p class="descriptive-text">Here is a sample of the portal that will be used for the hackathon.</p>
             
@@ -628,35 +643,48 @@
                 <h2>Our Partners</h2>
             </div>
             <div class="partner-logos">
+                <!-- IISc and IISc departments/centers -->
                 <div class="partner-logo-container">
-                    <img src="assets/img/acm-logo.png" alt="ACM Logo">
-                </div>
-                <div class="partner-logo-container">
-                    <img src="assets/img/btp-logo.png" alt="Bangalore Traffic Police Logo">
-                </div>
-                <div class="partner-logo-container">
-                    <img src="assets/img/cds-logo.png" alt="CDS Logo">
-                </div>
-                <div class="partner-logo-container">
-                    <img src="assets/img/dfpg-logo.png" alt="DFPG Logo">
-                </div>
-                <div class="partner-logo-container">
-                    <img src="assets/img/ieee-logo.png" alt="IEEE Logo">
-                </div>
-                <div class="partner-logo-container">
-                    <img src="assets/img/moe-logo.png" alt="Ministry of Education Logo">
-                </div>
-                <div class="partner-logo-container">
-                    <img src="assets/img/rbcbps-logo.png" alt="RBCBPS Logo">
+                    <img src="assets/img/iisc-logo.jpg" alt="IISc Logo">
                 </div>
                 <div class="partner-logo-container">
                     <img src="assets/img/cistup.png" alt="CISTUP Logo">
                 </div>
                 <div class="partner-logo-container">
-                    <img src="assets/img/artpark.png" alt="Artpark Logo">
+                    <img src="assets/img/cds-logo.png" alt="CDS Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/rbcps-logo.png" alt="RBCBPS Logo">
+                </div>
+                
+                <!-- Government and partner institutions -->
+                <div class="partner-logo-container">
+                    <img src="assets/img/moe-logo.png" alt="Ministry of Education Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/btp-logo.png" alt="Bangalore Traffic Police Logo">
                 </div>
                 <div class="partner-logo-container">
                     <img src="assets/img/airawat-logo.png" alt="Airawat Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/iitJ.png" alt="IIT-J Logo">
+                </div>
+                
+                <!-- Professional organizations -->
+                <div class="partner-logo-container">
+                    <img src="assets/img/acm-logo.png" alt="ACM Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/ieee-logo.png" alt="IEEE Logo">
+                </div>
+                
+                <!-- Additional partners -->
+                <div class="partner-logo-container">
+                    <img src="assets/img/artpark.png" alt="Artpark Logo">
+                </div>
+                <div class="partner-logo-container">
+                    <img src="assets/img/dfpg-logo.png" alt="DFPG Logo">
                 </div>
             </div>
         </div>
@@ -667,7 +695,7 @@
         <div class="container">
             <div class="terms">
                 <h3>Terms of Use</h3>
-                <p>© 2024 Urban Vision Hackathon. All rights reserved.</p>
+                <p>© 2025 Indian Institute of Science. All rights reserved.</p>
                 <p>Content and materials provided through this portal are for educational/non-commercial use only. By participating, you agree to:</p>
                 <ul>
                     <li>Submit original work</li>
@@ -709,7 +737,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2024 Urban Vision Hackathon. All rights reserved.</p>
+                <p>&copy; Indian Institute of Science 2025. All rights reserved.</p>
             </div>
         </div>
     </footer>
