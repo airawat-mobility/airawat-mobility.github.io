@@ -33,7 +33,7 @@
         // Typewriter effect implementation
         const typewriterTexts = [
             // "Revolutionizing urban mobility through AI and collective intelligence",
-            "Annotate traffic. Train AI. Win prizes..",
+            "Annotate traffic. Train AI. Win prizes.",
             "Help AI see Indian traffic better",
             "Real data. Real AI. Real impact",
             "Compete, annotate, win—daily!",

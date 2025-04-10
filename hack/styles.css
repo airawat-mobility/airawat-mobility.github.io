@@ -735,42 +735,56 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 15px;
+  padding: 20px; /* Increased padding */
   border-radius: var(--radius-sm);
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.9);
-  margin: 10px;
+  margin: 12px; /* Slightly larger margins */
   box-shadow: var(--shadow-sm);
+  min-width: 150px; /* Ensure minimum width */
+  min-height: 100px; /* Ensure minimum height */
 }
 
 [data-theme="dark"] .partner-logo-container {
-  background: rgba(255, 255, 255, 0.9); /* Solid white background in dark mode */
+  background: rgba(255, 255, 255, 0.95); /* More solid white background in dark mode */
   box-shadow: var(--shadow-md);
 }
 
 .partner-logo-container:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-5px) scale(1.05); /* Added scale effect */
+  box-shadow: var(--shadow-lg);
 }
 
 .partner-logos img {
-  height: 60px;
+  height: 70px; /* Increased from 60px */
+  max-width: 140px; /* Added max-width to control size */
   object-fit: contain;
   transition: transform 0.3s, filter 0.3s;
-  filter: grayscale(30%);
+  filter: grayscale(20%); /* Reduced grayscale */
 }
 
 [data-theme="dark"] .partner-logos img {
-  filter: grayscale(20%); /* Removed brightness/contrast adjustments for better visibility */
+  filter: grayscale(10%); /* Further reduced grayscale for dark mode */
+  opacity: 0.95; /* Slightly more visible */
 }
 
 .partner-logos img:hover {
-  transform: scale(1.05);
+  transform: scale(1.1); /* Increased scale effect */
   filter: grayscale(0%);
 }
 
-[data-theme="dark"] .partner-logos img:hover {
-  filter: grayscale(0%); /* Removed brightness adjustment for better visibility */
+/* Add responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .partner-logo-container {
+    padding: 15px;
+    min-width: 120px;
+    min-height: 90px;
+  }
+  
+  .partner-logos img {
+    height: 60px;
+    max-width: 120px;
+  }
 }
 
 footer {
