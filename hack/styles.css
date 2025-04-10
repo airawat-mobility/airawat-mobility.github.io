@@ -980,8 +980,8 @@ footer {
 /* About section modern styles */
 .about-wrapper {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: 50px;
+  grid-template-columns: 1fr 1fr;
+  gap: 35px;
   margin-bottom: 60px;
   padding: 20px 0;
 }
@@ -1000,6 +1000,7 @@ footer {
   box-shadow: var(--shadow-lg);
   border: 5px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
+  height: fit-content;
 }
 
 [data-theme="dark"] .about-image {
@@ -1011,30 +1012,40 @@ footer {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
-.about-main-image {
+.about-main-image-container {
   width: 100%;
-  height: 400px;
-  object-fit: cover;
-  transition: transform 0.5s ease;
+  height: 450px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0;
+  transition: transform 0.3s ease;
+  position: relative;
 }
 
-.about-image:hover .about-main-image {
-  transform: scale(1.05);
+.about-main-image-container:hover {
+  transform: translateY(-5px);
+}
+
+.about-main-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
 }
 
 .stat-cards {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  right: 20px;
   display: flex;
   justify-content: space-between;
   gap: 15px;
+  margin-top: 20px;
+  width: 100%;
 }
 
 .stat-card {
   background: rgba(255, 255, 255, 0.9);
-  padding: 20px;
+  padding: 15px;
   border-radius: var(--radius-sm);
   text-align: center;
   box-shadow: var(--shadow-md);
@@ -1075,6 +1086,28 @@ footer {
   position: relative;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
+  min-height: 450px;
+}
+
+.info-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(66, 153, 225, 0.1);
+  border-radius: 50%;
+  margin-bottom: 15px;
+  font-size: 24px;
+  color: var(--primary);
+  transition: all 0.3s ease;
+}
+
+.main-info-card:hover .info-card-icon {
+  transform: scale(1.1);
+  background-color: var(--primary);
+  color: white;
+  box-shadow: 0 0 20px rgba(66, 153, 225, 0.4);
 }
 
 .main-info-card .info-card-content {
@@ -2534,24 +2567,32 @@ footer {
 
 /* Video Player Styles */
 .video-container {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
-  display: none;
+    width: 100%;
+    height: auto;
+    display: none;
+    position: relative;
+    background-color: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    padding: 20px 0;
 }
 
 .video-container.active {
-  display: block;
+    display: block;
 }
 
 #video-player {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: black;
+    max-width: 800px;
+    width: 100%;
+    height: 800px;
+    background-color: #000;
+    margin: 0 auto;
+}
+
+/* Remove the video controls styles since we're using Google Drive's player */
+.video-controls, .progress-container, .progress-bar-video, .video-btn {
+    display: none;
 }
 
 .video-controls {
@@ -3038,5 +3079,283 @@ footer {
   
   .note-icon {
     margin-bottom: 15px;
+  }
+}
+
+/* About Carousel */
+.about-carousel {
+  width: 100%;
+  height: 450px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0;
+  position: relative;
+}
+
+.carousel-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  z-index: 1;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.carousel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.carousel-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-indicator.active {
+  background-color: white;
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive adjustments for carousel */
+@media (max-width: 992px) {
+  .about-carousel {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-carousel {
+    height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-carousel {
+    height: 250px;
+  }
+}
+
+/* Fix for registration note spacing */
+.registration-note {
+    background: rgba(66, 153, 225, 0.1);
+    border-left: 4px solid #4299e1;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.note-icon {
+    background: #4299e1;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.2rem;
+}
+
+.note-content {
+    flex: 1;
+}
+
+.note-content h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #2d3748;
+    font-size: 1.1rem;
+}
+
+.note-content p {
+    margin: 0;
+    color: #4a5568;
+}
+
+.registration-process {
+    margin-top: 20px;
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .registration-note {
+    background: rgba(66, 153, 225, 0.15);
+    border-left: 4px solid #4299e1;
+}
+
+[data-theme="dark"] .note-content h3 {
+    color: #e2e8f0;
+}
+
+[data-theme="dark"] .note-content p {
+    color: #cbd5e0;
+}
+
+@media (max-width: 992px) {
+  .about-wrapper {
+    grid-template-columns: 1fr;
+  }
+  
+  .about-main-image-container {
+    height: 400px;
+  }
+  
+  .main-info-card {
+    min-height: auto;
+    margin-top: 20px;
+  }
+  
+  .about-image {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-main-image-container {
+    height: 350px;
+  }
+  
+  .stat-cards {
+    flex-direction: row;
+  }
+  
+  .stat-card {
+    padding: 10px;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .stat-label {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-main-image-container {
+    height: 250px;
+  }
+}
+
+/* Auto Carousel for About Section */
+.about-carousel {
+  width: 100%;
+  height: 450px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  margin-bottom: 0;
+  position: relative;
+}
+
+.carousel-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+  z-index: 1;
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.carousel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 3;
+}
+
+.carousel-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-indicator.active {
+  background-color: white;
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+/* Responsive adjustments for carousel */
+@media (max-width: 992px) {
+  .about-carousel {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-carousel {
+    height: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-carousel {
+    height: 250px;
   }
 }

@@ -54,13 +54,9 @@
         <canvas id="network-graph"></canvas>
         <div class="hero-particles"></div>
         <div class="hero-content">
-            <div class="logo-container">
-                <img src="assets/img/iisc-logo.jpg" alt="IISc Logo">
-                <img src="assets/img/airawat-logo.png" alt="Airawat Logo">
-            </div>
             <h1>Urban Vision Hackathon</h1>
             <h2>Making AI work for India</h2>
-            <p>An AI-driven challenge to improve Indian traffic mobility through image annotation</p>
+            <p>An AI-driven challenge to improve Indian traffic mobility through image annotation and model building</p>
             <div class="hero-cta">
                 <a href="#register" class="btn btn-primary">
                     Register Now <i class="ri-arrow-right-line"></i>
@@ -76,8 +72,8 @@
                     <div class="hero-stat-label">Partner Institutions</div>
                 </div>
                 <div class="hero-stat">
-                    <div class="hero-stat-number">₹5L+</div>
-                    <div class="hero-stat-label">in Prizes</div>
+                    <div class="hero-stat-number">100+</div>
+                    <div class="hero-stat-label">Merch in Prizes</div>
                 </div>
             </div>
         </div>
@@ -101,7 +97,24 @@
             
             <div class="about-wrapper">
                 <div class="about-image">
-                    <img src="main.jpeg" alt="Urban Traffic in India" class="about-main-image">
+                    <div id="aboutCarousel" class="about-carousel">
+                        <div class="carousel-container">
+                            <div class="carousel-slide active">
+                                <img src="assets/img/main-1.jpg" alt="Urban Traffic in India 1" class="carousel-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="assets/img/main-2.jpg" alt="Urban Traffic in India 2" class="carousel-img">
+                            </div>
+                            <div class="carousel-slide">
+                                <img src="assets/img/main-3.jpg" alt="Urban Traffic in India 3" class="carousel-img">
+                            </div>
+                        </div>
+                        <div class="carousel-indicators">
+                            <span class="carousel-indicator active" data-index="0"></span>
+                            <span class="carousel-indicator" data-index="1"></span>
+                            <span class="carousel-indicator" data-index="2"></span>
+                        </div>
+                    </div>
                     <div class="stat-cards">
                         <div class="stat-card">
                             <span class="stat-number" data-count="100000">0</span>
@@ -121,7 +134,7 @@
                                 <i class="ri-building-2-line"></i>
                             </div>
                             <h3>AI for Urban Mobility</h3>
-                            <p>The AI for Urban Mobility initiative at IISc, supported by Ministry of Education, AIRAWAT and Bangalore Traffic Police, is using AI to ease traffic congestion, improve safety and enhance mobility planning. This hackathon will create the largest annotated traffic image dataset for India.</p>
+                            <p>The AI for Urban Mobility initiative at IISc, supported by Ministry of Education, AIRAWAT and Bangalore Traffic Police, is using AI to ease traffic congestion, improve safety and enhance mobility planning. This hackathon will create the largest annotated traffic image dataset for India, contributing to reduced greenhouse gas emissions, better air quality, and improved road safety.</p>
                             <div class="benefit-list animated-list">
                                 <div class="benefit-item"><i class="ri-check-line"></i> Build AI models that improve millions of commuters' lives</div>
                                 <div class="benefit-item"><i class="ri-check-line"></i> Contribute to India's largest and first open-source urban traffic dataset initiative</div>
@@ -133,6 +146,9 @@
                                 <span class="tag interactive-tag">Data Science</span>
                                 <span class="tag interactive-tag">Urban Planning</span>
                                 <span class="tag interactive-tag">Computer Vision</span>
+                                <span class="tag interactive-tag">Datathon</span>
+                                <span class="tag interactive-tag">Hackathon</span>
+                                <span class="tag interactive-tag">Sustainability</span>
                             </div>
                         </div>
                     </div>
@@ -185,6 +201,16 @@
         <div class="container">
             <div class="section-title">
                 <h2>How to Register</h2>
+            </div>
+            
+            <div class="registration-note">
+                <div class="note-icon">
+                    <i class="ri-information-line"></i>
+                </div>
+                <div class="note-content">
+                    <h3>Important Note</h3>
+                    <p>Each team can have a maximum of 4 members, including the leader.</p>
+                </div>
             </div>
             
             <div class="registration-process">
@@ -279,16 +305,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="registration-note">
-                <div class="note-icon">
-                    <i class="ri-information-line"></i>
-                </div>
-                <div class="note-content">
-                    <h3>Important Note</h3>
-                    <p>Each team can have a maximum of 4 members, including the leader.</p>
                 </div>
             </div>
         </div>
@@ -585,21 +601,14 @@
                     <div class="modal-content">
                         <!-- Video Player Container -->
                         <div class="video-container" id="video-player-container">
-                            <video id="video-player" controls>
-                                <source src="assets/video.mp4" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <div class="video-controls">
-                                <button class="video-btn play-pause">
-                                    <i class="ri-play-line"></i>
-                                </button>
-                                <div class="progress-container">
-                                    <div class="progress-bar-video"></div>
-                                </div>
-                                <button class="video-btn fullscreen">
-                                    <i class="ri-fullscreen-line"></i>
-                                </button>
-                            </div>
+                            <iframe 
+                                src="https://drive.google.com/file/d/1Orzx6bfHgP-O3OAHCiKsyjyLSOLijfBS/preview" 
+                                width="800" 
+                                height="800" 
+                                allow="autoplay"
+                                style="border: none; max-width: 100%;"
+                                id="video-player">
+                            </iframe>
                         </div>
                         
                         <!-- Poster Container -->
@@ -706,6 +715,43 @@
     </footer>
 
     <script src="script.js"></script>
+    
+    <script>
+        // Immediate carousel initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const indicators = document.querySelectorAll('.carousel-indicator');
+            let currentIndex = 0;
+            let carouselInterval;
+
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                
+                currentIndex = index;
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % slides.length;
+                showSlide(currentIndex);
+            }
+
+            // Start carousel immediately
+            carouselInterval = setInterval(nextSlide, 2000);
+
+            // Enable manual navigation
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    clearInterval(carouselInterval);
+                    showSlide(index);
+                    carouselInterval = setInterval(nextSlide, 2000);
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>

@@ -427,13 +427,6 @@
                 videoContainer.classList.add('active');
                 posterContainer.classList.remove('active');
                 document.body.style.overflow = 'hidden';
-                
-                // Reset video
-                if (videoPlayer) {
-                    videoPlayer.currentTime = 0;
-                    videoPlayer.pause();
-                    updatePlayPauseIcon();
-                }
             });
         }
         
@@ -444,11 +437,6 @@
                 posterContainer.classList.add('active');
                 videoContainer.classList.remove('active');
                 document.body.style.overflow = 'hidden';
-                
-                // Pause video if it was playing
-                if (videoPlayer) {
-                    videoPlayer.pause();
-                }
             });
         }
         
@@ -479,11 +467,6 @@
             if (mediaModal) {
                 mediaModal.classList.remove('active');
                 document.body.style.overflow = '';
-                
-                // Pause video if it was playing
-                if (videoPlayer) {
-                    videoPlayer.pause();
-                }
             }
         }
         
@@ -546,6 +529,59 @@
                 playPauseBtn.innerHTML = '<i class="ri-play-line"></i>';
             });
         }
+
+        // About Carousel
+        function setupAboutCarousel() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            const indicators = document.querySelectorAll('.carousel-indicator');
+            let currentIndex = 0;
+            let carouselInterval;
+
+            // Show the specified slide
+            function showSlide(index) {
+                // Hide all slides
+                slides.forEach(slide => slide.classList.remove('active'));
+                // Hide all indicators
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                // Show active slide and indicator
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                
+                currentIndex = index;
+            }
+
+            // Move to the next slide
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % slides.length;
+                showSlide(currentIndex);
+            }
+
+            // Start the carousel rotation
+            function startCarousel() {
+                carouselInterval = setInterval(nextSlide, 2000); // 2 seconds
+            }
+
+            // Reset and restart the carousel
+            function resetCarousel() {
+                clearInterval(carouselInterval);
+                startCarousel();
+            }
+
+            // Add click event listeners to indicators
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    showSlide(index);
+                    resetCarousel();
+                });
+            });
+
+            // Initialize carousel
+            startCarousel();
+        }
+
+        // Call the carousel setup
+        setupAboutCarousel();
     });
 
     // Initialize Game Gallery
