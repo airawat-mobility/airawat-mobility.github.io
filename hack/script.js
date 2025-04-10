@@ -33,11 +33,21 @@
         // Typewriter effect implementation
         const typewriterTexts = [
             // "Revolutionizing urban mobility through AI and collective intelligence",
+            "Annotate traffic. Train AI. Win prizes..",
+            "Help AI see Indian traffic better",
+            "Real data. Real AI. Real impact",
+            "Compete, annotate, win—daily!",
+            "Crowdsourced data powering India’s smartest traffic AI",
             "Annotate today, transform tomorrow's city traffic",
             "Your annotations can help millions get home faster",
-            // "A nationwide effort to train AI that sees the road like never before",
+            "Build award-winning AI from real-world traffic data",
             "Hack traffic problems with the power of community and AI",
-            // "Join India's biggest push towards AI-powered urban mobility"
+            "Join the AI traffic revolution",
+            "Your data, your AI, your city",
+            "AI traffic solutions for India's cities",
+            "Transform urban mobility with your data",
+            "AI traffic solutions for India's cities",
+            "Transform urban mobility with your data"
         ];
         
         const typewriterElement = document.getElementById('typewriter-text');

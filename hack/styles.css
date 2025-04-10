@@ -734,17 +734,19 @@ section {
   padding: 15px;
   border-radius: var(--radius-sm);
   transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.9);
+  margin: 10px;
+  box-shadow: var(--shadow-sm);
 }
 
 [data-theme="dark"] .partner-logo-container {
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: var(--shadow-sm);
+  background: rgba(255, 255, 255, 0.9); /* Solid white background in dark mode */
+  box-shadow: var(--shadow-md);
 }
 
 .partner-logo-container:hover {
   transform: translateY(-5px);
-  background: rgba(255, 255, 255, 0.15);
+  box-shadow: var(--shadow-md);
 }
 
 .partner-logos img {
@@ -755,7 +757,7 @@ section {
 }
 
 [data-theme="dark"] .partner-logos img {
-  filter: grayscale(20%) brightness(1.4) contrast(1.2);
+  filter: grayscale(20%); /* Removed brightness/contrast adjustments for better visibility */
 }
 
 .partner-logos img:hover {
@@ -764,13 +766,14 @@ section {
 }
 
 [data-theme="dark"] .partner-logos img:hover {
-  filter: grayscale(0%) brightness(1.6);
+  filter: grayscale(0%); /* Removed brightness adjustment for better visibility */
 }
 
 footer {
   background: var(--footer-bg);
   color: var(--footer-text);
   padding: 60px 0 20px;
+  background-color: #1a202c; /* Ensure dark background regardless of theme */
 }
 
 .footer-content {
@@ -785,6 +788,7 @@ footer {
   margin-bottom: 20px;
   position: relative;
   padding-bottom: 10px;
+  color: white; /* Always white regardless of theme */
 }
 
 .footer-column h3::after {
@@ -798,7 +802,7 @@ footer {
 }
 
 .footer-column p, .footer-column a {
-  color: var(--footer-link);
+  color: #a0aec0; /* Light gray color for better readability */
   margin-bottom: 10px;
   display: block;
   text-decoration: none;
@@ -3366,4 +3370,131 @@ footer {
   .about-carousel {
     height: 250px;
   }
+}
+
+/* Challenge Format Styles */
+.challenge-phases {
+  margin-top: 10px;
+}
+
+.challenge-phase {
+  padding: 12px 0;
+}
+
+.challenge-phase.compact {
+  padding: 5px 0;
+}
+
+.challenge-phase h4 {
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.challenge-phase.compact h4 {
+  margin-bottom: 4px;
+  font-size: 1rem;
+}
+
+.challenge-phase h4 i {
+  font-size: 1.2rem;
+  color: var(--primary);
+}
+
+.challenge-phase p {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  font-style: italic;
+}
+
+[data-theme="dark"] .challenge-phase p {
+  color: var(--text-light);
+}
+
+.challenge-phase-divider {
+  position: relative;
+  height: 30px;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.challenge-phase-divider.compact {
+  height: 20px;
+  margin: 2px 0;
+}
+
+.divider-line {
+  width: 50%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--primary), transparent);
+}
+
+.divider-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: 0 2px 10px rgba(66, 153, 225, 0.3);
+}
+
+.challenge-phase-divider.compact .divider-icon {
+  width: 24px;
+  height: 24px;
+  font-size: 0.8rem;
+}
+
+.phase-list {
+  margin-top: 10px;
+}
+
+.phase-list.compact {
+  margin-top: 5px;
+}
+
+.phase-list li {
+  margin-bottom: 8px;
+  padding-left: 25px;
+}
+
+.phase-list.compact li {
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+.phase-list li i {
+  color: var(--primary);
+  font-size: 1rem;
+}
+
+/* Make cards have equal height */
+.cards-grid .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cards-grid .card .card-button {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+/* Adjust card button to have consistent margin */
+.card-button {
+  margin-top: 15px;
+  display: inline-block;
 }
