@@ -2,7 +2,7 @@
 
 A modern, interactive website for the Urban Vision Hackathon - an AI-driven challenge to improve Indian traffic mobility through image annotation.
 
-![Urban Vision Hackathon Preview](assets/img/UI-1.png)
+![Urban Vision Hackathon Preview](/hack/assets/img/UI-1.png)
 
 ## About the Project
 
@@ -30,46 +30,42 @@ The Urban Vision Hackathon website serves as the central hub for this innovative
 - **Remixicon**: Modern icon library
 - **Google Fonts**: Typography with Poppins font family
 
-## Getting Started
-
-### Prerequisites
-
-- A modern web browser (Chrome, Firefox, Safari, Edge)
-- Basic knowledge of HTML, CSS, and JavaScript for customization
-
-### Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/urban-vision-hackathon.git
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd urban-vision-hackathon
-   ```
-
-3. Open `index.html` in your browser or set up a local server:
-   ```bash
-   # Using Python
-   python -m http.server 8000
-   # Using Node.js with live-server
-   npx live-server
-   ```
-
 ## Project Structure
 
 ```
-urban-vision-hackathon/
-├── assets/
-│   ├── img/            # Image assets including logos, UI screenshots
-│   ├── dash_board.gif  # Portal preview animation
-│   └── video.mp4       # Promotional video
-├── index.html          # Main HTML file
-├── styles.css          # CSS styles
-├── script.js           # JavaScript functionality
-├── main.jpeg           # Main image for about section
-└── README.md           # Project documentation
+.
+├── README.md
+├── hack
+│   ├── assets
+│   │   ├── img
+│   │   │   ├── UI-1.png
+│   │   │   ├── UI-2.png
+│   │   │   ├── UI-3.png
+│   │   │   ├── acm-logo.png
+│   │   │   ├── airawat-logo.png
+│   │   │   ├── artpark.png
+│   │   │   ├── btp-logo.png
+│   │   │   ├── cds-logo.png
+│   │   │   ├── cistup-logo.png
+│   │   │   ├── cistup.png
+│   │   │   ├── dfpg-logo.png
+│   │   │   ├── game.png
+│   │   │   ├── ieee-logo.png
+│   │   │   ├── iisc-logo.jpg
+│   │   │   ├── main-theme-2.png
+│   │   │   ├── main-theme.png
+│   │   │   ├── main.jpeg
+│   │   │   ├── moe-logo.png
+│   │   │   ├── portal.png
+│   │   │   └── rbcbps-logo.png
+│   │   └── poster.png
+│   ├── index.html
+│   ├── main.jpeg
+│   ├── script.js
+│   └── styles.css
+└── index.html
+
+4 directories, 27 files
 ```
 
 ## Customization
@@ -96,19 +92,6 @@ The website uses CSS variables defined at the top of `styles.css`, making it eas
 }
 ```
 
-### Adding New Features
-
-The JavaScript functionality is organized in a modular way in `script.js`, allowing for easy extension.
-
-## Browser Support
-
-The website is compatible with:
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers (iOS Safari, Android Chrome)
-
 ## Contributing
 
 1. Fork the repository
@@ -117,18 +100,13 @@ The website is compatible with:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
 
 ## Contact
 
-Project Link: [https://github.com/yourusername/urban-vision-hackathon](https://github.com/yourusername/urban-vision-hackathon)
+airawat.mobility@iisc.ac.in
 
 ## Acknowledgements
 
-- [Remixicon](https://remixicon.com/)
-- [Google Fonts](https://fonts.google.com/)
 - IISc Bangalore
 - Ministry of Education, India
 - AIRAWAT
