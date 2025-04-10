@@ -262,7 +262,9 @@
             const progressBar = document.querySelector('.progress-bar');
             if (progressBar) {
                 setTimeout(() => {
-                    progressBar.style.height = '25%';
+                    // First item (Registration Opens) is active initially
+                    // With 6 timeline items, 100% ÷ 6 ≈ 16.67% per item
+                    progressBar.style.height = '16.67%';
                 }, 500);
             }
         }
@@ -270,19 +272,37 @@
         // Countdown functionality
         function updateCountdowns() {
             const countdowns = document.querySelectorAll('.countdown');
+            const currentYear = new Date().getFullYear();
             
-            countdowns.forEach(countdown => {
+            countdowns.forEach((countdown, index) => {
                 const targetDate = new Date(countdown.getAttribute('data-date'));
                 const now = new Date();
                 
                 const diff = targetDate - now;
+                const timelineItem = countdown.closest('.timeline-item');
+                const timeRemainingEl = countdown.closest('.time-remaining');
                 
                 if (diff <= 0) {
-                    countdown.textContent = 'Today!';
+                    // If the date is in the past
+                    const daysPast = Math.floor((now - targetDate) / (1000 * 60 * 60 * 24));
+                    if (daysPast === 0) {
+                        countdown.textContent = 'Today!';
+                    } else if (daysPast === 1) {
+                        countdown.textContent = 'Yesterday';
+                    } else if (daysPast <= 7) {
+                        countdown.textContent = `${daysPast} days ago`;
+                    } else {
+                        countdown.textContent = 'Completed';
+                    }
+                    
+                    // Mark the parent element as past
+                    if (timelineItem) {
+                        timelineItem.classList.add('past-date');
+                    }
                     return;
                 }
                 
-                // Calculate days, hours, minutes, seconds
+                // It's a future date - calculate time components
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -290,14 +310,83 @@
                 
                 // Format the countdown
                 let timeString = '';
-                if (days > 0) {
-                    timeString += `${days}d `;
-                }
-                timeString += `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 
-                countdown.textContent = timeString;
-                countdown.classList.add('ticking');
+                // More than 1 month shows just days
+                if (days > 30) {
+                    timeString = `${days} days`;
+                    
+                    // Add appropriate prefixes based on the event type
+                    if (index === 0) {
+                        if (timeRemainingEl) timeRemainingEl.innerHTML = `Registration opens in <span class="countdown" data-date="${targetDate.toISOString().split('T')[0]}">${timeString}</span>`;
+                        else countdown.textContent = timeString;
+                    } else {
+                        if (timeRemainingEl) timeRemainingEl.innerHTML = `Coming in <span class="countdown" data-date="${targetDate.toISOString().split('T')[0]}">${timeString}</span>`;
+                        else countdown.textContent = timeString;
+                    }
+                }
+                // Less than a month but more than a day
+                else if (days > 0) {
+                    timeString = `${days}d ${hours.toString().padStart(2, '0')}h`;
+                    if (timeRemainingEl) timeRemainingEl.innerHTML = `Coming in <span class="countdown ticking" data-date="${targetDate.toISOString().split('T')[0]}">${timeString}</span>`;
+                    else {
+                        countdown.textContent = timeString;
+                        countdown.classList.add('ticking');
+                    }
+                }
+                // Less than a day
+                else {
+                    timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    if (timeRemainingEl) timeRemainingEl.innerHTML = `Starting in <span class="countdown ticking" data-date="${targetDate.toISOString().split('T')[0]}">${timeString}</span>`;
+                    else {
+                        countdown.textContent = timeString;
+                        countdown.classList.add('ticking');
+                    }
+                }
+                
+                // Add any special styling for upcoming event (the next event in the timeline)
+                if (timelineItem && !document.querySelector('.timeline-item.upcoming')) {
+                    let foundActiveItem = false;
+                    document.querySelectorAll('.timeline-item').forEach(item => {
+                        if (item === timelineItem && !foundActiveItem) {
+                            item.classList.add('upcoming');
+                            foundActiveItem = true;
+                        }
+                    });
+                }
             });
+            
+            // Update progress bar based on timeline events
+            updateTimelineProgress();
+        }
+        
+        // Update timeline progress based on completed events
+        function updateTimelineProgress() {
+            const progressBar = document.querySelector('.timeline-progress .progress-bar');
+            if (!progressBar) return;
+            
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const totalItems = timelineItems.length;
+            
+            // For future events (2025), the progress bar should be at the beginning
+            progressBar.style.height = '0%';
+            
+            // Set the first item as active if we're still before all events
+            const hasUpcoming = document.querySelector('.timeline-item.upcoming');
+            if (!hasUpcoming && timelineItems.length > 0) {
+                timelineItems.forEach(i => i.classList.remove('active', 'upcoming'));
+                timelineItems[0].classList.add('active', 'upcoming');
+            }
+        }
+        
+        // Initialize timeline based on current date
+        function initializeTimeline() {
+            updateCountdowns(); // This will mark past events and set the active one
+            
+            // Also check if we need to update the progress bar immediately
+            const timelineSection = document.querySelector('.timeline-progress');
+            if (timelineSection && timelineSection.offsetParent !== null) { // Check if visible
+                updateTimelineProgress();
+            }
         }
         
         // Initialize when elements are in view
@@ -313,7 +402,7 @@
         const timelineObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    updateProgressBar();
+                    updateTimelineProgress();
                     timelineObserver.unobserve(entry.target);
                 }
             });
@@ -331,8 +420,8 @@
             timelineObserver.observe(timelineSection);
         }
         
-        // Update countdowns
-        updateCountdowns();
+        // Initialize timeline and countdowns
+        initializeTimeline();
         
         // Schedule regular updates - update every second instead of every minute
         const countdownInterval = setInterval(updateCountdowns, 1000);
