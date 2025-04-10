@@ -202,6 +202,7 @@ nav {
   margin: 0 auto;
   z-index: 1;
   position: relative;
+  color: white; /* Ensures default text color for hero content */
 }
 
 .hero::before,
@@ -218,9 +219,9 @@ nav {
 .hero h1 {
   font-size: 4rem;
   font-weight: 700;
-  color: white;
+  color: white !important; /* Force white color for hero text elements */
   margin-bottom: 15px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow for better visibility on any background */
   position: relative;
   letter-spacing: -1px;
 }
@@ -578,11 +579,11 @@ section {
 }
 
 .feature-card {
-  background: white;
+  background: var(--card-bg);
   padding: 25px;
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-md);
-  transition: transform 0.3s;
+  transition: transform 0.3s, background 0.3s ease;
 }
 
 .feature-card:hover {
@@ -608,11 +609,11 @@ section {
   font-size: 2rem;
 }
 
-.feature-card:hover .feature-icon {
+[data-theme="dark"] .feature-card:hover .feature-icon {
   transform: translateY(-5px) scale(1.1);
   background: var(--accent);
   color: white;
-  box-shadow: 0 10px 20px rgba(255, 76, 41, 0.2);
+  box-shadow: 0 10px 20px rgba(255, 107, 65, 0.3);
 }
 
 .prize-section {
@@ -628,12 +629,12 @@ section {
 }
 
 .prize-card {
-  background: white;
+  background: var(--card-bg);
   border-radius: var(--radius-md);
   padding: 30px;
   box-shadow: var(--shadow-md);
   text-align: center;
-  transition: transform 0.3s;
+  transition: transform 0.3s, background 0.3s ease;
 }
 
 .prize-card:hover {
@@ -660,11 +661,11 @@ section {
   font-size: 2.5rem;
 }
 
-.prize-card:hover .prize-icon {
+[data-theme="dark"] .prize-card:hover .prize-icon {
   transform: translateY(-5px) scale(1.1);
   background: var(--primary);
   color: white;
-  box-shadow: 0 10px 20px rgba(66, 153, 225, 0.3);
+  box-shadow: 0 10px 20px rgba(99, 179, 237, 0.3);
 }
 
 .dates-eligibility {
@@ -735,56 +736,42 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px; /* Increased padding */
+  padding: 15px;
   border-radius: var(--radius-sm);
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.9);
-  margin: 12px; /* Slightly larger margins */
+  margin: 10px;
   box-shadow: var(--shadow-sm);
-  min-width: 150px; /* Ensure minimum width */
-  min-height: 100px; /* Ensure minimum height */
 }
 
 [data-theme="dark"] .partner-logo-container {
-  background: rgba(255, 255, 255, 0.95); /* More solid white background in dark mode */
+  background: rgba(255, 255, 255, 0.9); /* Solid white background in dark mode */
   box-shadow: var(--shadow-md);
 }
 
 .partner-logo-container:hover {
-  transform: translateY(-5px) scale(1.05); /* Added scale effect */
-  box-shadow: var(--shadow-lg);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
 }
 
 .partner-logos img {
-  height: 70px; /* Increased from 60px */
-  max-width: 140px; /* Added max-width to control size */
+  height: 60px;
   object-fit: contain;
   transition: transform 0.3s, filter 0.3s;
-  filter: grayscale(20%); /* Reduced grayscale */
+  filter: grayscale(30%);
 }
 
 [data-theme="dark"] .partner-logos img {
-  filter: grayscale(10%); /* Further reduced grayscale for dark mode */
-  opacity: 0.95; /* Slightly more visible */
+  filter: grayscale(20%); /* Removed brightness/contrast adjustments for better visibility */
 }
 
 .partner-logos img:hover {
-  transform: scale(1.1); /* Increased scale effect */
+  transform: scale(1.05);
   filter: grayscale(0%);
 }
 
-/* Add responsive adjustments for mobile */
-@media (max-width: 768px) {
-  .partner-logo-container {
-    padding: 15px;
-    min-width: 120px;
-    min-height: 90px;
-  }
-  
-  .partner-logos img {
-    height: 60px;
-    max-width: 120px;
-  }
+[data-theme="dark"] .partner-logos img:hover {
+  filter: grayscale(0%); /* Removed brightness adjustment for better visibility */
 }
 
 footer {
@@ -2102,9 +2089,11 @@ footer {
   transform: scale(0.92);
   transition: opacity 0.7s ease, transform 0.7s ease;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 20px;
+  padding-bottom: 60px; /* Space for caption */
   box-sizing: border-box;
 }
 
@@ -2116,7 +2105,7 @@ footer {
 
 .gallery-slide img {
   max-width: 100%;
-  max-height: 100%;
+  max-height: calc(100% - 50px); /* Reduced to make room for caption */
   object-fit: contain;
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-md);
@@ -2124,26 +2113,50 @@ footer {
   margin: 0 auto;
   width: auto;
   height: auto;
+  transition: transform 0.3s ease;
+}
+
+.gallery-slide img:hover {
+  transform: scale(1.02);
 }
 
 .slide-caption {
   position: absolute;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.6);
-  color: white;
-  padding: 10px 20px;
-  border-radius: 30px;
-  font-size: 0.9rem;
+  width: 80%;
+  margin: 0 auto;
+  padding: 12px 20px;
+  background: var(--card-bg);
+  color: var(--text-dark);
+  border-radius: 10px;
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  font-weight: 500;
+  font-size: 1rem;
   opacity: 0;
+  transform: translateY(10px);
   transition: opacity 0.5s ease, transform 0.5s ease;
-  backdrop-filter: blur(4px);
+  z-index: 10;
+  border-left: 4px solid var(--primary);
 }
 
 .gallery-slide.active .slide-caption {
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translateY(0);
+}
+
+[data-theme="dark"] .slide-caption {
+  background: var(--card-bg-dark);
+  color: var(--text-dark);
+  border-left: 4px solid var(--primary);
+}
+
+@media (max-width: 768px) {
+  .slide-caption {
+    width: 90%;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
 }
 
 .gallery-nav {
@@ -3750,3 +3763,832 @@ footer {
 [data-theme="dark"] .descriptive-text {
     color: rgba(255, 255, 255, 0.7);
 }
+
+/* Beautiful Game Points List */
+.game-points {
+  list-style: none;
+  padding: 0;
+  max-width: 900px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.game-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  background: var(--card-bg);
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-point:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.game-point::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, transparent 50%, rgba(66, 153, 225, 0.08) 50%);
+  border-radius: 0 0 0 100px;
+  z-index: 0;
+  transition: all 0.3s ease;
+}
+
+.game-point:hover::after {
+  width: 150px;
+  height: 150px;
+}
+
+.point-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  background: var(--primary);
+  color: white;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: 700;
+  box-shadow: 0 5px 15px rgba(66, 153, 225, 0.3);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.game-point:hover .point-number {
+  transform: scale(1.1) rotate(360deg);
+  box-shadow: 0 8px 25px rgba(66, 153, 225, 0.4);
+}
+
+.point-content {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.point-content h4 {
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+  font-weight: 600;
+}
+
+.point-content p {
+  color: var(--text-light);
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+[data-theme="dark"] .game-point {
+  background: var(--card-bg-dark);
+  border-left: 4px solid var(--primary);
+}
+
+[data-theme="dark"] .game-point::after {
+  background: linear-gradient(135deg, transparent 50%, rgba(99, 179, 237, 0.1) 50%);
+}
+
+[data-theme="dark"] .point-content h4 {
+  color: var(--text-dark);
+}
+
+[data-theme="dark"] .point-content p {
+  color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+  .game-point {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .point-number {
+    margin-bottom: 15px;
+  }
+}
+
+/* Benefits list highlighting in Why Join section */
+.benefits-list {
+  margin-bottom: 25px;
+}
+
+.benefits-list li {
+  margin-bottom: 15px;
+  padding: 10px 15px 10px 40px;
+  background: rgba(66, 153, 225, 0.05);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.benefits-list li i {
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.benefits-list li:hover {
+  transform: translateY(-3px);
+  background: rgba(66, 153, 225, 0.1);
+  box-shadow: var(--shadow-sm);
+}
+
+.benefits-list li:hover i {
+  transform: translateY(-50%) scale(1.2);
+  color: var(--accent);
+}
+
+.benefits-list li:nth-child(1) { border-left: 3px solid var(--primary); }
+.benefits-list li:nth-child(2) { border-left: 3px solid var(--accent); }
+.benefits-list li:nth-child(3) { border-left: 3px solid var(--secondary); }
+.benefits-list li:nth-child(4) { border-left: 3px solid #9f7aea; /* Purple */ }
+
+.benefits-list li:nth-child(1):hover i { color: var(--primary); }
+.benefits-list li:nth-child(2):hover i { color: var(--accent); }
+.benefits-list li:nth-child(3):hover i { color: var(--secondary); }
+.benefits-list li:nth-child(4):hover i { color: #9f7aea; /* Purple */ }
+
+[data-theme="dark"] .benefits-list li {
+  background: rgba(66, 153, 225, 0.08);
+}
+
+[data-theme="dark"] .benefits-list li:hover {
+  background: rgba(66, 153, 225, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Event dates styling for hero section */
+.event-dates {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin: 15px 0 25px;
+}
+
+.event-dates span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: white; /* This will be overridden for light mode below */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.event-dates span:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.event-dates span i {
+  font-size: 1.2rem;
+  color: var(--accent);
+}
+
+.event-dates span:first-child i {
+  color: var(--primary);
+}
+
+.event-dates span:nth-child(1) {
+  animation: pulse-glow 3s infinite alternate;
+}
+
+.event-dates span:nth-child(2) {
+  animation: pulse-glow 3s infinite alternate 1.5s;
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  100% {
+    box-shadow: 0 8px 25px rgba(255, 76, 41, 0.3);
+  }
+}
+
+@media (max-width: 768px) {
+  .event-dates {
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0 20px;
+  }
+  
+  .event-dates span {
+    width: 80%;
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+}
+
+/* Enhanced Dark Mode Styles */
+[data-theme="dark"] .slider .icons {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="dark"] .main-info-card {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .main-info-card h3 {
+  color: #63b3ed;
+}
+
+[data-theme="dark"] .slide-caption {
+  background: #2d3748;
+  color: #e2e8f0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .feature-card {
+  background: #2d3748;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .feature-card:hover {
+  background: #3a4a61;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] .stat-card {
+  background: rgba(45, 55, 72, 0.8);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .prize-card {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .prize-card:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  background: #3a4a61;
+}
+
+[data-theme="dark"] .modern-list li {
+  color: #e2e8f0;
+}
+
+[data-theme="dark"] .timeline-content {
+  background: #2d3748;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+}
+
+[data-theme="dark"] .timeline-item:hover .timeline-content {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .carousel-indicator {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] .carousel-indicator.active {
+  background-color: #63b3ed;
+}
+
+[data-theme="dark"] .info-card-icon {
+  background: rgba(99, 179, 237, 0.15);
+}
+
+[data-theme="dark"] .tag {
+  background: rgba(99, 179, 237, 0.15);
+  color: #63b3ed;
+}
+
+[data-theme="dark"] .about-typewriter {
+  background: rgba(99, 179, 237, 0.15);
+}
+
+[data-theme="dark"] .about-typewriter .typewriter-text {
+  color: #63b3ed;
+}
+
+[data-theme="dark"] .about-carousel {
+  border: 1px solid rgba(99, 179, 237, 0.2);
+}
+
+[data-theme="dark"] .benefit-item i {
+  color: #68d391;
+}
+
+[data-theme="dark"] .important-note {
+  background: rgba(255, 107, 65, 0.15);
+  border-left: 3px solid #ff6b41;
+}
+
+[data-theme="dark"] .benefits-list li {
+  background: rgba(99, 179, 237, 0.12);
+}
+
+[data-theme="dark"] .benefits-list li:hover {
+  background: rgba(99, 179, 237, 0.2);
+}
+
+/* Match "Who Can Participate" with "Why Join" design */
+.card .modern-list {
+  margin-bottom: 25px;
+}
+
+.card .modern-list li {
+  margin-bottom: 15px;
+  padding: 10px 15px 10px 40px;
+  background: rgba(66, 153, 225, 0.05);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  text-align: left;
+}
+
+.card .modern-list li i {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.card .modern-list li:hover {
+  transform: translateY(-3px);
+  background: rgba(66, 153, 225, 0.1);
+  box-shadow: var(--shadow-sm);
+}
+
+.card .modern-list li:hover i {
+  transform: translateY(-50%) scale(1.2);
+  color: var(--accent);
+}
+
+/* Color variations for "Who Can Participate" items */
+.card:nth-child(1) .modern-list li:nth-child(1) { border-left: 3px solid var(--primary); }
+.card:nth-child(1) .modern-list li:nth-child(2) { border-left: 3px solid var(--secondary); }
+.card:nth-child(1) .modern-list li:nth-child(3) { border-left: 3px solid var(--accent); }
+
+.card:nth-child(1) .modern-list li:nth-child(1):hover i { color: var(--primary); }
+.card:nth-child(1) .modern-list li:nth-child(2):hover i { color: var(--secondary); }
+.card:nth-child(1) .modern-list li:nth-child(3):hover i { color: var(--accent); }
+
+[data-theme="dark"] .card .modern-list li {
+  background: rgba(66, 153, 225, 0.08);
+}
+
+[data-theme="dark"] .card .modern-list li:hover {
+  background: rgba(66, 153, 225, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Override for light mode to ensure text is visible */
+@media (prefers-color-scheme: light) {
+  .event-dates span {
+    color: var(--text-dark);
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+}
+
+[data-theme="light"] .event-dates span {
+  color: var(--text-dark);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Fix announcement badge text visibility in light mode */
+.announcement-badge {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  animation: pulse 2s infinite;
+}
+
+/* Ensure announcement dates are visible in all modes */
+.announcement-dates {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-bg-accent);
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-weight: 500;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  color: var(--text-dark); /* Ensure text color is appropriate for light mode */
+}
+
+.announcement-dates i {
+  font-size: 1.1rem;
+  margin-right: 8px;
+  color: var(--color-primary);
+}
+
+[data-theme="dark"] .announcement-dates {
+  background-color: var(--dark-bg-accent);
+  color: var(--dark-text-primary);
+}
+
+/* Fix registration subtitle text visibility */
+.registration-subtitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+/* Fix the note content text visibility */
+.note-content h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+  font-size: 1.1rem;
+}
+
+.note-content p {
+  margin: 0;
+  color: var(--text-light);
+}
+
+/* Specific override for registration section badges */
+.registration-subtitle .announcement-badge {
+  color: white !important; /* Force white text */
+  background-color: var(--primary); /* Use primary color from theme */
+}
+
+.registration-subtitle .announcement-dates {
+  color: var(--text-dark) !important; /* Force dark text for light mode */
+  background-color: var(--bg-light); /* Use light bg color */
+  border: 1px solid rgba(0, 0, 0, 0.1); /* Add subtle border */
+}
+
+/* Interactive Image Styles */
+.interactive-image-container {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 0;
+  transition: all 0.5s ease;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.interactive-image-container:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(66, 153, 225, 0.3);
+}
+
+.about-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: all 0.5s ease;
+  transform: scale(1);
+  filter: brightness(0.9);
+}
+
+.interactive-image-container:hover .about-main-image {
+  transform: scale(1.05);
+  filter: brightness(1) contrast(1.1);
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, 
+    rgba(0, 0, 0, 0.2) 0%, 
+    rgba(0, 0, 0, 0) 30%,
+    rgba(0, 0, 0, 0) 70%,
+    rgba(0, 0, 0, 0.4) 100%);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.interactive-image-container:hover .image-overlay {
+  background: linear-gradient(to bottom, 
+    rgba(0, 0, 0, 0.4) 0%, 
+    rgba(0, 0, 0, 0.1) 30%,
+    rgba(0, 0, 0, 0.1) 70%,
+    rgba(0, 0, 0, 0.5) 100%);
+}
+
+.image-caption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 10px 20px;
+  backdrop-filter: blur(5px);
+  border-bottom-right-radius: var(--radius-sm);
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transform: translateY(0);
+  transition: all 0.3s ease;
+  z-index: 5;
+}
+
+.image-caption i {
+  font-size: 1.3rem;
+  color: var(--primary);
+}
+
+.interactive-image-container:hover .image-caption {
+  transform: translateY(0) scale(1.05);
+  background: rgba(66, 153, 225, 0.8);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.interactive-image-container:hover .image-caption i {
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+.image-hotspots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+}
+
+.image-hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.hotspot-dot {
+  width: 16px;
+  height: 16px;
+  background: var(--primary);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5), 0 0 0 8px rgba(66, 153, 225, 0.2);
+  cursor: pointer;
+  animation: pulse-glow 2s infinite;
+}
+
+.image-hotspot:nth-child(2) .hotspot-dot {
+  animation-delay: 0.5s;
+  background: var(--secondary);
+}
+
+.image-hotspot:nth-child(3) .hotspot-dot {
+  animation-delay: 1s;
+  background: var(--accent);
+}
+
+.hotspot-tooltip {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  color: white;
+  padding: 8px 15px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.hotspot-tooltip i {
+  color: var(--primary);
+}
+
+.image-hotspot:nth-child(2) .hotspot-tooltip i {
+  color: var(--secondary);
+}
+
+.image-hotspot:nth-child(3) .hotspot-tooltip i {
+  color: var(--accent);
+}
+
+.image-hotspot:hover .hotspot-dot {
+  background: white;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.8), 0 0 15px rgba(66, 153, 225, 0.5);
+  animation: none;
+}
+
+.image-hotspot:hover .hotspot-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5), 0 0 0 8px rgba(66, 153, 225, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.3), 0 0 0 15px rgba(66, 153, 225, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.5), 0 0 0 8px rgba(66, 153, 225, 0.2);
+  }
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .interactive-image-container {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .image-caption {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .interactive-image-container:hover .image-caption {
+  background: rgba(99, 179, 237, 0.8);
+}
+
+[data-theme="dark"] .hotspot-tooltip {
+  background: rgba(26, 32, 44, 0.9);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .interactive-image-container {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .interactive-image-container {
+    height: 350px;
+  }
+  
+  .image-caption {
+    font-size: 1rem;
+    padding: 8px 15px;
+  }
+  
+  .hotspot-dot {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .hotspot-tooltip {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .interactive-image-container {
+    height: 250px;
+  }
+}
+
+/* Dynamic Border Effect */
+.dynamic-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;
+  pointer-events: none;
+  border: 3px solid transparent;
+  border-image: linear-gradient(
+    45deg, 
+    var(--primary) 0%, 
+    var(--secondary) 25%, 
+    var(--accent) 50%, 
+    var(--secondary) 75%, 
+    var(--primary) 100%
+  ) 1;
+  border-radius: var(--radius-md);
+  animation: border-shift 8s linear infinite;
+  box-shadow: 0 0 20px rgba(66, 153, 225, 0.3);
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.interactive-image-container:hover .dynamic-border {
+  opacity: 1;
+  box-shadow: 0 0 30px rgba(66, 153, 225, 0.5);
+}
+
+@keyframes border-shift {
+  0% {
+    border-image: linear-gradient(
+      45deg, 
+      var(--primary) 0%, 
+      var(--secondary) 25%, 
+      var(--accent) 50%, 
+      var(--secondary) 75%, 
+      var(--primary) 100%
+    ) 1;
+  }
+  33% {
+    border-image: linear-gradient(
+      45deg, 
+      var(--secondary) 0%, 
+      var(--accent) 25%, 
+      var(--primary) 50%, 
+      var(--accent) 75%, 
+      var(--secondary) 100%
+    ) 1;
+  }
+  66% {
+    border-image: linear-gradient(
+      45deg, 
+      var(--accent) 0%, 
+      var(--primary) 25%, 
+      var(--secondary) 50%, 
+      var(--primary) 75%, 
+      var(--accent) 100%
+    ) 1;
+  }
+  100% {
+    border-image: linear-gradient(
+      45deg, 
+      var(--primary) 0%, 
+      var(--secondary) 25%, 
+      var(--accent) 50%, 
+      var(--secondary) 75%, 
+      var(--primary) 100%
+    ) 1;
+  }
+}
+
+/* Additional interactive effects with low computation */
+.interactive-image-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(66, 153, 225, 0.2) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.interactive-image-container:hover::before {
+  opacity: 1;
+}
+
+/* Remove unused styles for multiple hotspots */
+.image-hotspot:nth-child(2) .hotspot-dot,
+.image-hotspot:nth-child(3) .hotspot-dot,
+.image-hotspot:nth-child(2) .hotspot-tooltip i,
+.image-hotspot:nth-child(3) .hotspot-tooltip i {
+  display: none;
+}
+
+/* Script to track mouse position for hover effect */
+/* This will be added via script in JavaScript */

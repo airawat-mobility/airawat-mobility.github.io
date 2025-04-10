@@ -519,55 +519,38 @@
         const progressContainer = document.querySelector('.progress-container');
         const progressBar = document.querySelector('.progress-bar-video');
         
-        // Show video in modal
-        if (showVideoBtn) {
-            showVideoBtn.addEventListener('click', () => {
-                mediaModal.classList.add('active');
-                videoContainer.classList.add('active');
-                posterContainer.classList.remove('active');
-                document.body.style.overflow = 'hidden';
-            });
-        }
+        // Show video modal
+        showVideoBtn.addEventListener('click', function() {
+            mediaModal.classList.add('active');
+            videoContainer.style.display = 'block';
+            posterContainer.style.display = 'none';
+        });
         
-        // Show poster in modal
-        if (showPosterBtn) {
-            showPosterBtn.addEventListener('click', () => {
-                mediaModal.classList.add('active');
-                posterContainer.classList.add('active');
-                videoContainer.classList.remove('active');
-                document.body.style.overflow = 'hidden';
-            });
-        }
+        // Show poster modal
+        showPosterBtn.addEventListener('click', function() {
+            mediaModal.classList.add('active');
+            videoContainer.style.display = 'none';
+            posterContainer.style.display = 'block';
+        });
         
         // Close modal
-        if (closeModalBtn) {
-            closeModalBtn.addEventListener('click', () => {
-                closeMediaModal();
-            });
-        }
+        closeModalBtn.addEventListener('click', function() {
+            mediaModal.classList.remove('active');
+        });
         
-        // Close modal when clicking outside content
-        if (mediaModal) {
-            mediaModal.addEventListener('click', (e) => {
-                if (e.target === mediaModal || e.target.classList.contains('modal-overlay')) {
-                    closeMediaModal();
-                }
-            });
-        }
+        // Close modal when clicking outside
+        mediaModal.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                mediaModal.classList.remove('active');
+            }
+        });
         
         // Close with escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && mediaModal && mediaModal.classList.contains('active')) {
-                closeMediaModal();
+                mediaModal.classList.remove('active');
             }
         });
-        
-        function closeMediaModal() {
-            if (mediaModal) {
-                mediaModal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
         
         // Video player controls
         if (videoPlayer) {
@@ -685,269 +668,268 @@
 
     // Initialize Game Gallery
     function initGameGallery() {
-        const gallery = document.querySelector('.modern-gallery');
-        if (!gallery) return;
+        const galleryContainer = document.querySelector('.gallery-container');
+        if (!galleryContainer) return;
         
-        const galleryContainer = gallery.querySelector('.gallery-container');
-        const gallerySlides = gallery.querySelectorAll('.gallery-slide');
-        const filmstripThumbs = gallery.querySelectorAll('.filmstrip-thumb');
-        const prevBtn = gallery.querySelector('.gallery-prev');
-        const nextBtn = gallery.querySelector('.gallery-next');
-        const playPauseBtn = gallery.querySelector('.gallery-play-pause');
-        const fullscreenBtn = gallery.querySelector('.gallery-fullscreen');
-        const progressBar = gallery.querySelector('.progress-bar');
-        const currentSlideEl = gallery.querySelector('.current-slide');
-        const totalSlidesEl = gallery.querySelector('.total-slides');
+        const slides = document.querySelectorAll('.gallery-slide');
+        const prevButton = document.querySelector('.gallery-prev');
+        const nextButton = document.querySelector('.gallery-next');
+        const progressBar = document.querySelector('.gallery-progress .progress-bar');
+        const filmstripThumbs = document.querySelectorAll('.filmstrip-thumb');
+        const playPauseButton = document.querySelector('.gallery-play-pause');
+        const fullscreenButton = document.querySelector('.gallery-fullscreen');
+        const currentSlideSpan = document.querySelector('.current-slide');
+        const totalSlidesSpan = document.querySelector('.total-slides');
         
-        let currentSlide = 0;
-        let touchStartX = 0;
-        let touchEndX = 0;
-        let slideInterval;
-        let isPlaying = true;
-        let progressValue = 0;
+        let currentIndex = 0;
+        let autoPlayInterval;
         let progressInterval;
+        let isPlaying = true;
+        let isFull = false;
         
-        // Update slide counter
-        if (totalSlidesEl) {
-            totalSlidesEl.textContent = gallerySlides.length;
-        }
-        
-        // Set initial slide
-        function showSlide(index) {
-            // Reset progress
-            resetProgress();
+        // GIF caching - preload GIFs
+        function preloadGIFs() {
+            const gifSlides = document.querySelectorAll('.gallery-slide[data-type="gif"] img');
+            const gifURLs = Array.from(gifSlides).map(gif => gif.src);
             
-            // Remove active class from all slides
-            gallerySlides.forEach(slide => {
-                slide.classList.remove('active');
-            });
-            filmstripThumbs.forEach(thumb => {
-                thumb.classList.remove('active');
-            });
-            
-            // Add active class to current slide
-            gallerySlides[index].classList.add('active');
-            filmstripThumbs[index].classList.add('active');
-            
-            // Update slide counter
-            if (currentSlideEl) {
-                currentSlideEl.textContent = index + 1;
-            }
-            
-            currentSlide = index;
-            
-            // Start progress for autoplay
-            if (isPlaying) {
-                startProgress();
-            }
-        }
-        
-        // Navigate to previous slide
-        function prevSlide() {
-            currentSlide = (currentSlide - 1 + gallerySlides.length) % gallerySlides.length;
-            showSlide(currentSlide);
-        }
-        
-        // Navigate to next slide
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % gallerySlides.length;
-            showSlide(currentSlide);
-        }
-        
-        // Progress bar functions
-        function startProgress() {
-            // Clear any existing interval
-            clearInterval(progressInterval);
-            
-            // Reset progress
-            progressValue = 0;
-            if (progressBar) {
-                progressBar.style.width = '0%';
-            }
-            
-            // Start new progress
-            progressInterval = setInterval(() => {
-                progressValue += 0.67;
-                if (progressBar) {
-                    progressBar.style.width = `${progressValue}%`;
-                }
+            // Create cache by preloading images
+            gifURLs.forEach(url => {
+                const img = new Image();
+                img.src = url;
                 
-                if (progressValue >= 100) {
+                // Store in sessionStorage that we've loaded this GIF
+                sessionStorage.setItem(`cached_${url}`, 'true');
+                
+                // Optional: Add loading indicator
+                img.onload = function() {
+                    console.log(`GIF cached: ${url}`);
+                };
+            });
+        }
+        
+        // Run preload when the page loads or when user switches to the game section
+        document.addEventListener('DOMContentLoaded', preloadGIFs);
+        
+        // Also add lazy loading attribute to GIFs to improve initial page load
+        document.querySelectorAll('.gallery-slide[data-type="gif"] img').forEach(gif => {
+            gif.setAttribute('loading', 'lazy');
+        });
+        
+        // Variable timing for slides based on type
+        function getSlideTime(index) {
+            const slideType = slides[index].getAttribute('data-type');
+            return slideType === 'gif' ? 5000 : 2500; // 5 seconds for GIFs, 2.5 seconds for images
+        }
+        
+        // Initialize total slides counter
+        if (totalSlidesSpan) {
+            totalSlidesSpan.textContent = slides.length;
+        }
+        
+        function showSlide(index) {
+            // Stop any current progress and remove active class from all slides
+            resetProgress();
+            slides.forEach(slide => slide.classList.remove('active'));
+            filmstripThumbs.forEach(thumb => thumb.classList.remove('active'));
+            
+            // Set the new active slide
+            currentIndex = index;
+            slides[currentIndex].classList.add('active');
+            
+            if (filmstripThumbs[currentIndex]) {
+                filmstripThumbs[currentIndex].classList.add('active');
+            }
+            
+            if (currentSlideSpan) {
+                currentSlideSpan.textContent = currentIndex + 1;
+            }
+            
+            // If autoplay is active, start progress for the appropriate duration
+            if (isPlaying) {
+                startProgress(getSlideTime(currentIndex));
+            }
+        }
+        
+        function prevSlide() {
+            const newIndex = (currentIndex - 1 + slides.length) % slides.length;
+            showSlide(newIndex);
+        }
+        
+        function nextSlide() {
+            const newIndex = (currentIndex + 1) % slides.length;
+            showSlide(newIndex);
+        }
+        
+        function startProgress(duration = 3000) {
+            if (!progressBar) return;
+            
+            let startTime = null;
+            
+            const animate = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / duration * 100, 100);
+                
+                progressBar.style.width = `${progress}%`;
+                
+                if (progress < 100) {
+                    progressInterval = requestAnimationFrame(animate);
+                } else {
+                    // When progress reaches 100%, move to next slide
                     nextSlide();
                 }
-            }, 20); // 20ms * 0.67 * 100 = ~3000ms (3s) for full progress
+            };
+            
+            progressInterval = requestAnimationFrame(animate);
         }
         
         function resetProgress() {
-            clearInterval(progressInterval);
-            progressValue = 0;
+            if (progressInterval) {
+                cancelAnimationFrame(progressInterval);
+                progressInterval = null;
+            }
+            
             if (progressBar) {
                 progressBar.style.width = '0%';
             }
         }
         
-        // Play/Pause functions
         function togglePlayPause() {
             isPlaying = !isPlaying;
             
-            if (playPauseBtn) {
-                if (isPlaying) {
-                    playPauseBtn.innerHTML = '<i class="ri-pause-line"></i>';
-                    playPauseBtn.setAttribute('aria-label', 'Pause slideshow');
-                    startProgress();
-                    startAutoPlay();
-                } else {
-                    playPauseBtn.innerHTML = '<i class="ri-play-line"></i>';
-                    playPauseBtn.setAttribute('aria-label', 'Play slideshow');
-                    resetProgress();
-                    stopAutoPlay();
-                }
+            if (playPauseButton) {
+                playPauseButton.innerHTML = isPlaying 
+                    ? '<i class="ri-pause-line"></i>' 
+                    : '<i class="ri-play-line"></i>';
+                    
+                playPauseButton.setAttribute('aria-label', isPlaying ? 'Pause slideshow' : 'Play slideshow');
             }
-        }
-        
-        // Fullscreen mode
-        function toggleFullscreen() {
-            if (galleryContainer.classList.contains('fullscreen')) {
-                // Exit fullscreen
-                galleryContainer.classList.remove('fullscreen');
-                document.body.style.overflow = '';
-                if (fullscreenBtn) {
-                    fullscreenBtn.innerHTML = '<i class="ri-fullscreen-line"></i>';
-                    fullscreenBtn.setAttribute('aria-label', 'View fullscreen');
-                }
+            
+            if (isPlaying) {
+                startProgress(getSlideTime(currentIndex));
+                startAutoPlay();
             } else {
-                // Enter fullscreen
-                galleryContainer.classList.add('fullscreen');
-                document.body.style.overflow = 'hidden';
-                if (fullscreenBtn) {
-                    fullscreenBtn.innerHTML = '<i class="ri-fullscreen-exit-line"></i>';
-                    fullscreenBtn.setAttribute('aria-label', 'Exit fullscreen');
-                }
+                resetProgress();
+                stopAutoPlay();
             }
         }
         
-        // Add event listeners
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                prevSlide();
-                if (isPlaying) {
-                    resetProgress();
-                    startProgress();
-                }
-            });
+        function toggleFullscreen() {
+            isFull = !isFull;
+            
+            if (isFull) {
+                galleryContainer.classList.add('fullscreen');
+                fullscreenButton.innerHTML = '<i class="ri-fullscreen-exit-line"></i>';
+                document.body.style.overflow = 'hidden';
+            } else {
+                galleryContainer.classList.remove('fullscreen');
+                fullscreenButton.innerHTML = '<i class="ri-fullscreen-line"></i>';
+                document.body.style.overflow = '';
+            }
         }
         
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                nextSlide();
-                if (isPlaying) {
-                    resetProgress();
-                    startProgress();
-                }
-            });
-        }
+        // Set up event handlers for buttons
+        if (prevButton) prevButton.addEventListener('click', () => {
+            prevSlide();
+        });
         
-        // Filmstrip thumbnails navigation
-        filmstripThumbs.forEach(thumb => {
+        if (nextButton) nextButton.addEventListener('click', () => {
+            nextSlide();
+        });
+        
+        // Set up filmstrip thumbnails
+        filmstripThumbs.forEach((thumb, index) => {
             thumb.addEventListener('click', () => {
-                const slideIndex = parseInt(thumb.getAttribute('data-index'));
-                showSlide(slideIndex);
+                showSlide(index);
             });
         });
         
-        // Play/Pause button
-        if (playPauseBtn) {
-            playPauseBtn.addEventListener('click', togglePlayPause);
+        // Set up play/pause button
+        if (playPauseButton) {
+            playPauseButton.addEventListener('click', togglePlayPause);
         }
         
-        // Fullscreen button
-        if (fullscreenBtn) {
-            fullscreenBtn.addEventListener('click', toggleFullscreen);
+        // Set up fullscreen button
+        if (fullscreenButton) {
+            fullscreenButton.addEventListener('click', toggleFullscreen);
         }
         
-        // Touch swipe functionality
-        if (galleryContainer) {
-            galleryContainer.addEventListener('touchstart', (e) => {
-                touchStartX = e.changedTouches[0].screenX;
-            }, { passive: true });
-            
-            galleryContainer.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
-            }, { passive: true });
-        }
+        // Handle swipe events for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
         
-        // Handle swipe
         function handleSwipe() {
-            if (touchEndX < touchStartX - 50) {
-                // Swipe left, go to next slide
-                nextSlide();
-            } else if (touchEndX > touchStartX + 50) {
-                // Swipe right, go to previous slide
+            const swipeThreshold = 50;
+            const swipeDistance = touchEndX - touchStartX;
+            
+            if (swipeDistance > swipeThreshold) {
                 prevSlide();
+            } else if (swipeDistance < -swipeThreshold) {
+                nextSlide();
             }
         }
         
-        // Auto-play functionality
         function startAutoPlay() {
-            stopAutoPlay();
-            slideInterval = setInterval(nextSlide, 3000);
+            stopAutoPlay(); // Clear any existing interval
+            // No need to set an interval here since we're using requestAnimationFrame for timing
         }
         
         function stopAutoPlay() {
-            clearInterval(slideInterval);
+            resetProgress();
         }
         
-        // Pause auto-play on hover
-        if (galleryContainer) {
-            galleryContainer.addEventListener('mouseenter', () => {
-                if (isPlaying) {
-                    resetProgress();
-                    stopAutoPlay();
-                }
-            });
-            
-            galleryContainer.addEventListener('mouseleave', () => {
-                if (isPlaying) {
-                    startProgress();
-                    startAutoPlay();
-                }
-            });
-        }
+        // Add touch event handlers
+        galleryContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
         
-        // Keyboard navigation
+        galleryContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        // Add keyboard navigation
         function handleKeyDown(e) {
-            if (e.key === 'ArrowLeft') {
-                prevSlide();
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
-            } else if (e.key === 'Escape' && galleryContainer.classList.contains('fullscreen')) {
-                toggleFullscreen();
-            } else if (e.key === ' ') {
-                // Space key to toggle play/pause
-                togglePlayPause();
-                e.preventDefault(); // Prevent page scrolling
+            if (!galleryContainer.contains(document.activeElement) && 
+                !galleryContainer.classList.contains('fullscreen')) {
+                return;
+            }
+            
+            switch (e.key) {
+                case 'ArrowLeft':
+                    prevSlide();
+                    break;
+                case 'ArrowRight':
+                    nextSlide();
+                    break;
+                case ' ':
+                    togglePlayPause();
+                    e.preventDefault();
+                    break;
+                case 'f':
+                case 'F':
+                    toggleFullscreen();
+                    break;
+                case 'Escape':
+                    if (isFull) toggleFullscreen();
+                    break;
             }
         }
         
         document.addEventListener('keydown', handleKeyDown);
         
-        // Cleanup function for when the gallery is removed
+        // Cleanup function to remove event listeners
         function cleanup() {
-            stopAutoPlay();
-            resetProgress();
             document.removeEventListener('keydown', handleKeyDown);
+            stopAutoPlay();
         }
         
-        // Expose cleanup function
-        gallery.cleanup = cleanup;
-        
-        // Initialize first slide
+        // Initialize
         showSlide(0);
-        
-        // Start autoplay
         startAutoPlay();
-        startProgress();
+        
+        // Return cleanup function
+        return cleanup;
     }
 
     // Network Graph Animation
@@ -1530,3 +1512,38 @@
             }
         });
     }
+
+    // Initialize carousel immediately
+    document.addEventListener('DOMContentLoaded', function() {
+        const slides = document.querySelectorAll('.carousel-slide');
+        const indicators = document.querySelectorAll('.carousel-indicator');
+        let currentIndex = 0;
+        let carouselInterval;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            indicators.forEach(indicator => indicator.classList.remove('active'));
+            
+            slides[index].classList.add('active');
+            indicators[index].classList.add('active');
+            
+            currentIndex = index;
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % slides.length;
+            showSlide(currentIndex);
+        }
+
+        // Start carousel immediately
+        carouselInterval = setInterval(nextSlide, 2000);
+
+        // Enable manual navigation
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                clearInterval(carouselInterval);
+                showSlide(index);
+                carouselInterval = setInterval(nextSlide, 2000);
+            });
+        });
+    });
