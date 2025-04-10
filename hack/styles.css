@@ -4592,3 +4592,35 @@ footer {
 
 /* Script to track mouse position for hover effect */
 /* This will be added via script in JavaScript */
+
+.prize-content p {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: 320px;
+  margin: 0 auto;
+  text-align: justify; /* Add justified text alignment */
+  hyphens: auto; /* Enable hyphenation for better justification */
+}
+
+/* Enhanced Prize Content Styling */
+.prize-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+}
+
+.prize-content p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 320px;
+  margin: 0 auto;
+  text-align: justify;
+  hyphens: auto; /* Enable hyphenation for better justification */
+  word-spacing: -0.05em; /* Slightly adjust word spacing for better justification */
+}
+
+/* Add a subtle hover effect to the prize content */
+.prize-card:hover .prize-content p {
+  color: var(--text-dark);
+}
