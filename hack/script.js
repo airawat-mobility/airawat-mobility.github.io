@@ -37,7 +37,7 @@
             "Help AI see Indian traffic better",
             "Real data. Real AI. Real impact",
             "Compete, annotate, win—daily!",
-            "Crowdsourced data powering India’s smartest traffic AI",
+            "Crowdsourced data powering India's smartest traffic AI",
             "Annotate today, transform tomorrow's city traffic",
             "Your annotations can help millions get home faster",
             "Build award-winning AI from real-world traffic data",
@@ -870,6 +870,9 @@
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
         
+        // Check if device is mobile
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+        
         // Color settings
         const primaryColor = 'rgba(66, 153, 225, 0.5)'; // Blue
         const accentColor = 'rgba(255, 76, 41, 0.5)';   // Orange/Red accent
@@ -877,25 +880,37 @@
         const nodeColor = 'rgba(255, 255, 255, 0.6)';   // Nodes color
         const focusedColor = 'rgba(255, 255, 255, 0.9)'; // Highlighted nodes
         
-        // Network settings
-        const particleCount = Math.min(70, Math.floor(width * height / 12000)); // Reduced count
-        const maxDistance = 180;
-        const mouseSensitivity = 0.2;
-        const particleSizeRange = { min: 1.5, max: 5 };
-        const particleSpeedRange = { min: 0.1, max: 0.7 };
+        // Network settings - greatly reduced for mobile
+        const particleCount = isMobile ? 
+            Math.min(20, Math.floor(width * height / 30000)) : // Fewer particles on mobile
+            Math.min(50, Math.floor(width * height / 15000));  // Reduced count on desktop too
+            
+        const maxDistance = isMobile ? 120 : 150; // Shorter connection distance on mobile
+        const mouseSensitivity = isMobile ? 0.1 : 0.2; // Reduced sensitivity on mobile
+        const particleSizeRange = { 
+            min: isMobile ? 1 : 1.5, 
+            max: isMobile ? 3 : 4 
+        };
+        const particleSpeedRange = { 
+            min: isMobile ? 0.05 : 0.1, 
+            max: isMobile ? 0.3 : 0.5 
+        }; // Slower movement on mobile
+        
+        // Maximum connections per node (degree constraint)
+        const MAX_CONNECTIONS_PER_NODE = isMobile ? 2 : 3;
         
         // Mouse position with smoothing
         let targetMouseX = width / 2;
         let targetMouseY = height / 2;
         let mouseX = targetMouseX;
         let mouseY = targetMouseY;
-        let mouseRadius = 180;
+        let mouseRadius = isMobile ? 100 : 150;
         
         // Special "brain center" position - moved slightly lower
         const brainCenter = {
             x: width / 2,
             y: height / 1.6, // Moved lower to avoid text
-            radius: Math.min(width, height) * 0.2
+            radius: Math.min(width, height) * (isMobile ? 0.15 : 0.2)
         };
         
         // Text protection zone in the center
@@ -911,6 +926,14 @@
         
         // Data paths - simulates data flowing through the network
         let dataPaths = [];
+        
+        // Animation frame tracking
+        let animationFrameId = null;
+        
+        // Reduced frame rate for mobile
+        const FPS = isMobile ? 30 : 60;
+        const frameInterval = 1000 / FPS;
+        let lastFrameTime = 0;
         
         // Particle class
         class Particle {
@@ -943,9 +966,9 @@
                 );
                 
                 // Reduce tendency to stay near center
-                this.centerAttraction = (Math.random() * 0.015) * (isSpecial ? 1.2 : 0.8);
-                // Make fewer particles cluster (40% instead of 60%)
-                this.shouldCluster = Math.random() > 0.6;
+                this.centerAttraction = (Math.random() * 0.01) * (isSpecial ? 1.2 : 0.8);
+                // Make fewer particles cluster (30% instead of 60%)
+                this.shouldCluster = Math.random() > (isMobile ? 0.8 : 0.7);
             }
             
             update() {
@@ -1013,8 +1036,8 @@
                     }
                 }
                 
-                // Pulse animation
-                this.pulsePhase += 0.02;
+                // Pulse animation - slower on mobile
+                this.pulsePhase += isMobile ? 0.01 : 0.02;
                 if (this.pulsePhase > Math.PI * 2) this.pulsePhase = 0;
                 
                 // Apply damping to prevent excessive speed
@@ -1022,7 +1045,7 @@
                 this.speedY *= 0.98;
                 
                 // Speed limit to prevent excessive movement
-                const maxSpeed = 2;
+                const maxSpeed = isMobile ? 1.5 : 2;
                 const currentSpeed = Math.sqrt(this.speedX * this.speedX + this.speedY * this.speedY);
                 if (currentSpeed > maxSpeed) {
                     this.speedX = (this.speedX / currentSpeed) * maxSpeed;
@@ -1078,8 +1101,8 @@
                 ctx.arc(this.x, this.y, finalSize, 0, Math.PI * 2);
                 ctx.fill();
                 
-                // Glow effect for special nodes
-                if (this.isSpecial || this.isNearMouse) {
+                // Glow effect only for special nodes on desktop, simplified on mobile
+                if ((this.isSpecial || this.isNearMouse) && !isMobile) {
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, finalSize * 1.5, 0, Math.PI * 2);
                     const glowColor = this.isAccent ? 
@@ -1114,8 +1137,8 @@
                 this.sourceNode = sourceNode;
                 this.targetNode = targetNode;
                 this.progress = 0;
-                this.speed = 0.02 + Math.random() * 0.03;
-                this.size = 1.5 + Math.random();
+                this.speed = (isMobile ? 0.01 : 0.02) + Math.random() * 0.02;
+                this.size = 1 + Math.random();
                 this.color = sourceNode.isAccent || targetNode.isAccent ? 
                             accentColor.replace('0.5', '0.8') : 
                             sourceNode.isSecondary || targetNode.isSecondary ?
@@ -1157,19 +1180,28 @@
             particles = [];
             dataPaths = [];
             
-            // Create special "hub" nodes - keep them away from the text
-            for (let i = 0; i < 5; i++) {
+            // Create special "hub" nodes - limit to 3 on mobile
+            const specialNodes = isMobile ? 2 : 4;
+            for (let i = 0; i < specialNodes; i++) {
                 particles.push(new Particle(true));
             }
             
             // Create regular nodes
-            for (let i = 0; i < particleCount - 5; i++) {
+            for (let i = 0; i < particleCount - specialNodes; i++) {
                 particles.push(new Particle(false));
             }
         }
         
-        // Animation loop
-        function animate() {
+        // Animation loop with throttling for mobile
+        function animate(timestamp) {
+            // Skip frames to maintain target FPS
+            if (timestamp - lastFrameTime < frameInterval) {
+                animationFrameId = requestAnimationFrame(animate);
+                return;
+            }
+            
+            lastFrameTime = timestamp;
+            
             ctx.clearRect(0, 0, width, height);
             
             // Smooth mouse follow
@@ -1177,7 +1209,7 @@
             mouseY += (targetMouseY - mouseY) * 0.1;
             
             // Create data paths occasionally (less frequently)
-            if (Math.random() < 0.02 && particles.length > 5) {
+            if (Math.random() < (isMobile ? 0.005 : 0.015) && particles.length > 3) {
                 const sourceIndex = Math.floor(Math.random() * particles.length);
                 let targetIndex;
                 do {
@@ -1196,8 +1228,11 @@
                     const dy = sourceNode.y - targetNode.y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     
-                    if (distance < maxDistance * 1.5) {
-                        dataPaths.push(new DataPath(sourceNode, targetNode));
+                    if (distance < maxDistance * 1.2) {
+                        // Only create data path if within connection limit
+                        if (dataPaths.length < (isMobile ? 5 : 15)) {
+                            dataPaths.push(new DataPath(sourceNode, targetNode));
+                        }
                     }
                 }
             }
@@ -1222,12 +1257,15 @@
                 particles[i].draw();
             }
             
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         }
         
-        // Draw lines between particles
+        // Draw lines between particles with degree constraint
         function connectParticles(particle, particles) {
             particle.connectedTo = [];
+            
+            // Find potential connections within maxDistance
+            let potentialConnections = [];
             
             for (let j = 0; j < particles.length; j++) {
                 const p2 = particles[j];
@@ -1243,10 +1281,31 @@
                     const midY = (particle.y + p2.y) / 2;
                     if (isInTextZone(midX, midY)) continue;
                     
-                    particle.connectedTo.push(p2);
-                    
+                    potentialConnections.push({
+                        particle: p2,
+                        distance: distance
+                    });
+                }
+            }
+            
+            // Sort by distance (prioritize closer particles)
+            potentialConnections.sort((a, b) => a.distance - b.distance);
+            
+            // Limit to MAX_CONNECTIONS_PER_NODE connections
+            const connections = potentialConnections.slice(0, MAX_CONNECTIONS_PER_NODE);
+            
+            // Draw the selected connections
+            connections.forEach(connection => {
+                const p2 = connection.particle;
+                const distance = connection.distance;
+                
+                particle.connectedTo.push(p2);
+                
+                // Only draw if the other node hasn't already connected to this one
+                // This ensures we don't draw the same connection twice
+                if (!p2.connectedTo.includes(particle)) {
                     // Set opacity based on distance and reduce general opacity
-                    const opacity = (1 - (distance / maxDistance)) * 0.7;
+                    const opacity = (1 - (distance / maxDistance)) * 0.6;
                     
                     // Determine line color
                     let color;
@@ -1262,14 +1321,16 @@
                     
                     // Draw thinner lines overall
                     ctx.strokeStyle = color;
-                    ctx.lineWidth = (particle.isSpecial || p2.isSpecial) ? opacity * 1.5 : opacity * 0.7;
+                    ctx.lineWidth = (particle.isSpecial || p2.isSpecial) ? 
+                                    opacity * (isMobile ? 1 : 1.5) : 
+                                    opacity * (isMobile ? 0.5 : 0.7);
                     
                     ctx.beginPath();
                     ctx.moveTo(particle.x, particle.y);
                     ctx.lineTo(p2.x, p2.y);
                     ctx.stroke();
                 }
-            }
+            });
         }
         
         // Track mouse movement
@@ -1281,31 +1342,102 @@
         // Handle touch events for mobile
         document.addEventListener('touchmove', (e) => {
             if (e.touches.length > 0) {
-                e.preventDefault();
+                // Do NOT prevent default to allow scrolling
                 targetMouseX = e.touches[0].clientX;
                 targetMouseY = e.touches[0].clientY;
             }
-        }, { passive: false });
+        }, { passive: true }); // Set passive to true to improve scroll performance
+        
+        // Handle scroll - pause animation during scroll on mobile
+        let scrollTimeout;
+        const pauseAnimationDuringScroll = () => {
+            if (isMobile) {
+                // Cancel the existing animation frame
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+                
+                // Clear existing timeout
+                clearTimeout(scrollTimeout);
+                
+                // Set a timeout to resume animation after scrolling stops
+                scrollTimeout = setTimeout(() => {
+                    if (!animationFrameId) {
+                        animationFrameId = requestAnimationFrame(animate);
+                    }
+                }, 200); // Resume after 200ms of no scrolling
+            }
+        };
+        
+        window.addEventListener('scroll', pauseAnimationDuringScroll, { passive: true });
         
         // Handle window resize
         window.addEventListener('resize', () => {
+            // Check if device type changed
+            const wasDesktop = !isMobile;
+            const newIsMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+            
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             
             // Recalculate brain center and text zone
             brainCenter.x = width / 2;
             brainCenter.y = height / 1.6;
-            brainCenter.radius = Math.min(width, height) * 0.2;
+            brainCenter.radius = Math.min(width, height) * (newIsMobile ? 0.15 : 0.2);
             
             textZone.x = width / 2;
             textZone.y = height / 2.5;
             textZone.width = Math.min(width * 0.7, 700);
             textZone.height = Math.min(height * 0.4, 300);
             
-            init();
+            // If device type changed, we should reinitialize
+            if (wasDesktop !== newIsMobile) {
+                // Stop animation
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                }
+                
+                // Reinitialize with new settings
+                init();
+                animationFrameId = requestAnimationFrame(animate);
+            } else {
+                // Just reinitialize
+                init();
+            }
         });
+        
+        // Cleanup function to stop animation when the canvas is no longer visible
+        function cleanup() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+                animationFrameId = null;
+            }
+            
+            // Remove event listeners
+            window.removeEventListener('scroll', pauseAnimationDuringScroll);
+        }
         
         // Initialize and start animation
         init();
-        animate();
+        lastFrameTime = performance.now();
+        animationFrameId = requestAnimationFrame(animate);
+        
+        // Add global cleanup method
+        window.cleanupNetworkGraph = cleanup;
+        
+        // Visibility API - pause animation when page is not visible
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
+            } else {
+                if (!animationFrameId) {
+                    lastFrameTime = performance.now();
+                    animationFrameId = requestAnimationFrame(animate);
+                }
+            }
+        });
     }
