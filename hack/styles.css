@@ -8,6 +8,7 @@
   --bg-light: #f8fafc;
   --bg-dark: #e2e8f0;
   --card-bg: white;
+  --card-bg-dark: #2d3748;
   --hover-bg: #f7fafc;
   --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
   --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
@@ -24,6 +25,7 @@
   --game-section-bg: white;
   --prize-section-bg: #f6f9fc;
   --partners-section-bg: white;
+  --section-bg: var(--bg-light);
 }
 
 [data-theme="dark"] {
@@ -36,6 +38,7 @@
   --bg-light: #1a202c;
   --bg-dark: #171923;
   --card-bg: #2d3748;
+  --card-bg-dark: #1e2533;
   --hover-bg: #252d3d;
   --shadow-sm: 0 2px 4px rgba(0,0,0,0.3);
   --shadow-md: 0 4px 6px rgba(0,0,0,0.3);
@@ -49,6 +52,7 @@
   --game-section-bg: #1e2533;
   --prize-section-bg: #1a202c;
   --partners-section-bg: #1e2533;
+  --section-bg: var(--bg-dark);
 }
 
 * {
@@ -3687,4 +3691,48 @@ footer {
         max-width: 250px;
         justify-content: center;
     }
+}
+
+[data-theme="dark"] .portal-section {
+    background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(26, 32, 44, 0.3) 100%);
+}
+
+[data-theme="dark"] .portal-wrapper {
+    background: var(--card-bg-dark);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .portal-preview-container {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .portal-preview {
+    border-color: rgba(255, 255, 255, 0.05);
+    filter: brightness(0.9) contrast(1.1);
+}
+
+[data-theme="dark"] .portal-badge {
+    background: var(--primary-dark);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .portal-feature {
+    background: rgba(66, 153, 225, 0.15);
+    color: var(--primary);
+}
+
+[data-theme="dark"] .portal-feature:hover {
+    background: var(--primary-dark);
+    color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .title-caption {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+[data-theme="dark"] .descriptive-text {
+    color: rgba(255, 255, 255, 0.7);
 }
