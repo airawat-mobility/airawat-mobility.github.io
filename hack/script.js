@@ -1,35 +1,3 @@
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize network graph animation
-        initNetworkGraph();
-    
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
-        });
-    
-        // Registration tabs functionality
-        const registrationTabs = document.querySelectorAll('.registration-tab');
-        if (registrationTabs.length > 0) {
-            registrationTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs
-                    registrationTabs.forEach(t => t.classList.remove('active'));
-                    
-                    // Add active class to clicked tab
-                    tab.classList.add('active');
-                    
-                    // Hide all panels
-                    document.querySelectorAll('.registration-panel').forEach(panel => {
-                        panel.classList.remove('active');
-                    });
-                    
-                    // Show the corresponding panel
-                    const targetId = tab.getAttribute('data-target');
-                    document.getElementById(targetId + '-panel').classList.add('active');
-                });
-            });
-        }
-    
         // Typewriter effect implementation
         const typewriterTexts = [
             // "Revolutionizing urban mobility through AI and collective intelligence",
@@ -50,8 +18,8 @@
             "Transform urban mobility with your data"
         ];
         
-        const typewriterElement = document.getElementById('typewriter-text');
-        const typewriterCursor = document.querySelector('.typewriter-cursor');
+let typewriterElement;
+let typewriterCursor;
         let textIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
@@ -60,6 +28,12 @@
         let delayAfterDeleting = 500; // Pause when text is deleted before typing new text
         
         function typeWriter() {
+    if (!typewriterElement) {
+        typewriterElement = document.getElementById('typewriter-text');
+        typewriterCursor = document.querySelector('.typewriter-cursor');
+        if (!typewriterElement) return; // Exit if element doesn't exist
+    }
+
             const currentText = typewriterTexts[textIndex];
             
             if (isDeleting) {
@@ -68,7 +42,7 @@
                 charIndex--;
                 typingSpeed = 30; // Faster when deleting
             } else {
-                // Typing tex
+        // Typing text
                 typewriterElement.textContent = currentText.substring(0, charIndex + 1);
                 charIndex++;
                 typingSpeed = 50; // Normal typing speed
@@ -89,43 +63,230 @@
             setTimeout(typeWriter, typingSpeed);
         }
         
-        // Start the typewriter effect
-        typeWriter();
+// Theme switcher functionality
+function switchTheme(e) {
+    if (e.target.checked) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+        // Update map theme if map exists
+        if (document.getElementById('india-map')) {
+            updateMapTheme(true);
+            // Force redraw of markers after theme change
+            setTimeout(refreshMapMarkers, 100);
+        }
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+        // Update map theme if map exists
+        if (document.getElementById('india-map')) {
+            updateMapTheme(false);
+            // Force redraw of markers after theme change
+            setTimeout(refreshMapMarkers, 100);
+        }
+    }
+}
+
+// Function to completely rebuild markers if they're out of position
+function refreshMapMarkers() {
+    if (!window.participantMap || !window.pincodeData || !window.markerLayer) return;
     
-        // Generate a unique visitor ID using browser fingerprint
-        async function getVisitorId() {
-            const components = [
-                navigator.userAgent,
-                navigator.hardwareConcurrency,
-                navigator.deviceMemory,
-                screen.width + 'x' + screen.height,
-                navigator.language
-            ].join('|');
-
-            const hashBuffer = await crypto.subtle.digest('SHA-1', new TextEncoder().encode(components));
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    // Preserve current center and zoom
+    const center = window.participantMap.getCenter();
+    const zoom = window.participantMap.getZoom();
+    
+    // Clear existing markers
+    window.markerLayer.clearLayers();
+    
+    // Get current theme
+    const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+    
+    // Recreate all markers
+    const markers = [];
+    
+    // Re-add each marker at its exact geographic position
+    window.pincodeData.forEach(entry => {
+        if (entry.pincode && entry.lat && entry.lng) {
+            const marker = L.circleMarker([entry.lat, entry.lng], {
+                radius: 8,
+                fillColor: "#ff4c29",
+                color: isDarkMode ? "#333" : "#fff",
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 1,
+                interactive: false
+            }).addTo(window.markerLayer);
+            
+            markers.push(marker);
         }
+    });
+    
+    // Update global markers array
+    window.markers = markers;
+    
+    // Ensure map stays at same position
+    window.participantMap.setView(center, zoom, {
+        animate: false,
+        duration: 0
+    });
+    
+    // Bring marker layer to front
+    window.markerLayer.bringToFront();
+}
 
-        // Track unique visitors
-        async function trackVisitor() {
-            try {
-                const visitorId = await getVisitorId();
-                let visitors = JSON.parse(localStorage.getItem('uniqueVisitors') || '{"count":0,"ids":[]}');
-                
-                if(!visitors.ids.includes(visitorId)) {
-                    visitors.count++;
-                    visitors.ids.push(visitorId);
-                    localStorage.setItem('uniqueVisitors', JSON.stringify(visitors));
-                }
-                
-                document.getElementById('visitCount').textContent = visitors.count;
-            } catch {
-                document.getElementById('visitCount').textContent = 'many';
+// Apply custom styling to map based on theme
+function updateMapTheme(isDarkMode) {
+    const mapContainer = document.getElementById('india-map');
+    
+    if (!mapContainer || !window.participantMap) return;
+    
+    // Get the current theme from the document if not explicitly provided
+    if (isDarkMode === undefined) {
+        isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+    }
+    
+    // Store current map view state
+    const currentCenter = window.participantMap.getCenter();
+    const currentZoom = window.participantMap.getZoom();
+    
+    if (isDarkMode) {
+        // Apply dark mode styling to map with improved contrast
+        document.querySelectorAll('.leaflet-tile-pane .leaflet-layer').forEach(layer => {
+            layer.style.filter = 'invert(1) hue-rotate(180deg) brightness(0.7) contrast(1.4)';
+        });
+        
+        // Update map container styling
+        mapContainer.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.4)';
+    } else {
+        // Reset to light mode
+        document.querySelectorAll('.leaflet-tile-pane .leaflet-layer').forEach(layer => {
+            layer.style.filter = 'none';
+        });
+        
+        // Reset map container styling
+        mapContainer.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.1)';
+    }
+    
+    // Update marker styles based on theme
+    if (window.updateMarkerStyles) {
+        window.updateMarkerStyles(isDarkMode);
+    }
+    
+    // Forces a redraw of the map to ensure everything is correctly positioned
+    if (window.participantMap) {
+        // Stop any animations
+        window.participantMap.stop();
+        
+        // Invalidate size to force a redraw
+        window.participantMap.invalidateSize(true);
+        
+        // Small delay to ensure map has redrawn
+        setTimeout(() => {
+            // Force the map to reset view to same center and zoom level
+            window.participantMap.setView(currentCenter, currentZoom, {
+                animate: false,
+                duration: 0
+            });
+            
+            // Bring marker layer to front to ensure it's visible
+            if (window.markerLayer) {
+                window.markerLayer.bringToFront();
             }
-        }
+        }, 50);
+    }
+}
 
+document.addEventListener('DOMContentLoaded', function() {
+    // Initial theme based on user preference or saved setting
+    const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    const savedTheme = localStorage.getItem("theme");
+    
+    if (savedTheme === "dark" || (savedTheme === null && prefersDarkScheme.matches)) {
+        document.documentElement.setAttribute("data-theme", "dark");
+        document.getElementById("checkbox").checked = true;
+    }
+
+    // Theme switch functionality
+    const themeSwitch = document.getElementById('checkbox');
+    if (themeSwitch) {
+        themeSwitch.addEventListener('change', switchTheme, false);
+    }
+
+    // Mobile menu functionality
+    const menuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuBtn) {
+        menuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            this.classList.toggle('active');
+        });
+    }
+
+    // Initialize timeline progress
+    if (document.querySelector('.timeline-progress')) {
+        updateTimelineProgress();
+        initializeTimeline();
+    }
+
+    // Initialize visitor counter
+    if (document.querySelector('.visit-counter')) {
         trackVisitor();
+    }
+    
+    // Initialize all components
+    // Initialize participant map
+    if (document.getElementById('india-map')) {
+        initializeParticipantMap();
+    }
+
+    // Initialize game gallery
+    if (document.querySelector('.gallery-container')) {
+        initGameGallery();
+    }
+
+    // Initialize network graph for hero section
+    if (document.getElementById('network-graph')) {
+        initNetworkGraph();
+    }
+
+    // Initialize about carousel
+    if (document.querySelector('.carousel-container')) {
+        setupAboutCarousel();
+    }
+
+    // Start counters when in view
+    document.addEventListener('scroll', function() {
+        animateOnScroll();
+    });
+
+    // Call scroll once on load to check for elements in view
+    animateOnScroll();
+
+    // Start the typewriter effect
+    typeWriter();
+
+    // Registration tabs functionality
+    const registrationTabs = document.querySelectorAll('.registration-tab');
+    if (registrationTabs.length > 0) {
+        registrationTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                registrationTabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Hide all panels
+                document.querySelectorAll('.registration-panel').forEach(panel => {
+                    panel.classList.remove('active');
+                });
+                
+                // Show the corresponding panel
+                const targetId = tab.getAttribute('data-target');
+                document.getElementById(targetId + '-panel').classList.add('active');
+            });
+        });
+    }
 
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -431,49 +592,6 @@
             clearInterval(countdownInterval);
         });
 
-        // Theme switcher functionality
-        const toggleSwitch = document.querySelector('#checkbox');
-        const currentTheme = localStorage.getItem('theme');
-
-        // Check for saved theme preference
-        if (currentTheme) {
-            document.documentElement.setAttribute('data-theme', currentTheme);
-            if (currentTheme === 'dark') {
-                toggleSwitch.checked = true;
-            }
-        } else {
-            // Check for user's system preference
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                toggleSwitch.checked = true;
-                localStorage.setItem('theme', 'dark');
-            }
-        }
-
-        // Switch theme function
-        function switchTheme(e) {
-            if (e.target.checked) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-                // Optional: Add smooth transition animation
-                document.documentElement.classList.add('theme-transition');
-                setTimeout(() => {
-                    document.documentElement.classList.remove('theme-transition');
-                }, 300);
-            } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-                localStorage.setItem('theme', 'light');
-                // Optional: Add smooth transition animation
-                document.documentElement.classList.add('theme-transition');
-                setTimeout(() => {
-                    document.documentElement.classList.remove('theme-transition');
-                }, 300);
-            }
-        }
-
-        // Event listener for theme switch
-        toggleSwitch.addEventListener('change', switchTheme);
-
         // Game Gallery Functionality
         initGameGallery();
 
@@ -612,54 +730,39 @@
             });
         }
 
-        // About Carousel
+    // Set up the about carousel
         function setupAboutCarousel() {
             const slides = document.querySelectorAll('.carousel-slide');
             const indicators = document.querySelectorAll('.carousel-indicator');
             let currentIndex = 0;
             let carouselInterval;
 
-            // Show the specified slide
             function showSlide(index) {
-                // Hide all slides
                 slides.forEach(slide => slide.classList.remove('active'));
-                // Hide all indicators
                 indicators.forEach(indicator => indicator.classList.remove('active'));
                 
-                // Show active slide and indicator
                 slides[index].classList.add('active');
                 indicators[index].classList.add('active');
                 
                 currentIndex = index;
             }
 
-            // Move to the next slide
             function nextSlide() {
                 currentIndex = (currentIndex + 1) % slides.length;
                 showSlide(currentIndex);
             }
 
-            // Start the carousel rotation
-            function startCarousel() {
-                carouselInterval = setInterval(nextSlide, 2000); // 2 seconds
-            }
+        // Start carousel immediately
+        carouselInterval = setInterval(nextSlide, 2000);
 
-            // Reset and restart the carousel
-            function resetCarousel() {
-                clearInterval(carouselInterval);
-                startCarousel();
-            }
-
-            // Add click event listeners to indicators
+        // Enable manual navigation
             indicators.forEach((indicator, index) => {
                 indicator.addEventListener('click', () => {
+                clearInterval(carouselInterval);
                     showSlide(index);
-                    resetCarousel();
+                carouselInterval = setInterval(nextSlide, 2000);
                 });
             });
-
-            // Initialize carousel
-            startCarousel();
         }
 
         // Call the carousel setup
@@ -1513,37 +1616,120 @@
         });
     }
 
-    // Initialize carousel immediately
-    document.addEventListener('DOMContentLoaded', function() {
-        const slides = document.querySelectorAll('.carousel-slide');
-        const indicators = document.querySelectorAll('.carousel-indicator');
-        let currentIndex = 0;
-        let carouselInterval;
+// Initialize the participant map
+function initializeParticipantMap() {
+    // Create map centered on India with more restrictive settings
+    const map = L.map('india-map', {
+        center: [23.5937, 78.9629], // Center of India
+        zoom: 4.5,
+        zoomControl: true,
+        scrollWheelZoom: true,
+        maxZoom: 5, // Limit max zoom level
+        minZoom: 4, // Limit min zoom level
+        dragging: true,
+        tap: false,
+        // Add bounds to restrict panning
+        maxBounds: [
+            [6.5, 68.0], // Southwest coordinates
+            [36.0, 98.0]  // Northeast coordinates
+        ],
+        maxBoundsViscosity: 1.0 // Make the bounds hard to cross
+    });
 
-        function showSlide(index) {
-            slides.forEach(slide => slide.classList.remove('active'));
-            indicators.forEach(indicator => indicator.classList.remove('active'));
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Create sets to track unique values
+    const uniquePincodes = new Set();
+    const uniqueCities = new Set();
+    const uniqueStates = new Set();
+    
+    // Hardcoded pincode data with accurate coordinates
+    const pincodeData = [
+        { pincode: "560012", lat: 12.9716, lng: 77.5946, city: "Bangalore", state: "Karnataka" },
+        { pincode: "560001", lat: 12.9762, lng: 77.6033, city: "Bangalore", state: "Karnataka" },
+        { pincode: "560092", lat: 13.0629, lng: 77.6372, city: "Bangalore", state: "Karnataka" },
+        { pincode: "110001", lat: 28.6139, lng: 77.2090, city: "Delhi", state: "Delhi" },
+        { pincode: "400001", lat: 18.9387, lng: 72.8353, city: "Mumbai", state: "Maharashtra" },
+        { pincode: "700001", lat: 22.5726, lng: 88.3639, city: "Kolkata", state: "West Bengal" },
+        { pincode: "600001", lat: 13.0827, lng: 80.2707, city: "Chennai", state: "Tamil Nadu" },
+        { pincode: "500001", lat: 17.3850, lng: 78.4867, city: "Hyderabad", state: "Telangana" },
+        { pincode: "641001", lat: 11.0168, lng: 76.9558, city: "Coimbatore", state: "Tamil Nadu" },
+        { pincode: "380001", lat: 23.0225, lng: 72.5714, city: "Ahmedabad", state: "Gujarat" },
+        { pincode: "411001", lat: 18.5204, lng: 73.8567, city: "Pune", state: "Maharashtra" },
+        { pincode: "226001", lat: 26.8467, lng: 80.9462, city: "Lucknow", state: "Uttar Pradesh" },
+        { pincode: "800001", lat: 25.5941, lng: 85.1376, city: "Patna", state: "Bihar" },
+        { pincode: "302001", lat: 26.9124, lng: 75.7873, city: "Jaipur", state: "Rajasthan" },
+        { pincode: "781001", lat: 26.1445, lng: 91.7362, city: "Guwahati", state: "Assam" },
+        { pincode: "160001", lat: 30.7333, lng: 76.7794, city: "Chandigarh", state: "Chandigarh" },
+        { pincode: "799046", lat: 23.8315, lng: 91.2868, city: "Agartala", state: "Tripura" },
+        { pincode: "673601", lat: 11.2588, lng: 75.7804, city: "Kozhikode", state: "Kerala" },
+        { pincode: "151302", lat: 30.9050, lng: 75.8573, city: "Ludhiana", state: "Punjab" },
+        { pincode: "517102", lat: 13.6288, lng: 79.4192, city: "Tirupati", state: "Andhra Pradesh" }
+    ];
+
+    // Create a fixed layer for markers to avoid positioning issues
+    const markerLayer = L.layerGroup().addTo(map);
+    
+    // Store all markers for later reference
+    const markers = [];
+    
+    // Create a simple circle marker function - more stable than icon-based markers
+    function createCircleMarker(lat, lng) {
+        return L.circleMarker([lat, lng], {
+            radius: 8,
+            fillColor: "#ff4c29",
+            color: "#fff",
+            weight: 2,
+            opacity: 1,
+            fillOpacity: 1,
+            interactive: false
+        });
+    }
+    
+    // Add markers for each pincode
+    pincodeData.forEach(entry => {
+        if (entry.pincode && entry.lat && entry.lng) {
+            // Create a simple circle marker - more stable for positioning
+            const marker = createCircleMarker(entry.lat, entry.lng).addTo(markerLayer);
+            markers.push(marker);
             
-            slides[index].classList.add('active');
-            indicators[index].classList.add('active');
-            
-            currentIndex = index;
+            // Track unique values
+            uniquePincodes.add(entry.pincode);
+            if (entry.city) uniqueCities.add(entry.city.trim());
+            if (entry.state) uniqueStates.add(entry.state.trim());
         }
-
-        function nextSlide() {
-            currentIndex = (currentIndex + 1) % slides.length;
-            showSlide(currentIndex);
-        }
-
-        // Start carousel immediately
-        carouselInterval = setInterval(nextSlide, 2000);
-
-        // Enable manual navigation
-        indicators.forEach((indicator, index) => {
-            indicator.addEventListener('click', () => {
-                clearInterval(carouselInterval);
-                showSlide(index);
-                carouselInterval = setInterval(nextSlide, 2000);
+    });
+    
+    // Function to update marker styles based on theme
+    function updateMarkerStyles(isDarkMode) {
+        markers.forEach(marker => {
+            marker.setStyle({
+                color: isDarkMode ? "#333" : "#fff"
             });
         });
+    }
+    
+    // Update stats
+    document.getElementById('total-cities').textContent = uniqueCities.size;
+    document.getElementById('total-states').textContent = uniqueStates.size;
+
+    // Store map instance and update function for theme updates
+    window.participantMap = map;
+    window.updateMarkerStyles = updateMarkerStyles;
+    window.markerLayer = markerLayer; // Expose marker layer to global scope
+    window.pincodeData = pincodeData; // Store pincode data for potential marker redrawing
+    window.markers = markers; // Expose markers array globally
+    
+    // Apply current theme
+    updateMapTheme();
+    
+    // Ensure markers are refreshed after zoom
+    map.on('zoomend', function() {
+        markerLayer.bringToFront();
     });
+    
+    return map;
+}

@@ -4624,3 +4624,397 @@ footer {
 .prize-card:hover .prize-content p {
   color: var(--text-dark);
 }
+
+/* Participant Map Section Styles */
+.map-section {
+    padding: 80px 0;
+    background-color: var(--bg-color);
+    transition: background-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.map-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.map-center-column {
+    width: 80%;
+    max-width: 1000px;
+    position: relative;
+}
+
+#india-map {
+    height: 600px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    will-change: transform; /* Optimize rendering */
+}
+
+/* Enhance map controls */
+.leaflet-control-container .leaflet-top {
+    top: 10px;
+}
+
+.leaflet-control-container .leaflet-control-zoom {
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.leaflet-control-container .leaflet-control-zoom a {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 18px;
+}
+
+.leaflet-control-container .leaflet-control-zoom a:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+[data-theme="dark"] .leaflet-control-container .leaflet-control-zoom a {
+    background-color: #333;
+    color: #fff;
+}
+
+.map-stats {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.map-stat-card {
+    width: 23%;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.map-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.map-stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+.map-stat-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+    letter-spacing: 1.5px;
+}
+
+/* Dark mode enhancements */
+[data-theme="dark"] .map-stats {
+    color: #fff;
+}
+
+[data-theme="dark"] .map-stat-card {
+    background-color: #333;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .map-stat-card:hover {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Map marker styling */
+.custom-div-icon {
+    background: transparent;
+    border: none;
+}
+
+.marker-pin {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #ff4c29; /* Orange color that matches the theme */
+    border: 3px solid white;
+    box-shadow: 0 0 10px rgba(255, 76, 41, 0.5);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the pin properly */
+    z-index: 400;
+    pointer-events: none; /* Make unclickable */
+}
+
+/* Dark mode styling */
+[data-theme="dark"] .marker-pin {
+    border: 3px solid #333;
+    background-color: #ff4c29; /* Keep same orange in dark mode */
+    box-shadow: 0 0 10px rgba(255, 76, 41, 0.6); /* Enhanced glow in dark mode */
+}
+
+/* Hide all popup styling as we're not using popups */
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+    display: none;
+}
+
+/* Dark mode map background */
+[data-theme="dark"] #india-map {
+    background-color: #1a1a1a;
+}
+
+/* Ensure no transform issues with leaflet-marker-pane */
+.leaflet-marker-pane {
+    pointer-events: none;
+}
+
+.leaflet-marker-icon {
+    transition: none !important; /* Disable any transitions */
+}
+
+/* Responsive Map Section */
+@media (max-width: 768px) {
+    .marker-pin {
+        width: 20px;
+        height: 20px;
+        border: 2px solid white;
+    }
+    
+    [data-theme="dark"] .marker-pin {
+        border: 2px solid #333;
+    }
+}
+
+/* Responsive styles for map and stats */
+@media (max-width: 992px) {
+    .map-center-column {
+        width: 90%;
+    }
+    
+    #india-map {
+        height: 500px;
+    }
+    
+    .map-stat-card {
+        width: 48%;
+    }
+}
+
+@media (max-width: 768px) {
+    .map-section {
+        padding: 60px 0;
+    }
+    
+    #india-map {
+        height: 400px;
+    }
+}
+
+@media (max-width: 576px) {
+    .map-stat-card {
+        width: 100%;
+    }
+    
+    #india-map {
+        height: 350px;
+    }
+}
+
+/* Title caption styles for map section */
+#participant-map .title-caption {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 40px;
+    font-weight: 300;
+    transition: color 0.3s ease;
+}
+
+#participant-map .title-caption a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+#participant-map .title-caption a:hover {
+    color: #ff4c29; /* Match the orange theme color */
+}
+
+#participant-map .title-caption a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -3px;
+    left: 0;
+    background-color: #ff4c29; /* Match the orange theme color */
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease;
+}
+
+#participant-map .title-caption a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+[data-theme="dark"] #participant-map .title-caption {
+    color: var(--text-color);
+}
+
+[data-theme="dark"] #participant-map .title-caption a {
+    color: var(--text-color);
+}
+
+/* Circle marker styling */
+.leaflet-interactive {
+    cursor: default !important; /* Prevent cursor change on hover */
+}
+
+/* Enhanced styling for the marker circles to ensure they remain fixed on zoom */
+svg.leaflet-zoom-animated {
+    z-index: 400;
+}
+
+/* Keep SVG elements fixed in size and position */
+.leaflet-zoom-animated g {
+    transform-origin: center !important;
+}
+
+/* Responsive Map Section */
+@media (max-width: 768px) {
+    .marker-pin {
+        width: 20px;
+        height: 20px;
+        border: 2px solid white;
+    }
+    
+    [data-theme="dark"] .marker-pin {
+        border: 2px solid #333;
+    }
+}
+
+/* Ensure smooth transitions for map elements */
+.leaflet-container {
+    transition: background-color 0.3s ease;
+}
+
+.leaflet-tile-pane .leaflet-layer {
+    transition: filter 0.3s ease;
+}
+
+/* Prevent position glitches for circle markers */
+.leaflet-pane.leaflet-marker-pane {
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+}
+
+/* Prevent SVG elements from moving during theme transitions */
+.leaflet-overlay-pane svg {
+    transform-origin: 0 0 !important;
+}
+
+/* Ensure circles maintain their positions */
+.leaflet-interactive.leaflet-path-draggable {
+    transition: none !important;
+    will-change: transform;
+}
+
+/* Prevent unwanted animations on map elements */
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-zoom-box,
+.leaflet-overlay-pane svg,
+.leaflet-shadow-pane {
+    backface-visibility: hidden;
+}
+
+/* Last updated text styling */
+.map-last-updated {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
+    color: var(--text-light);
+    z-index: 1000;
+    font-weight: 500;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .map-last-updated {
+    background: rgba(45, 55, 72, 0.9);
+    color: var(--text-light);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced map stats styling */
+.map-stat-card {
+    width: 23%;
+    padding: 20px;
+    background: var(--card-bg);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    border-left: 4px solid var(--primary);
+}
+
+.map-stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+[data-theme="dark"] .map-stat-card {
+    background: rgba(45, 55, 72, 0.9);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-left: 4px solid var(--primary);
+}
+
+[data-theme="dark"] .map-stat-card:hover {
+    background: rgba(66, 153, 225, 0.15);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .map-stat-number {
+    color: var(--primary);
+}
+
+[data-theme="dark"] .map-stat-label {
+    color: var(--text-light);
+}
