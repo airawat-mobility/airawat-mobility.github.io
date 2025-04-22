@@ -133,6 +133,41 @@ function refreshMapMarkers() {
     window.markerLayer.bringToFront();
 }
 
+ // Immediate carousel initialization
+ document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.carousel-slide');
+    const indicators = document.querySelectorAll('.carousel-indicator');
+    let currentIndex = 0;
+    let carouselInterval;
+
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+        
+        slides[index].classList.add('active');
+        indicators[index].classList.add('active');
+        
+        currentIndex = index;
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        showSlide(currentIndex);
+    }
+
+    // Start carousel immediately
+    carouselInterval = setInterval(nextSlide, 2000);
+
+    // Enable manual navigation
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            clearInterval(carouselInterval);
+            showSlide(index);
+            carouselInterval = setInterval(nextSlide, 2000);
+        });
+    });
+});
+
 // Apply custom styling to map based on theme
 function updateMapTheme(isDarkMode) {
     const mapContainer = document.getElementById('india-map');
@@ -1713,8 +1748,8 @@ function initializeParticipantMap() {
     }
     
     // Update stats
-    document.getElementById('total-cities').textContent = uniqueCities.size;
-    document.getElementById('total-states').textContent = uniqueStates.size;
+    document.getElementById('total-cities').textContent = uniqueCities.size + '+';
+    document.getElementById('total-states').textContent = uniqueStates.size + '+';
 
     // Store map instance and update function for theme updates
     window.participantMap = map;
