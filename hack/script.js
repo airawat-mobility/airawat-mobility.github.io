@@ -488,7 +488,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else if (daysPast <= 7) {
                         countdown.textContent = `${daysPast} days ago`;
                     } else {
-                        countdown.textContent = 'Completed';
+                        // Handle Registration Opens differently (index 0)
+                        if (index === 0) {
+                            countdown.textContent = 'Registration open';
+                        } else {
+                            countdown.textContent = 'Completed';
+                        }
                     }
                     
                     // Mark the parent element as past
