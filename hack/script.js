@@ -682,6 +682,11 @@ document.addEventListener('DOMContentLoaded', function() {
             mediaModal.classList.add('active');
             videoContainer.style.display = 'block';
             posterContainer.style.display = 'none';
+
+            // Add autoplay functionality
+            if (videoPlayer) {
+                videoPlayer.src += (videoPlayer.src.includes('?') ? '&' : '?') + 'autoplay=1';
+            }
         });
         
         // Show poster modal
@@ -689,11 +694,21 @@ document.addEventListener('DOMContentLoaded', function() {
             mediaModal.classList.add('active');
             videoContainer.style.display = 'none';
             posterContainer.style.display = 'block';
+
+            // Stop video playback when switching to poster
+            if (videoPlayer) {
+                videoPlayer.src = videoPlayer.src.split('?')[0]; // Reset video source to stop playback
+            }
         });
         
         // Close modal
         closeModalBtn.addEventListener('click', function() {
             mediaModal.classList.remove('active');
+
+            // Stop video playback when closing the modal
+            if (videoPlayer) {
+                videoPlayer.src = videoPlayer.src.split('?')[0]; // Reset video source to stop playback
+            }
         });
         
         // Close modal when clicking outside
@@ -974,12 +989,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set up event handlers for buttons
         if (prevButton) prevButton.addEventListener('click', () => {
             prevSlide();
+            restartAutoPlay(); 
         });
         
         if (nextButton) nextButton.addEventListener('click', () => {
             nextSlide();
+            restartAutoPlay();
         });
         
+        // Function to restart auto-play
+        function restartAutoPlay() {
+            stopAutoPlay(); // Clear the existing interval
+            startAutoPlay(); // Start a new interval
+        }
+
         // Set up filmstrip thumbnails
         filmstripThumbs.forEach((thumb, index) => {
             thumb.addEventListener('click', () => {
@@ -1015,12 +1038,18 @@ document.addEventListener('DOMContentLoaded', function() {
         function startAutoPlay() {
             stopAutoPlay(); // Clear any existing interval
             // No need to set an interval here since we're using requestAnimationFrame for timing
+            autoPlayInterval = setInterval(nextSlide, 10000); // Auto-play every 2 seconds
         }
         
         function stopAutoPlay() {
-            resetProgress();
+            // resetProgress();
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
         }
         
+        startAutoPlay();
         // Add touch event handlers
         galleryContainer.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
@@ -1688,26 +1717,116 @@ function initializeParticipantMap() {
     
     // Hardcoded pincode data with accurate coordinates
     const pincodeData = [
-        { pincode: "560012", lat: 12.9716, lng: 77.5946, city: "Bangalore", state: "Karnataka" },
-        { pincode: "560001", lat: 12.9762, lng: 77.6033, city: "Bangalore", state: "Karnataka" },
-        { pincode: "560092", lat: 13.0629, lng: 77.6372, city: "Bangalore", state: "Karnataka" },
-        { pincode: "110001", lat: 28.6139, lng: 77.2090, city: "Delhi", state: "Delhi" },
-        { pincode: "400001", lat: 18.9387, lng: 72.8353, city: "Mumbai", state: "Maharashtra" },
-        { pincode: "700001", lat: 22.5726, lng: 88.3639, city: "Kolkata", state: "West Bengal" },
-        { pincode: "600001", lat: 13.0827, lng: 80.2707, city: "Chennai", state: "Tamil Nadu" },
-        { pincode: "500001", lat: 17.3850, lng: 78.4867, city: "Hyderabad", state: "Telangana" },
-        { pincode: "641001", lat: 11.0168, lng: 76.9558, city: "Coimbatore", state: "Tamil Nadu" },
-        { pincode: "380001", lat: 23.0225, lng: 72.5714, city: "Ahmedabad", state: "Gujarat" },
-        { pincode: "411001", lat: 18.5204, lng: 73.8567, city: "Pune", state: "Maharashtra" },
-        { pincode: "226001", lat: 26.8467, lng: 80.9462, city: "Lucknow", state: "Uttar Pradesh" },
-        { pincode: "800001", lat: 25.5941, lng: 85.1376, city: "Patna", state: "Bihar" },
-        { pincode: "302001", lat: 26.9124, lng: 75.7873, city: "Jaipur", state: "Rajasthan" },
-        { pincode: "781001", lat: 26.1445, lng: 91.7362, city: "Guwahati", state: "Assam" },
-        { pincode: "160001", lat: 30.7333, lng: 76.7794, city: "Chandigarh", state: "Chandigarh" },
-        { pincode: "799046", lat: 23.8315, lng: 91.2868, city: "Agartala", state: "Tripura" },
-        { pincode: "673601", lat: 11.2588, lng: 75.7804, city: "Kozhikode", state: "Kerala" },
-        { pincode: "151302", lat: 30.9050, lng: 75.8573, city: "Ludhiana", state: "Punjab" },
-        { pincode: "517102", lat: 13.6288, lng: 79.4192, city: "Tirupati", state: "Andhra Pradesh" }
+        { "pincode": "20201", "lat": 44.425, "lng": -68.985, "city": "Bar Harbor", "state": "Maine" },
+        { "pincode": "52240", "lat": 41.6611, "lng": -91.5302, "city": "Iowa City", "state": "Iowa" },
+        { "pincode": "500032", "lat": 17.385, "lng": 78.4867, "city": "Hyderabad", "state": "Telangana" },
+        { "pincode": "500043", "lat": 17.385, "lng": 78.4867, "city": "Hyderabad", "state": "Telangana" },
+        { "pincode": "500075", "lat": 17.385, "lng": 78.4867, "city": "Hyderabad", "state": "Telangana" },
+        { "pincode": "500007", "lat": 17.385, "lng": 78.4867, "city": "Hyderabad", "state": "Telangana" },
+        { "pincode": "500089", "lat": 17.385, "lng": 78.4867, "city": "Hyderabad", "state": "Telangana" },
+        { "pincode": "5000090", "lat": 17.385, "lng": 78.4867, "city": "Hyderabad", "state": "Telangana" },
+        { "pincode": "500100", "lat": 17.385, "lng": 78.4867, "city": "Hyderabad", "state": "Telangana" },
+        { "pincode": "506004", "lat": 17.9784, "lng": 79.5941, "city": "Warangal", "state": "Telangana" },
+        { "pincode": "517102", "lat": 13.6288, "lng": 79.4192, "city": "Tirupati", "state": "Andhra Pradesh" },
+        { "pincode": "517541", "lat": 13.6288, "lng": 79.4192, "city": "Tirupati", "state": "Andhra Pradesh" },
+        { "pincode": "522240", "lat": 16.3067, "lng": 80.4365, "city": "Guntur", "state": "Andhra Pradesh" },
+        { "pincode": "522502", "lat": 16.3067, "lng": 80.4365, "city": "Guntur", "state": "Andhra Pradesh" },
+        { "pincode": "530003", "lat": 17.6868, "lng": 83.2185, "city": "Visakhapatnam", "state": "Andhra Pradesh" },
+        { "pincode": "560001", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "560004", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "560012", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "560019", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "560054", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "560064", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "560066", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "560068", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "560074", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "560092", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "560107", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "562112", "lat": 12.9716, "lng": 77.5946, "city": "Bengaluru Rural", "state": "Karnataka" },
+        { "pincode": "570028", "lat": 12.2958, "lng": 76.6394, "city": "Mysuru", "state": "Karnataka" },
+        { "pincode": "572216", "lat": 13.3392, "lng": 77.101, "city": "Tumakuru", "state": "Karnataka" },
+        { "pincode": "580007", "lat": 15.3647, "lng": 75.124, "city": "Hubballi", "state": "Karnataka" },
+        { "pincode": "580009", "lat": 15.3647, "lng": 75.124, "city": "Hubballi", "state": "Karnataka" },
+        { "pincode": "580031", "lat": 15.3647, "lng": 75.124, "city": "Hubballi", "state": "Karnataka" },
+        { "pincode": "600041", "lat": 13.0827, "lng": 80.2707, "city": "Chennai", "state": "Tamil Nadu" },
+        { "pincode": "600044", "lat": 13.0827, "lng": 80.2707, "city": "Chennai", "state": "Tamil Nadu" },
+        { "pincode": "600044", "lat": 13.0827, "lng": 80.2707, "city": "Chennai", "state": "Tamil Nadu" },
+        { "pincode": "600048", "lat": 13.0827, "lng": 80.2707, "city": "Chennai", "state": "Tamil Nadu" },
+        { "pincode": "600063", "lat": 13.0827, "lng": 80.2707, "city": "Chennai", "state": "Tamil Nadu" },
+        { "pincode": "600069", "lat": 13.0827, "lng": 80.2707, "city": "Chennai", "state": "Tamil Nadu" },
+        { "pincode": "602105", "lat": 13.0827, "lng": 80.2707, "city": "Chennai", "state": "Tamil Nadu" },
+        { "pincode": "603203", "lat": 12.8239, "lng": 80.0454, "city": "Chengalpattu", "state": "Tamil Nadu" },
+        { "pincode": "613401", "lat": 10.7867, "lng": 79.1378, "city": "Thanjavur", "state": "Tamil Nadu" },
+        { "pincode": "620015", "lat": 10.7905, "lng": 78.7047, "city": "Tiruchirappalli", "state": "Tamil Nadu" },
+        { "pincode": "630003", "lat": 9.8474, "lng": 78.4836, "city": "Sivaganga", "state": "Tamil Nadu" },
+        { "pincode": "632014", "lat": 12.9165, "lng": 79.1325, "city": "Vellore", "state": "Tamil Nadu" },
+        { "pincode": "632059", "lat": 12.9165, "lng": 79.1325, "city": "Vellore", "state": "Tamil Nadu" },
+        { "pincode": "636006", "lat": 11.6643, "lng": 78.1460, "city": "Salem", "state": "Tamil Nadu" },
+        { "pincode": "637215", "lat": 11.3600, "lng": 77.8000, "city": "Namakkal", "state": "Tamil Nadu" },
+        { "pincode": "637504", "lat": 11.3600, "lng": 77.8000, "city": "Namakkal", "state": "Tamil Nadu" },
+        { "pincode": "638060", "lat": 11.3410, "lng": 77.7172, "city": "Erode", "state": "Tamil Nadu" },
+        { "pincode": "641004", "lat": 11.0168, "lng": 76.9558, "city": "Coimbatore", "state": "Tamil Nadu" },
+        { "pincode": "641032", "lat": 11.0168, "lng": 76.9558, "city": "Coimbatore", "state": "Tamil Nadu" },
+        { "pincode": "641062", "lat": 11.0168, "lng": 76.9558, "city": "Coimbatore", "state": "Tamil Nadu" },
+        { "pincode": "641112", "lat": 11.0168, "lng": 76.9558, "city": "Coimbatore", "state": "Tamil Nadu" },
+        { "pincode": "673601", "lat": 11.2588, "lng": 75.7804, "city": "Kozhikode", "state": "Kerala" },
+        { "pincode": "690525", "lat": 9.2620, "lng": 76.7832, "city": "Alappuzha", "state": "Kerala" },
+        { "pincode": "690546", "lat": 9.2620, "lng": 76.7832, "city": "Alappuzha", "state": "Kerala" },
+        { "pincode": "695016", "lat": 8.5241, "lng": 76.9366, "city": "Thiruvananthapuram", "state": "Kerala" },
+        { "pincode": "700091", "lat": 22.5726, "lng": 88.3639, "city": "Kolkata", "state": "West Bengal" },
+        { "pincode": "700126", "lat": 22.5726, "lng": 88.3639, "city": "Kolkata", "state": "West Bengal" },
+        { "pincode": "700135", "lat": 22.5726, "lng": 88.3639, "city": "Kolkata", "state": "West Bengal" },
+        { "pincode": "751024", "lat": 20.2961, "lng": 85.8245, "city": "Bhubaneswar", "state": "Odisha" },
+        { "pincode": "799046", "lat": 23.8315, "lng": 91.2868, "city": "Agartala", "state": "Tripura" },
+        { "pincode": "800005", "lat": 25.5941, "lng": 85.1376, "city": "Patna", "state": "Bihar" },
+        { "pincode": "801106", "lat": 25.5941, "lng": 85.1376, "city": "Patna", "state": "Bihar" },
+        { "pincode": "110007", "lat": 28.6139, "lng": 77.2090, "city": "Delhi", "state": "Delhi" },
+        { "pincode": "110078", "lat": 28.6139, "lng": 77.2090, "city": "Delhi", "state": "Delhi" },
+        { "pincode": "151302", "lat": 30.2110, "lng": 74.9455, "city": "Bathinda", "state": "Punjab" },
+        { "pincode": "160012", "lat": 30.7333, "lng": 76.7794, "city": "Chandigarh", "state": "Chandigarh" },
+        { "pincode": "160022", "lat": 30.7333, "lng": 76.7794, "city": "Chandigarh", "state": "Chandigarh" },
+        { "pincode": "201009", "lat": 28.6692, "lng": 77.4538, "city": "Ghaziabad", "state": "Uttar Pradesh" },
+        { "pincode": "201301", "lat": 28.5355, "lng": 77.3910, "city": "Noida", "state": "Uttar Pradesh" },
+        { "pincode": "211002", "lat": 25.4696, "lng": 81.8563, "city": "Allahabad", "state": "Uttar Pradesh" },
+        { "pincode": "243006", "lat": 28.3901, "lng": 79.4577, "city": "Bareilly", "state": "Uttar Pradesh" },
+        { "pincode": "243202", "lat": 28.4427, "lng": 79.4353, "city": "Bareilly", "state": "Uttar Pradesh" },
+        { "pincode": "247667", "lat": 29.8543, "lng": 77.8880, "city": "Haridwar", "state": "Uttarakhand" },
+        { "pincode": "305817", "lat": 26.4499, "lng": 74.6399, "city": "Ajmer", "state": "Rajasthan" },
+        { "pincode": "333031", "lat": 28.1261, "lng": 75.3980, "city": "Jhunjhunu", "state": "Rajasthan" },
+        { "pincode": "395007", "lat": 21.1404, "lng": 72.8042, "city": "Surat", "state": "Gujarat" },
+        { "pincode": "400018", "lat": 19.0001, "lng": 72.8197, "city": "Mumbai", "state": "Maharashtra" },
+        { "pincode": "400058", "lat": 19.1198, "lng": 72.8453, "city": "Mumbai", "state": "Maharashtra" },
+        { "pincode": "411033", "lat": 18.6160, "lng": 73.7710, "city": "Pune", "state": "Maharashtra" },
+        { "pincode": "411038", "lat": 18.5099, "lng": 73.8072, "city": "Pune", "state": "Maharashtra" },
+        { "pincode": "411044", "lat": 18.6186, "lng": 73.8037, "city": "Pune", "state": "Maharashtra" },
+        { "pincode": "411052", "lat": 18.5074, "lng": 73.8077, "city": "Pune", "state": "Maharashtra" },
+        { "pincode": "441108", "lat": 20.7453, "lng": 78.6022, "city": "Nagpur", "state": "Maharashtra" },
+        { "pincode": "466114", "lat": 23.2547, "lng": 76.1460, "city": "Sehore", "state": "Madhya Pradesh" },
+        { "pincode": "500007", "lat": 17.3850, "lng": 78.4867, "city": "Hyderabad", "state": "Telangana" },
+        { "pincode": "560064", "lat": 13.0358, "lng": 77.5970, "city": "Bangalore", "state": "Karnataka" },
+
+
+        // { "pincode": "560012", "lat": 13.0216, "lng": 77.5670, "city": "Bangalore", "state": "Karnataka" },
+        // { "pincode": "560001", "lat": 12.9762, "lng": 77.6033, "city": "Bangalore", "state": "Karnataka" },
+        // { "pincode": "560092", "lat": 13.0629, "lng": 77.6372, "city": "Bangalore", "state": "Karnataka" },
+        // { "pincode": "110001", "lat": 28.6139, "lng": 77.2090, "city": "Delhi", "state": "Delhi" },
+        // { "pincode": "400001", "lat": 18.9387, "lng": 72.8353, "city": "Mumbai", "state": "Maharashtra" },
+        // { "pincode": "700001", "lat": 22.5726, "lng": 88.3639, "city": "Kolkata", "state": "West Bengal" },
+        // { "pincode": "600001", "lat": 13.0827, "lng": 80.2707, "city": "Chennai", "state": "Tamil Nadu" },
+        // { "pincode": "500001", "lat": 17.3850, "lng": 78.4867, "city": "Hyderabad", "state": "Telangana" },
+        // { "pincode": "641001", "lat": 11.0168, "lng": 76.9558, "city": "Coimbatore", "state": "Tamil Nadu" },
+        // { "pincode": "380001", "lat": 23.0225, "lng": 72.5714, "city": "Ahmedabad", "state": "Gujarat" },
+        // { "pincode": "411001", "lat": 18.5204, "lng": 73.8567, "city": "Pune", "state": "Maharashtra" },
+        // { "pincode": "226001", "lat": 26.8467, "lng": 80.9462, "city": "Lucknow", "state": "Uttar Pradesh" },
+        // { "pincode": "800001", "lat": 25.5941, "lng": 85.1376, "city": "Patna", "state": "Bihar" },
+        // { "pincode": "302001", "lat": 26.9124, "lng": 75.7873, "city": "Jaipur", "state": "Rajasthan" },
+        // { "pincode": "781001", "lat": 26.1445, "lng": 91.7362, "city": "Guwahati", "state": "Assam" },
+        // { "pincode": "160001", "lat": 30.7333, "lng": 76.7794, "city": "Chandigarh", "state": "Chandigarh" },
+        // { "pincode": "799001", "lat": 23.8315, "lng": 91.2868, "city": "Agartala", "state": "Tripura" },
+        // { "pincode": "673001", "lat": 11.2588, "lng": 75.7804, "city": "Kozhikode", "state": "Kerala" },
+        // { "pincode": "141001", "lat": 30.9050, "lng": 75.8573, "city": "Ludhiana", "state": "Punjab" },
+        // { "pincode": "517501", "lat": 13.6288, "lng": 79.4192, "city": "Tirupati", "state": "Andhra Pradesh" }
     ];
 
     // Create a fixed layer for markers to avoid positioning issues
