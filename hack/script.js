@@ -1912,8 +1912,8 @@ function initializeParticipantMap() {
         { "pincode": "641014", "lat": 11.0300, "lng": 77.0400, "city": "Coimbatore", "state": "Tamil Nadu" },
         { "pincode": "683582", "lat": 10.2000, "lng": 76.4000, "city": "Ernakulam", "state": "Kerala" },
         { "pincode": "700032", "lat": 22.4980, "lng": 88.3700, "city": "Kolkata", "state": "West Bengal" },
+
         { "pincode": "412201", "lat": 18.5294, "lng": 73.9732, "city": "Loni Kalbhor", "state": "Maharashtra" },
-        
         { "pincode": "600124", "lat": 13.1183, "lng": 80.0875, "city": "Vellavedu", "state": "Tamil Nadu" },
         { "pincode": "600127", "lat": 12.9333, "lng": 80.0167, "city": "Melakkottaiyur", "state": "Tamil Nadu" },
         { "pincode": "424002", "lat": 20.9019, "lng": 74.7774, "city": "Dhule", "state": "Maharashtra" },
@@ -1946,6 +1946,9 @@ function initializeParticipantMap() {
         { "pincode": "641008", "lat": 11.0167, "lng": 76.9667, "city": "Coimbatore", "state": "Tamil Nadu" },
         { "pincode": "110067", "lat": 28.6139, "lng": 77.2090, "city": "Delhi", "state": "Delhi" },
         { "pincode": "110078", "lat": 28.6139, "lng": 77.2090, "city": "Delhi", "state": "Delhi" },
+        { "pincode": "300036", "lat": 27.5529907, "lng": 76.6345735, "city": "Alwar", "state": "Rajasthan" },
+        { "pincode": "695018", "lat": 8.4722, "lng": 76.9801, "city": "Thiruvananthapuram", "state": "Kerala" }, 
+        { "pincode": "229304", "lat": 27.2884, "lng": 80.8392, "city": "Singhpur", "state": "Uttar Pradesh" }
     ];
 
     // Create a fixed layer for markers to avoid positioning issues
