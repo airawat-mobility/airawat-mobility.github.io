@@ -1949,7 +1949,11 @@ function initializeParticipantMap() {
         { "pincode": "695018", "lat": 8.4722, "lng": 76.9801, "city": "Thiruvananthapuram", "state": "Kerala" }, 
         { "pincode": "229304", "lat": 27.2884, "lng": 80.8392, "city": "Singhpur", "state": "Uttar Pradesh" },
         { "pincode": "500055", "lat": 17.5188, "lng": 78.4586, "city": "Hyderabad", "state": "Telangana" },
+        { "pincode": "584135", "lat": 16.2076, "lng": 77.3566, "city": "Raichur", "state": "Karnataka" },
+        { "pincode": "500055", "lat": 17.4931, "lng": 78.4581, "city": "Hyderabad", "state": "Telangana" },
+        { "pincode": "425405", "lat": 21.0446, "lng": 74.5859, "city": "Shirpur", "state": "Maharashtra" },
         { "pincode": "584135", "lat": 16.2076, "lng": 77.3566, "city": "Raichur", "state": "Karnataka" }
+
     ];
 
     // Create a fixed layer for markers to avoid positioning issues
