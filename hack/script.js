@@ -1952,8 +1952,15 @@ function initializeParticipantMap() {
         { "pincode": "584135", "lat": 16.2076, "lng": 77.3566, "city": "Raichur", "state": "Karnataka" },
         { "pincode": "500055", "lat": 17.4931, "lng": 78.4581, "city": "Hyderabad", "state": "Telangana" },
         { "pincode": "425405", "lat": 21.0446, "lng": 74.5859, "city": "Shirpur", "state": "Maharashtra" },
-        { "pincode": "584135", "lat": 16.2076, "lng": 77.3566, "city": "Raichur", "state": "Karnataka" }
-
+        { "pincode": "584135", "lat": 16.2076, "lng": 77.3566, "city": "Raichur", "state": "Karnataka" },
+        { "pincode": "243201", "lat": 28.4311, "lng": 79.0023, "city": "Bareilly", "state": "Uttar Pradesh" },
+        { "pincode": "601103", "lat": 13.0904, "lng": 80.2722, "city": "Chennai", "state": "Tamil Nadu" },
+        { "pincode": "382007", "lat": 23.0435, "lng": 72.5721, "city": "Ahmedabad", "state": "Gujarat" },
+        { "pincode": "201313", "lat": 28.5086, "lng": 77.7366, "city": "Ghaziabad", "state": "Uttar Pradesh" },
+        { "pincode": "835222", "lat": 23.6788, "lng": 85.2795, "city": "Ranchi", "state": "Jharkhand" },
+        { "pincode": "500088", "lat": 17.4117, "lng": 78.5471, "city": "Hyderabad", "state": "Telangana" },
+        { "pincode": "70091", "lat": 22.5726, "lng": 88.3639, "city": "Kolkata", "state": "West Bengal" },
+        { "pincode": "382426", "lat": 23.3095, "lng": 72.8536, "city": "Ahmedabad", "state": "Gujarat" }
     ];
 
     // Create a fixed layer for markers to avoid positioning issues
