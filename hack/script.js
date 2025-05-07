@@ -1705,8 +1705,6 @@ function initializeParticipantMap() {
         maxBoundsViscosity: 1.0 // Make the bounds hard to cross
     });
 
-    // Add OpenStreetMap tiles
-
     // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     // }).addTo(map);
