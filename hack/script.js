@@ -1969,7 +1969,14 @@ function initializeParticipantMap() {
         { "pincode": "585367", "lat": 17.3449, "lng": 76.9267, "city": "Kalaburagi", "state": "Karnataka" },
         { "pincode": "801103", "lat": 25.5563, "lng": 84.8670, "city": "Bihta", "state": "Bihar" },
         { "pincode": "580002", "lat": 15.4416, "lng": 75.0101, "city": "Dharwad", "state": "Karnataka" },
-        { "pincode": "560098", "lat": 12.8985, "lng": 77.5222, "city": "Bengaluru", "state": "Karnataka" }
+        { "pincode": "560098", "lat": 12.8985, "lng": 77.5222, "city": "Bengaluru", "state": "Karnataka" },
+        { "pincode": "140307", "lat": 30.7038, "lng": 76.6572, "city": "Mohali", "state": "Punjab" },
+        { "pincode": "424001", "lat": 20.9050, "lng": 74.7749, "city": "Dhule", "state": "Maharashtra" },
+        { "pincode": "201303", "lat": 28.5672, "lng": 77.3260, "city": "Noida", "state": "Uttar Pradesh" },
+        { "pincode": "380009", "lat": 23.0333, "lng": 72.6181, "city": "Ahmedabad", "state": "Gujarat" },
+        { "pincode": "801108", "lat": 25.6127, "lng": 84.8722, "city": "Patna", "state": "Bihar" },
+        { "pincode": "752054", "lat": 20.2352, "lng": 85.7284, "city": "Bhubaneswar", "state": "Odisha" },
+        { "pincode": "110032", "lat": 28.6600, "lng": 77.2500, "city": "New Delhi", "state": "Delhi" }
     ];
 
     // Create a fixed layer for markers to avoid positioning issues
