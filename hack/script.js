@@ -1709,7 +1709,7 @@ function initializeParticipantMap() {
     //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     // }).addTo(map);
 
-    L.tileLayer('https://api.mapbox.com/styles/v1/planemad/ckf4xcet7231819mm2e8njlca/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic2ltbWhhbiIsImEiOiJjbWFkdnI0aWcwMTF3MnFzNTZlOWVvamIzIn0.t-_K8urqYNf-Y8gJEDVb0A', {
+    L.tileLayer('https://api.mapbox.com/styles/v1/planemad/ckf4xcet7231819mm2e8njlca/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoic2Fua2FscC1nIiwiYSI6ImNtYWZhb3BidDAwbDAybHF3MmRlNmZwb3cifQ.s2_ilri3bzCPlSNKBf8vqw', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
