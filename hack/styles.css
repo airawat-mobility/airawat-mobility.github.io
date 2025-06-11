@@ -774,8 +774,6 @@ section {
   filter: grayscale(0%); /* Removed brightness adjustment for better visibility */
 }
 
-
-/* Section padding and background */
 .sponsers {
   padding: 60px 0;
   background: var(--partners-section-bg);
@@ -783,7 +781,7 @@ section {
 }
 
 [data-theme="dark"] .sponsers {
-  background: #242e3f;
+  background: #242e3f; /* Slightly lighter than default dark background */
 }
 
 .sponsers-logos {
@@ -799,11 +797,11 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 15px;
   border-radius: var(--radius-sm);
   transition: all 0.3s ease;
   background: rgba(255, 255, 255, 0.9);
-  margin: 15px;
+  margin: 10px;
   box-shadow: var(--shadow-sm);
 }
 
@@ -818,7 +816,7 @@ section {
 }
 
 .sponsers-logos img {
-  height: 120px; /* Bigger size */
+  height: 80px; /* Slightly bigger than partner logos */
   object-fit: contain;
   transition: transform 0.3s, filter 0.3s;
   filter: grayscale(30%);
@@ -836,6 +834,7 @@ section {
 [data-theme="dark"] .sponsers-logos img:hover {
   filter: grayscale(0%);
 }
+
 
 footer {
   background: var(--footer-bg);
