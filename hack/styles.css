@@ -774,17 +774,17 @@ section {
   filter: grayscale(0%); /* Removed brightness adjustment for better visibility */
 }
 
-.sponsers {
+.sponsors {
   padding: 60px 0;
   background: var(--partners-section-bg);
   transition: background 0.3s ease;
 }
 
-[data-theme="dark"] .sponsers {
+[data-theme="dark"] .sponsors {
   background: #242e3f;
 }
 
-.sponsers-logos {
+.sponsors-logos {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -793,7 +793,7 @@ section {
   margin-top: 40px;
 }
 
-.sponsers-logo-container {
+.sponsors-logo-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -805,17 +805,17 @@ section {
   box-shadow: var(--shadow-sm);
 }
 
-[data-theme="dark"] .sponsers-logo-container {
+[data-theme="dark"] .sponsors-logo-container {
   background: rgba(255, 255, 255, 0.9);
   box-shadow: var(--shadow-md);
 }
 
-.sponsers-logo-container:hover {
+.sponsors-logo-container:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-md);
 }
 
-.sponsers-logos img {
+.sponsors-logos img {
   height: 120px;
   max-width: 100%;
   object-fit: contain;
@@ -823,50 +823,50 @@ section {
   filter: grayscale(30%);
 }
 
-[data-theme="dark"] .sponsers-logos img {
+[data-theme="dark"] .sponsors-logos img {
   filter: grayscale(20%);
 }
 
-.sponsers-logos img:hover {
+.sponsors-logos img:hover {
   transform: scale(1.05);
   filter: grayscale(0%);
 }
 
-[data-theme="dark"] .sponsers-logos img:hover {
+[data-theme="dark"] .sponsors-logos img:hover {
   filter: grayscale(0%);
 }
 
 @media (max-width: 1024px) {
-  .sponsers-logos img {
+  .sponsors-logos img {
     height: 100px;
   }
 }
 
 @media (max-width: 768px) {
-  .sponsers {
+  .sponsors {
     padding: 40px 0;
   }
 
-  .sponsers-logos {
+  .sponsors-logos {
     gap: 20px;
   }
 
-  .sponsers-logo-container {
+  .sponsors-logo-container {
     padding: 12px;
     margin: 8px;
   }
 
-  .sponsers-logos img {
+  .sponsors-logos img {
     height: 80px;
   }
 }
 
 @media (max-width: 480px) {
-  .sponsers-logos img {
+  .sponsors-logos img {
     height: 60px;
   }
 
-  .sponsers-logo-container {
+  .sponsors-logo-container {
     padding: 10px;
   }
 }
