@@ -521,14 +521,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         if (timeRemainingEl) timeRemainingEl.innerHTML = `Registration opens in <span class="countdown" data-date="${targetDate.toISOString().split('T')[0]}">${timeString}</span>`;
                         else countdown.textContent = timeString;
                     } else {
-                        if (timeRemainingEl) timeRemainingEl.innerHTML = `Coming in <span class="countdown" data-date="${targetDate.toISOString().split('T')[0]}">${timeString}</span>`;
+                        if (timeRemainingEl) timeRemainingEl.innerHTML = `Coming in <span class="countdown" data-date="${targetDate.toISOString()}">${timeString}</span>`;
                         else countdown.textContent = timeString;
                     }
                 }
                 // Less than a month but more than a day
                 else if (days > 0) {
                     timeString = `${days}d ${hours.toString().padStart(2, '0')}h`;
-                    if (timeRemainingEl) timeRemainingEl.innerHTML = `Coming in <span class="countdown ticking" data-date="${targetDate.toISOString().split('T')[0]}">${timeString}</span>`;
+                    if (timeRemainingEl) timeRemainingEl.innerHTML = `Coming in <span class="countdown ticking" data-date="${targetDate.toISOString()}">${timeString}</span>`;
                     else {
                         countdown.textContent = timeString;
                         countdown.classList.add('ticking');
@@ -537,10 +537,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Less than a day
                 else {
                     timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                    if (timeRemainingEl) timeRemainingEl.innerHTML = `Starting in <span class="countdown ticking" data-date="${targetDate.toISOString().split('T')[0]}">${timeString}</span>`;
+                    if (timeRemainingEl) timeRemainingEl.innerHTML = `Starting in <span class="countdown ticking" data-date="${targetDate.toISOString()}">${timeString}</span>`;
                     else {
                         countdown.textContent = timeString;
-                        countdown.classList.add('ticking');
+                        countdown.classList
                     }
                 }
                 
