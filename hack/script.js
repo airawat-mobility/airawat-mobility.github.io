@@ -490,7 +490,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     } else {
                         // Handle Registration Opens differently (index 0)
                         if (index === 0) {
-                            countdown.textContent = 'Registration open';
+                            countdown.textContent = 'Registration closed';
                         } else {
                             countdown.textContent = 'Completed';
                         }

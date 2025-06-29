@@ -5434,3 +5434,25 @@ svg.leaflet-zoom-animated {
 [data-theme="dark"] .map-stat-label {
     color: var(--text-light);
 }
+
+/* Add style for event completed message */
+.event-completed, .completed-message {
+  display: block;
+  background: var(--secondary);
+  color: white;
+  padding: 18px 30px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 30px auto 40px auto;
+  box-shadow: 0 4px 16px rgba(72, 187, 120, 0.15);
+  max-width: 700px;
+}
+
+/* Visually mute registration and countdown elements if still present */
+.registration-process, .registration-tabs, .registration-content, .countdown.ticking {
+  opacity: 0.4;
+  pointer-events: none;
+  filter: grayscale(1);
+}
