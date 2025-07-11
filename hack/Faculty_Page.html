@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard - Final Winners</title>
+  <style>
+    .leaderboard-container {
+      max-width: 1500px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 4px 32px 0 #0001;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+    .leaderboard-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      letter-spacing: 1px;
+    }
+    .leaderboard-top3 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+    .leaderboard-phase2-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      color: #333;
+    }
+    .leaderboard-top3-cards {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: nowrap;
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 2.5rem;
+      overflow: visible;
+    }
+    .leaderboard-card.top3 {
+      flex: 1 1 300px;
+      min-width: 300px;
+      max-width: 340px;
+      min-height: 340px;
+      background: linear-gradient(135deg, #f8fafc 80%, #e0e7ef 100%);
+      border: 3px solid #eee;
+      border-radius: 18px;
+      padding: 2.5rem 1rem 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: visible;
+      margin-top: 2.5rem;
+    }
+    .leaderboard-card.top3:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 8px 32px 0 #0002;
+    }
+    .leaderboard-rank {
+      position: absolute;
+      top: -55px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #fff;
+      padding: 0.3em 1em;
+      border-radius: 1em 1em 1.5em 1.5em/1.2em 1.2em 2em 2em;
+      box-shadow: 0 2px 8px #0002;
+      border: 2px solid #fff;
+      z-index: 2;
+      min-width: 60px;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-clip: padding-box;
+      overflow: visible;
+    }
+    .leaderboard-team-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin: 2.5rem 0 1rem 0;
+      text-align: center;
+      color: #222;
+    }
+    .leaderboard-members {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      width: 100%;
+    }
+    .leaderboard-member {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: #f3f6fa;
+      border-radius: 8px;
+      padding: 0.4rem 0.7rem;
+      box-shadow: 0 1px 4px #0001;
+    }
+    .leaderboard-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #e0e7ef;
+      background: #fff;
+    }
+    .leaderboard-member-name {
+      font-weight: 500;
+      color: #222;
+    }
+    .leaderboard-member-college {
+      font-size: 0.95em;
+      color: #6b7280;
+    }
+    .leaderboard-rest {
+      margin-top: 2.5rem;
+    }
+    .leaderboard-rest-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      color: #333;
+    }
+    .leaderboard-table-wrapper {
+      overflow-x: auto;
+    }
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 0.5rem;
+      font-size: 1.05rem;
+      background: none;
+    }
+    .leaderboard-table th, .leaderboard-table td {
+      padding: 0.7rem 1rem;
+      text-align: left;
+    }
+    .leaderboard-table th {
+      background: #f3f6fa;
+      font-weight: 700;
+      color: #222;
+      border-radius: 8px 8px 0 0;
+    }
+    .leaderboard-row {
+      background: #f8fafc;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px #0001;
+      transition: box-shadow 0.2s;
+    }
+    .leaderboard-row:hover {
+      box-shadow: 0 4px 16px #0002;
+    }
+    .leaderboard-rank-cell {
+      font-weight: bold;
+      color: #3b82f6;
+      font-size: 1.1em;
+    }
+    .leaderboard-team-cell {
+      font-weight: 500;
+      color: #222;
+    }
+    .leaderboard-members-cell {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+    }
+    .leaderboard-member-list {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: #e0e7ef;
+      border-radius: 6px;
+      padding: 0.2rem 0.5rem;
+      margin-right: 0.5rem;
+      margin-bottom: 0.3rem;
+    }
+    .leaderboard-avatar-small {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1.5px solid #fff;
+      background: #fff;
+    }
+    @media (max-width: 1400px) {
+      .leaderboard-container {
+        max-width: 98vw;
+      }
+      .leaderboard-top3-cards {
+        gap: 1rem;
+      }
+      .leaderboard-card.top3 {
+        min-width: 260px;
+        max-width: 320px;
+      }
+    }
+    @media (max-width: 900px) {
+      .leaderboard-top3-cards {
+        flex-wrap: wrap;
+      }
+    }
+    @media (max-width: 600px) {
+      .leaderboard-container {
+        padding: 0.5rem;
+      }
+      .leaderboard-title {
+        font-size: 2rem;
+      }
+      .leaderboard-card.top3 {
+        padding: 1rem 0.5rem;
+      }
+      .leaderboard-rest-title {
+        font-size: 1.1rem;
+      }
+      .leaderboard-table th, .leaderboard-table td {
+        padding: 0.4rem 0.5rem;
+      }
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #181a1b;
+        color: #f3f6fa;
+      }
+      .leaderboard-container {
+        background: #23272b;
+        box-shadow: 0 4px 32px 0 #0008;
+      }
+      .leaderboard-card.top3 {
+        background: linear-gradient(135deg, #181a1b 80%, #23272b 100%);
+        border-color: #333;
+      }
+      .leaderboard-row {
+        background: #23272b;
+        box-shadow: 0 1px 4px #0008;
+      }
+      .leaderboard-table th {
+        background: #23272b;
+        color: #f3f6fa;
+      }
+      .leaderboard-member,
+      .leaderboard-member-list {
+        background: #181a1b;
+        color: #f3f6fa;
+      }
+      .leaderboard-team-cell,
+      .leaderboard-member-name,
+      .leaderboard-rest-title,
+      .leaderboard-phase2-title,
+      .leaderboard-title {
+        color: #f3f6fa;
+      }
+      .leaderboard-member-college {
+        color: #b0b8c1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="leaderboard-container">
+    <!-- <h1 class="leaderboard-title">Leaderboard</h1> -->
+    <div class="leaderboard-top3">
+      <h2 class="leaderboard-phase2-title">Phase 2 Winners</h2>
+      <div class="leaderboard-top3-cards">
+        <!-- 1st Place -->
+        <div class="leaderboard-card top3" style="border-color: #FFD700; box-shadow: 0 4px 24px 0 #FFD70033;">
+          <div class="leaderboard-rank" style="background: #FFD700;">🥇</div>
+          <div class="leaderboard-team-name" style="color: #222">Explorers</div>
+          <div class="leaderboard-members">
+            <div class="leaderboard-member">
+              <img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Alice Kumar" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">ADITYA R</div>
+                <div class="leaderboard-member-college">Sri Sai Ram Engineering College</div>
+              </div>
+            </div>
+            <div class="leaderboard-member">
+              <img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Bob Singh" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">VISHNUVARTHAN M</div>
+                <div class="leaderboard-member-college">Sri Sai Ram Engineering College</div>
+              </div>
+            </div>
+            <div class="leaderboard-member">
+              <img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Carol Nair" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">DEEPAK</div>
+                <div class="leaderboard-member-college">Sri Sai Ram Engineering College</div>
+              </div>
+            </div>
+            <div class="leaderboard-member">
+              <img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="David Rao" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">Vishal Rathin V</div>
+                <div class="leaderboard-member-college">Sri Sai Ram Engineering College</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 2nd Place -->
+        <div class="leaderboard-card top3" style="border-color: #C0C0C0; box-shadow: 0 4px 24px 0 #C0C0C033;">
+          <div class="leaderboard-rank" style="background: #C0C0C0;">🥈</div>
+          <div class="leaderboard-team-name" style="color: #222">Astrix</div>
+          <div class="leaderboard-members">
+            <div class="leaderboard-member">
+              <img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Esha Patel" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">Daksh Mehta</div>
+                <div class="leaderboard-member-college">Ramaiah Institute of Technology</div>
+              </div>
+            </div>
+            <div class="leaderboard-member">
+              <img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Farhan Ali" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">Sakshi Agarwala</div>
+                <div class="leaderboard-member-college">Ramaiah Institute of Technology</div>
+              </div>
+            </div>
+            <div class="leaderboard-member">
+              <img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Gita Das" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">Lalit Singh Kharayat</div>
+                <div class="leaderboard-member-college">Ramaiah Institute of Technology</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 3rd Place -->
+        <div class="leaderboard-card top3" style="border-color: #CD7F32; box-shadow: 0 4px 24px 0 #CD7F3233;">
+          <div class="leaderboard-rank" style="background: #CD7F32;">🥉</div>
+          <div class="leaderboard-team-name" style="color: #222">Aprameya</div>
+          <div class="leaderboard-members">
+            <div class="leaderboard-member">
+              <img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Isha Roy" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">Sai Revanth Singavarapu</div>
+                <div class="leaderboard-member-college">KL University</div>
+              </div>
+            </div>
+            <div class="leaderboard-member">
+              <img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Jay Mehta" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">Kamsani Yashwanth</div>
+                <div class="leaderboard-member-college">KL University</div>
+              </div>
+            </div>
+            <div class="leaderboard-member">
+              <img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Kiran Shah" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">Venkata Praveen Akula </div>
+                <div class="leaderboard-member-college">KL University</div>
+              </div>
+            </div>
+            <div class="leaderboard-member">
+              <img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Lata Singh" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">Komal Sai Raj Atmakuri</div>
+                <div class="leaderboard-member-college">KL University</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 4th Place -->
+        <div class="leaderboard-card top3" style="border-color: #8b5cf6; box-shadow: 0 4px 24px 0 #8b5cf633;">
+          <div class="leaderboard-rank" style="background: #8b5cf6;">4</div>
+          <div class="leaderboard-team-name" style="color: #222">Asterix</div>
+          <div class="leaderboard-members">
+            <div class="leaderboard-member">
+              <img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Manoj Kumar" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">SUDARSHAN KHOT</div>
+                <div class="leaderboard-member-college">Pune Institute of Computer Technology</div>
+              </div>
+            </div>
+            <div class="leaderboard-member">
+              <img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Nisha Jain" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">Shree Mengshetti</div>
+                <div class="leaderboard-member-college">Pune Institute of Computer Technology</div>
+              </div>
+            </div>
+            <div class="leaderboard-member">
+              <img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Om Prakash" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">SAKSHAM VERMA</div>
+                <div class="leaderboard-member-college">Pune Institute of Computer Technology</div>
+              </div>
+            </div>
+            <div class="leaderboard-member">
+              <img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Pooja Sinha" class="leaderboard-avatar" />
+              <div>
+                <div class="leaderboard-member-name">Vallabh Vidyasagar</div>
+                <div class="leaderboard-member-college">Pune Institute of Computer Technology</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="leaderboard-rest">
+      <h2 class="leaderboard-rest-title">Phase 1 Winners (Participated in Phase 2)</h2>
+      <div class="leaderboard-table-wrapper">
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Team</th>
+              <th>Members</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Remaining teams (5-20) -->
+            <!-- The following rows are generated by hand from the JSX data, with correct images and names. -->
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">5</td>
+              <td class="leaderboard-team-cell">Frame by Frame</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Qadir Khan" class="leaderboard-avatar-small" />Himanshu <span class="leaderboard-member-college">Gati shakti Vishwavidyalaya</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Riya Sen" class="leaderboard-avatar-small" />Harsh Vardhan <span class="leaderboard-member-college">Gati shakti Vishwavidyalaya</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Sahil Gupta" class="leaderboard-avatar-small" />Anmol Verma<span class="leaderboard-member-college">Gati shakti Vishwavidyalaya</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Tina Paul" class="leaderboard-avatar-small" />Sambhav Verma <span class="leaderboard-member-college">Gati shakti Vishwavidyalaya</span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">6</td>
+              <td class="leaderboard-team-cell">UrbanPulse</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Uma Sharma" class="leaderboard-avatar-small" />Sakshi Jadhav <span class="leaderboard-member-college">AISSMS Institute of Information Technology</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Vikas Yadav" class="leaderboard-avatar-small" />MadihaShaikh <span class="leaderboard-member-college">AISSMS Institute of Information Technology</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Waseem Akram" class="leaderboard-avatar-small" />SwaraliModak<span class="leaderboard-member-college">AISSMS Institute of Information Technology</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Xena Dey" class="leaderboard-avatar-small" />Anushka Gaikwad <span class="leaderboard-member-college">AISSMS Institute of Information Technology</span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">7</td>
+              <td class="leaderboard-team-cell">Q-Learners</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Yash Patel" class="leaderboard-avatar-small" />Manikonda Vishnu Vardhan Reddy <span class="leaderboard-member-college">Chaitanya Bharathi Institute of Technology</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Zara Khan" class="leaderboard-avatar-small" />Chaitanyya Pratap Agarwal <span class="leaderboard-member-college">Chaitanya Bharathi Institute of Technology</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Amit Saha" class="leaderboard-avatar-small" />MithilEmmadi <span class="leaderboard-member-college">Chaitanya Bharathi Institute of Technology</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Bina Roy" class="leaderboard-avatar-small" />Sankar Narayanalnupakutika <span class="leaderboard-member-college">Chaitanya Bharathi Institute of Technology</span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">8</td>
+              <td class="leaderboard-team-cell">Urban eye</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Chirag Joshi" class="leaderboard-avatar-small" />Naveen pSuresh<span class="leaderboard-member-college">Government Engineering College Thrissur</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Deepa Nair" class="leaderboard-avatar-small" />TerinThomas <span class="leaderboard-member-college">Government Engineering College Thrissur</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Evan Thomas" class="leaderboard-avatar-small" />ThejusJacob P <span class="leaderboard-member-college">Government Engineering College Thrissur</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Fatima Noor" class="leaderboard-avatar-small" />SreeramK Manoj<span class="leaderboard-member-college">Government Engineering College Thrissur</span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">9</td>
+              <td class="leaderboard-team-cell">Aeropixel</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Gopal Das" class="leaderboard-avatar-small" />Uzma Patil <span class="leaderboard-member-college">Symbiosis Institute of Technology</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Heena Shaikh" class="leaderboard-avatar-small" />Shivani Patil <span class="leaderboard-member-college">Symbiosis Institute of Technology</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Imran Khan" class="leaderboard-avatar-small" />Sejalhanmante <span class="leaderboard-member-college">Symbiosis Institute of Technology</span></span>
+                <!-- <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Jaya Rao" class="leaderboard-avatar-small" />Jaya Rao <span class="leaderboard-member-college">(PES University)</span></span> -->
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">10</td>
+              <td class="leaderboard-team-cell">Rebound</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Kunal Singh" class="leaderboard-avatar-small" />Sai Harsha<span class="leaderboard-member-college">Amrita vishwa Vidyapeetham Coimbatore </span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Leena Paul" class="leaderboard-avatar-small" />Salla Shivesh <span class="leaderboard-member-college">Amrita vishwa Vidyapeetham Coimbatore </span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Mohan Das" class="leaderboard-avatar-small" />Rahul Chowdary <span class="leaderboard-member-college">Amrita vishwa Vidyapeetham Coimbatore </span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Nidhi Verma" class="leaderboard-avatar-small" />Nitish Dandu <span class="leaderboard-member-college">Amrita vishwa Vidyapeetham Coimbatore </span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">11</td>
+              <td class="leaderboard-team-cell">CircuitBreakers</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Omkar Patil" class="leaderboard-avatar-small" />J Joel AntoEdwin<span class="leaderboard-member-college">PSG INSTITUTE OF TECHNOLOGY AND APPLIED RESEARCH</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Priya Singh" class="leaderboard-avatar-small" />Cijopriyadharshan J. <span class="leaderboard-member-college">PSG INSTITUTE OF TECHNOLOGY AND APPLIED RESEARCH</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Rahul Jain" class="leaderboard-avatar-small" />GopalR <span class="leaderboard-member-college">PSG INSTITUTE OF TECHNOLOGY AND APPLIED RESEARCH</span></span>
+                <!-- <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Sneha Roy" class="leaderboard-avatar-small" />Sneha Roy <span class="leaderboard-member-college">(Amity University)</span></span> -->
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">12</td>
+              <td class="leaderboard-team-cell">HackOps</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Tanvi Shah" class="leaderboard-avatar-small" />SamyukthasriHm <span class="leaderboard-member-college">Knowledge Institute of Technology â€“ Salem Tamilnadu</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Uday Kumar" class="leaderboard-avatar-small" />VaishanviKumaresan <span class="leaderboard-member-college">Knowledge Institute of Technology â€“ Salem Tamilnadu</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Vani Gupta" class="leaderboard-avatar-small" />Vinodhan V A <span class="leaderboard-member-college">Knowledge Institute of Technology â€“ Salem Tamilnadu</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Wasim Khan" class="leaderboard-avatar-small" />Deepak Kumar GS <span class="leaderboard-member-college">Knowledge Institute of Technology â€“ Salem Tamilnadu</span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">13</td>
+              <td class="leaderboard-team-cell">The Runtime Terrors</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Xavier Dsouza" class="leaderboard-avatar-small" />Sameer Kumar<span class="leaderboard-member-college">Vellore Institute of Technology, Vellore</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Yamini Reddy" class="leaderboard-avatar-small" />Raahul Muthukumar <span class="leaderboard-member-college">Vellore Institute of Technology, Vellore</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Zubin Mehta" class="leaderboard-avatar-small" />Nishurshek Prabakaran <span class="leaderboard-member-college">Vellore Institute of Technology, Vellore</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Aarti Sharma" class="leaderboard-avatar-small" />Sree RajMuthaiya.A.L<span class="leaderboard-member-college">Vellore Institute of Technology, Vellore</span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">14</td>
+              <td class="leaderboard-team-cell">Reboot Racers</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Bhavesh Patel" class="leaderboard-avatar-small" />DevaDarshini.P <span class="leaderboard-member-college">Amrita Vishwa Vidyapeetham, Chennai campus.</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Chitra Sen" class="leaderboard-avatar-small" />S Kusuma Reddy <span class="leaderboard-member-college">Amrita Vishwa Vidyapeetham, Chennai campus.</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Devika Rao" class="leaderboard-avatar-small" />RithikkaaS J <span class="leaderboard-member-college">Amrita Vishwa Vidyapeetham, Chennai campus.</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Eshan Ali" class="leaderboard-avatar-small" />SwethaGanesh <span class="leaderboard-member-college">Amrita Vishwa Vidyapeetham, Chennai campus.</span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">15</td>
+              <td class="leaderboard-team-cell">TerraVizzor</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Farida Khan" class="leaderboard-avatar-small" />SayanDatta<span class="leaderboard-member-college">Amity University Kolkata</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Girish Nair" class="leaderboard-avatar-small" />Soumodeep Banerjee<span class="leaderboard-member-college">Amity University Kolkata</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Harsha Patel" class="leaderboard-avatar-small" />SourishPaul<span class="leaderboard-member-college">Amity University Kolkata</span></span>
+                <!-- <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Indira Das" class="leaderboard-avatar-small" />Indira Das <span class="leaderboard-member-college">(Punjab University)</span></span> -->
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">16</td>
+              <td class="leaderboard-team-cell">Smart</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Jatin Mehra" class="leaderboard-avatar-small" />Hruthik Palivela<span class="leaderboard-member-college">(Amrita Vishwa Vidyapeetham)</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Kavya Sinha" class="leaderboard-avatar-small" />Ashrith Venkat <span class="leaderboard-member-college">(Amrita Vishwa Vidyapeetham)</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Lakshmi Rao" class="leaderboard-avatar-small" />Madhav Yalamarthi<span class="leaderboard-member-college">(Amrita Vishwa Vidyapeetham)</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Manish Gupta" class="leaderboard-avatar-small" />Nallapaneni Vaibhav <span class="leaderboard-member-college">(Amrita Vishwa Vidyapeetham)</span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">17</td>
+              <td class="leaderboard-team-cell">Sarathi</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Nikita Jain" class="leaderboard-avatar-small" />Joel Joby K<span class="leaderboard-member-college">(GEC THRISSUR)</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Om Prakash" class="leaderboard-avatar-small" />AthulkrishnaM A<span class="leaderboard-member-college">(GEC THRISSUR)</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Priti Das" class="leaderboard-avatar-small" />Antony Manjila<span class="leaderboard-member-college">(GEC THRISSUR)</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Qasim Ali" class="leaderboard-avatar-small" />SteeveJoy<span class="leaderboard-member-college">(GEC THRISSUR)</span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">18</td>
+              <td class="leaderboard-team-cell">Sai Dwellers</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Ramesh Kumar" class="leaderboard-avatar-small" />Mukil SD<span class="leaderboard-member-college">(Sri Sairam Institute Of Technology)</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Sana Shaikh" class="leaderboard-avatar-small" />Mukesh SD<span class="leaderboard-member-college">(Sri Sairam Institute Of Technology)</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Tara Menon" class="leaderboard-avatar-small" />Monika Vijay<span class="leaderboard-member-college">(Sri Sairam Institute Of Technology)</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Umesh Yadav" class="leaderboard-avatar-small" />DineshKanna A<span class="leaderboard-member-college">(Sri Sairam Institute Of Technology)</span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">19</td>
+              <td class="leaderboard-team-cell">404 Found</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Vikas Sharma" class="leaderboard-avatar-small" />Aarshi Mukharjee<span class="leaderboard-member-college">(Vellore Institute of Technology, Vellore)</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Wendy Dsouza" class="leaderboard-avatar-small" />Gadi SrihariReddy<span class="leaderboard-member-college">(Vellore Institute of Technology, Vellore)</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Xavier Pinto" class="leaderboard-avatar-small" />Prithvi Raghu<span class="leaderboard-member-college">(Vellore Institute of Technology, Vellore)</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Yusuf Khan" class="leaderboard-avatar-small" />Jennifer Anand<span class="leaderboard-member-college">(Vellore Institute of Technology, Vellore)</span></span>
+              </td>
+            </tr>
+            <tr class="leaderboard-row">
+              <td class="leaderboard-rank-cell">20</td>
+              <td class="leaderboard-team-cell">NMIT</td>
+              <td class="leaderboard-members-cell">
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Zara Sheikh" class="leaderboard-avatar-small" />NikhilS G<span class="leaderboard-member-college">(Nitte Meenakshi Institute of technology)</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Aman Verma" class="leaderboard-avatar-small" />HrathikHarikant<span class="leaderboard-member-college">(Nitte Meenakshi Institute of technology)</span></span>
+                <span class="leaderboard-member-list"><img src="https://plus.unsplash.com/premium_photo-1688740375397-34605b6abe48?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZmVtYWxlJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D" alt="Bhavna Patel" class="leaderboard-avatar-small" />RohitNaik<span class="leaderboard-member-college">(Nitte Meenakshi Institute of technology)</span></span>
+                <span class="leaderboard-member-list"><img src="https://www.shutterstock.com/image-photo/headshot-portrait-happy-millennial-man-260nw-1548802709.jpg" alt="Chirag Shah" class="leaderboard-avatar-small" />Sharath RamaBaidinmane <span class="leaderboard-member-college">(Nitte Meenakshi Institute of technology)</span></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

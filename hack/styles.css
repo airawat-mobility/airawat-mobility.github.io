@@ -5456,3 +5456,124 @@ svg.leaflet-zoom-animated {
   pointer-events: none;
   filter: grayscale(1);
 }
+
+/* Winners Section Styles */
+.winners-section {
+  background: var(--prize-section-bg); /* Use a soft background distinct from others */
+  padding: 80px 0;
+  transition: background 0.3s ease;
+}
+
+[data-theme="dark"] .winners-section {
+  background: #232b3b; /* Slightly different from other dark backgrounds */
+}
+
+.winners-content {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 40px 30px 30px 30px;
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+[data-theme="dark"] .winners-content {
+  background: var(--card-bg-dark);
+}
+
+.phase2-winners-btn {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 14px 36px;
+  background: var(--secondary);
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(72, 187, 120, 0.15);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  letter-spacing: 1px;
+}
+
+.phase2-winners-btn:hover {
+  background: var(--primary);
+  color: #fff;
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 10px 30px rgba(66, 153, 225, 0.18);
+}
+
+@media (max-width: 768px) {
+  .winners-content {
+    padding: 25px 10px 20px 10px;
+  }
+  .phase2-winners-btn {
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+}
+
+.winners-modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+.winners-modal.active {
+  display: flex;
+}
+.winners-modal-content {
+  background: #fff;
+  margin: 3rem auto;
+  border-radius: 16px;
+  max-width: 95vw;
+  width: 1500px;
+  box-shadow: 0 8px 32px #0002;
+  position: relative;
+  padding: 2rem 1rem;
+}
+.winners-modal-close {
+  position: absolute;
+  top: 1rem; right: 1.5rem;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+  z-index: 10;
+}
+@media (max-width: 900px) {
+  .winners-modal-content { width: 99vw; padding: 0.5rem; }
+}
+
+[data-theme="dark"] .leaderboard-container {
+  background: var(--card-bg-dark);
+  color: var(--text-dark);
+}
+[data-theme="dark"] .leaderboard-title,
+[data-theme="dark"] .leaderboard-team-name,
+[data-theme="dark"] .leaderboard-member-name,
+[data-theme="dark"] .leaderboard-team-cell {
+  color: var(--text-dark);
+}
+[data-theme="dark"] .leaderboard-phase2-title,
+[data-theme="dark"] .leaderboard-rest-title {
+  color: var(--text-light);
+}
+[data-theme="dark"] .leaderboard-member,
+[data-theme="dark"] .leaderboard-row {
+  background: var(--bg-dark);
+}
+[data-theme="dark"] .leaderboard-member-list {
+  background: var(--card-bg-dark);
+}
+[data-theme="dark"] .leaderboard-table th {
+  background: var(--card-bg-dark);
+  color: var(--text-dark);
+}
